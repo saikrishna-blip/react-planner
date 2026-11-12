@@ -137,13 +137,13 @@
       <p class="eyebrow">Decorative lighting · warm white 2700–3000 K</p>
       <h2>Lighting plan</h2>
       <ul class="light">
-        <li><span class="dot"></span><div><b>Canopy downlights</b> · 2 × 7 W recessed COB in the porch slab soffit, over the main door and the glass side light.</div></li>
-        <li><span class="dot"></span><div><b>Canopy edge cove</b> · concealed LED strip (IP65) along the front lip of the porch slab.</div></li>
-        <li><span class="dot"></span><div><b>Up–down wall washer</b> · 2 × 6 W on the stone fin, beams grazing the stone texture.</div></li>
-        <li><span class="dot"></span><div><b>Feature frame cove</b> · hidden LED strip under the top band of the tall frame, washing the teak panel and window.</div></li>
-        <li><span class="dot"></span><div><b>Planter spike lights</b> · 3 × 3 W spikes in the raised planter, aimed up at the plants.</div></li>
-        <li><span class="dot"></span><div><b>Gate pillar lights</b> · 2 × cube lights on the compound wall at both sides of the gate.</div></li>
-        <li><span class="dot"></span><div><b>Parapet strip</b> · LED strip under the parapet coping over the entrance bay.</div></li>
+        <li><span class="dot"></span><div><b>Soffit cove</b> · concealed LED strip along the front edge of the sloped wood soffit, plus 3 recessed spots.</div></li>
+        <li><span class="dot"></span><div><b>Up–down washers</b> · 2 × 6 W on the stone-block cladding, grazing the texture.</div></li>
+        <li><span class="dot"></span><div><b>Window box glow</b> · LED strip inside the top of the white box frame.</div></li>
+        <li><span class="dot"></span><div><b>Porch ceiling</b> · 2 × 7 W COB downlights in the wood ceiling, lighting the wave wall and door.</div></li>
+        <li><span class="dot"></span><div><b>Side cove line</b> · LED strip under the side parapet coping, the warm line from the reference.</div></li>
+        <li><span class="dot"></span><div><b>Name plate & gate</b> · backlit name plate and cube lights on both gate pillars.</div></li>
+        <li><span class="dot"></span><div><b>Planter spikes</b> · 3 × 3 W spike lights in the front planter.</div></li>
       </ul>
       <p class="note">Put the outdoor lights on a timer or dusk-to-dawn sensor. All fittings should be outdoor-rated, IP65 or better.</p>
     </section>
@@ -159,31 +159,32 @@
 
   // ---------------- colour schemes ----------------
   const SCHEMES = {
-    classic: {
-      label: 'Classic', title: 'Classic White & Teak',
-      note: 'Recommended for Sullurpeta. Light walls reflect the coastal heat, the dark plinth hides monsoon splash marks, and teak with grey stone keeps it classy.',
-      body: '#efebe4', frame: '#fbfaf7', recess: '#d6ccbe', plinth: '#3f4245', metal: '#2a2c2f', wood: '#8a5a34', compound: '#ece7df', coping: '#3f4245'
-    },
     sand: {
-      label: 'Sandstone', title: 'Warm Sandstone & Walnut',
-      note: 'Earthy and warm. The beige body hides dust well and goes with the walnut wood and bronze frames.',
-      body: '#e3d5bf', frame: '#f6f0e6', recess: '#b59c80', plinth: '#4a3e35', metal: '#3b332c', wood: '#6a4328', compound: '#e3d5bf', coping: '#4a3e35'
+      label: 'Sandstone', title: 'Sandstone Block & Wood',
+      note: 'The look from your reference. Warm sandstone-block cladding, grey fins and wood soffits on a white base. The light body keeps the house cool, and the cladding hides dust and rain marks.',
+      body: '#f3f0eb', frame: '#fbfaf8', clad: '#a8846a', accent: '#55595e', wood: '#b8743c', wave: '#c9773a', plinth: '#4a4d51', compound: '#f0ece6', coping: '#55595e', metal: '#2b2d30'
     },
-    modern: {
-      label: 'Charcoal', title: 'Modern Charcoal Frame',
-      note: 'A bolder look, with a charcoal feature frame against light grey walls. Dark paint absorbs heat, so keep it to the frame only.',
-      body: '#e8e9e8', frame: '#3a3e43', recess: '#c8cacb', plinth: '#2d3033', metal: '#1d1f22', wood: '#a6744a', compound: '#e8e9e8', coping: '#3a3e43'
+    grey: {
+      label: 'Grey Stone', title: 'Grey Stone & Walnut',
+      note: 'A cooler, more modern version. Grey stone cladding with charcoal fins and darker walnut wood.',
+      body: '#eeeeec', frame: '#fafafa', clad: '#8b8d8f', accent: '#34373b', wood: '#8c5a35', wave: '#9c6a45', plinth: '#34373b', compound: '#ececea', coping: '#34373b', metal: '#1f2124'
+    },
+    beige: {
+      label: 'Beige & Teak', title: 'Beige Stone & Teak',
+      note: 'Softer and traditional. Light beige cladding with teak wood and bronze-brown frames.',
+      body: '#efe7da', frame: '#fbf8f2', clad: '#c2a988', accent: '#5b4a3c', wood: '#8a5a34', wave: '#a5683a', plinth: '#4a3e35', compound: '#ece4d6', coping: '#5b4a3c', metal: '#3a322b'
     }
   };
   const FINISH_ROWS = [
-    ['body', 'Main walls', 'Exterior emulsion, smooth finish, on all plastered walls'],
-    ['frame', 'Feature frame & parapet bands', 'The tall window frame, top band and parapet edges'],
-    ['recess', 'Entrance bay wall', 'Recessed wall behind the door, for depth under the canopy'],
-    ['wood', 'Wood panels & main door', 'HPL/WPC exterior wood-look panel beside the tall window; teak main door'],
-    ['stone', 'Stone cladding', 'Grey slate or ledger stone on the fin, plus the base panel on the right'],
-    ['metal', 'Gate, grills, window frames', 'Powder-coated MS/aluminium, matte finish'],
-    ['plinth', 'Plinth band & coping', 'Bottom 1.5 ft band and compound wall coping (hides splash dirt)'],
-    ['compound', 'Compound wall', 'Same as main walls, with dark coping']
+    ['body', 'Main walls', 'Exterior emulsion on all plastered walls'],
+    ['frame', 'Sloped fascia & window box', 'White band of the sloped frame and the deep box around the tall window'],
+    ['clad', 'Stone-block cladding', '2 ft × 1 ft sandstone/porcelain cladding on the feature block, pillars, side panels and planter'],
+    ['accent', 'Fins, box frames & roof screen', 'Grey ACP/MS vertical fins, side window box frames and the screen on the porch roof'],
+    ['wood', 'Wood soffit, porch ceiling & door', 'HPL/WPC wood-look under the sloped fascia and the porch ceiling; teak main door'],
+    ['wave', 'Porch feature wall', '3D wave-pattern wood/HPL panel behind the main door'],
+    ['metal', 'Gate & railings', 'Powder-coated MS, matte finish'],
+    ['plinth', 'Plinth band', 'Bottom 1.5 ft band, hides splash dirt'],
+    ['compound', 'Compound wall', 'Main wall colour with grey coping']
   ];
   const STONE = '#5b5e61';
 
@@ -238,6 +239,38 @@
     for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(0,0,0,${rnd() * 0.035})`; g.fillRect(rnd() * w, rnd() * h, 1.5, 1.5); }
   }, 4, 4);
 
+  // stone-block cladding (world-unit UVs: 512 px = 4 ft, blocks 2 ft x 1 ft)
+  const cladTex = canvasTex(512, 512, (g, w, h) => {
+    g.fillStyle = '#6e6e6e'; g.fillRect(0, 0, w, h);
+    for (let r = 0; r < 4; r++) for (let c = -1; c < 3; c++) {
+      const x = c * 256 + (r % 2 ? 128 : 0), y = r * 128, v = 190 + rnd() * 55;
+      g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(x + 3, y + 3, 250, 122);
+      for (let k = 0; k < 260; k++) { const d = rnd() * 40 - 20; g.fillStyle = `rgba(${v + d},${v + d},${v + d},.7)`; g.fillRect(x + 3 + rnd() * 246, y + 3 + rnd() * 118, 3, 3); }
+    }
+  }, 0.25, 0.25);
+  // porch feature wall: wavy grooves
+  const waveTex = canvasTex(512, 512, (g, w, h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h);
+    const N = 22;
+    for (let i = 0; i < N; i++) {
+      const v = i % 2 ? 210 : 250; g.fillStyle = `rgb(${v},${v},${v})`;
+      g.beginPath();
+      for (let x = 0; x <= w; x += 8) { const y = (i / N) * h + Math.sin(x / w * Math.PI * 2.2 + i * 0.32) * 26; x ? g.lineTo(x, y) : g.moveTo(x, y); }
+      for (let x = w; x >= 0; x -= 8) { const y = ((i + 1) / N) * h + Math.sin(x / w * Math.PI * 2.2 + (i + 1) * 0.32) * 26; g.lineTo(x, y); }
+      g.closePath(); g.fill();
+    }
+  }, 1, 1);
+  const tileTex = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#f1efea'; g.fillRect(0, 0, w, h); g.strokeStyle = '#c9c5bd'; g.lineWidth = 3;
+    for (let i = 0; i <= 2; i++) { g.beginPath(); g.moveTo(i * 128, 0); g.lineTo(i * 128, h); g.stroke(); g.beginPath(); g.moveTo(0, i * 128); g.lineTo(w, i * 128); g.stroke(); }
+  }, 2.5, 2.5);
+  const plateTex = canvasTex(512, 256, (g, w, h) => {
+    g.fillStyle = '#f7f5f0'; g.fillRect(0, 0, w, h); g.fillStyle = '#5a5248';
+    g.font = 'italic 600 78px Georgia, serif'; g.textAlign = 'center'; g.fillText('House', w / 2, 110);
+    g.font = 'italic 600 62px Georgia, serif'; g.fillText('No.', w / 2, 196);
+  }, 1, 1);
+  const woodWTex = woodTex.clone(); woodWTex.needsUpdate = true; woodWTex.repeat.set(0.35, 0.35);
+
   const M = {};
   const lin = (hex) => new THREE.Color(hex).convertSRGBToLinear();
   const mat = (o) => { if (o.color) o.color = lin(o.color); return new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.85, metalness: 0 }, o)); };
@@ -248,6 +281,11 @@
   M.glass = new THREE.MeshStandardMaterial({ color: lin('#4a5b68'), roughness: 0.12, metalness: 0.55, emissive: '#000000' });
   M.paver = mat({ map: paverTex }); M.grass = mat({ map: grassTex }); M.road = mat({ color: '#4b4d50', roughness: 0.95 });
   M.soil = mat({ color: '#4a3525' }); M.leaf = mat({ color: '#3f7a35', roughness: 0.8 }); M.leaf2 = mat({ color: '#6aa346', roughness: 0.8 });
+  M.clad = mat({ map: cladTex, roughness: 0.9 }); M.accent = mat({ roughness: 0.55, metalness: 0.2 });
+  M.woodW = mat({ map: woodWTex, roughness: 0.6 }); M.tile = mat({ map: tileTex, roughness: 0.5 });
+  M.recess.map = waveTex; M.recess.roughness = 0.6;
+  M.plate = new THREE.MeshStandardMaterial({ map: plateTex, emissiveMap: plateTex, emissive: lin('#ffd9a0'), emissiveIntensity: 0, roughness: 0.6 });
+  M.trunk = mat({ color: '#7a6248', roughness: 0.9 }); M.frond = mat({ color: '#4f8a3a', roughness: 0.8, side: THREE.DoubleSide });
   M.lampOn = new THREE.MeshStandardMaterial({ color: lin('#2a2c2f'), emissive: lin('#ffb45e'), emissiveIntensity: 0 });
 
   const house = new THREE.Group(); scene.add(house);
@@ -258,6 +296,28 @@
     mesh.castShadow = cast; mesh.receiveShadow = m !== M.glass; house.add(mesh); return mesh;
   }
 
+  // extruded profile: pts = [[x, z], ...] in plan feet, extruded from plan y0 to y1 (world-unit UVs)
+  function prism(pts, y0, y1, m, cast = true) {
+    const sh = new THREE.Shape(pts.map(([x, z]) => new THREE.Vector2(W(x), z)));
+    const mesh = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: y1 - y0, bevelEnabled: false }), m);
+    mesh.position.z = D(y1); mesh.castShadow = cast; mesh.receiveShadow = true; house.add(mesh); return mesh;
+  }
+  const cbox = (x0, x1, y0, y1, z0, z1, m = M.clad) => prism([[x0, z0], [x1, z0], [x1, z1], [x0, z1]], y0, y1, m);
+  function palm(x, y, s) {
+    const g = new THREE.Group(); let px = 0, pz = 0, h = 0;
+    for (let i = 0; i < 6; i++) {
+      const seg = new THREE.Mesh(new THREE.CylinderGeometry(0.22 * s, 0.28 * s, 1.6 * s, 7), M.trunk);
+      px += 0.12 * s; h += 1.5 * s; seg.position.set(px, h - 0.75 * s, pz); seg.rotation.z = -0.08; seg.castShadow = true; g.add(seg);
+    }
+    for (let i = 0; i < 9; i++) {
+      const geo = new THREE.BoxGeometry(4.2 * s, 0.06 * s, 0.9 * s); geo.translate(2.1 * s, 0, 0);
+      const hold = new THREE.Object3D(); hold.position.set(px, h, pz); hold.rotation.y = i * Math.PI * 2 / 9;
+      const leaf = new THREE.Mesh(geo, M.frond); leaf.rotation.z = -0.3 - rnd() * 0.35; leaf.castShadow = true;
+      hold.add(leaf); g.add(hold);
+    }
+    g.position.set(W(x), 0, D(y)); house.add(g);
+  }
+
   // ---------------- ground ----------------
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), M.grass);
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
@@ -265,6 +325,7 @@
   box(-60, 84, -2, 0, 0, 0.35, M.plinth, false);                     // kerb
   box(0.3, 23.7, 0.3, 10, 0.02, 0.12, M.paver, false);               // front paving
   box(0.3, 2.9, 10, 59.7, 0.02, 0.1, M.paver, false);                // left side path
+  box(1, 10, 0.4, 9.6, 0.1, 0.2, M.tile, false);                    // white tiled entrance path
   box(21.1, 23.7, 6, 59.7, 0.02, 0.1, M.paver, false);               // right side path
 
   // ---------------- compound wall + gate ----------------
@@ -273,16 +334,20 @@
   box(24 - CW, 24, 0, 60, 0, CH, M.compound); box(24 - CW, 24, 0, 60, CH, CH + 0.25, M.coping);
   box(0, 24, 60 - CW, 60, 0, CH, M.compound);
   box(0, 24, 60 - CW, 60, CH, CH + 0.25, M.coping);
-  box(10, 24, 0, CW, 0, 3.5, M.compound); box(10, 24, 0, CW, 3.5, 3.75, M.coping);      // lower front wall (right)
-  box(0, 1, 0, CW + 0.2, 0, 6, M.compound); box(0, 1, 0, CW + 0.2, 6, 6.25, M.coping);  // gate pillar L
-  box(10, 11, 0, CW + 0.2, 0, 6, M.compound); box(10, 11, 0, CW + 0.2, 6, 6.25, M.coping); // gate pillar R
-  // gate: two leaves, horizontal slats with a wood inset
+  box(12.5, 24, 0, CW, 0, 3.5, M.compound); box(12.5, 24, 0, CW, 3.5, 3.75, M.coping);     // low front wall (right)
+  // gate pillars: stone-block cladding with grey caps; right one carries the name plate
+  cbox(0, 1.1, -0.1, 0.8, 0, 6.2); box(-0.1, 1.2, -0.2, 0.9, 6.2, 6.5, M.accent);
+  cbox(10, 12.5, -0.1, 0.8, 0, 6.2); box(9.9, 12.6, -0.2, 0.9, 6.2, 6.5, M.accent);
+  box(10.55, 11.95, -0.16, -0.1, 3.4, 4.9, M.plate);                  // name plate
+  box(10.45, 12.05, -0.12, -0.08, 3.3, 5.0, M.accent);
+  // gate: two leaves, horizontal slats + top picket row
   for (let leaf = 0; leaf < 2; leaf++) {
-    const gx0 = 1.05 + leaf * 4.5, gx1 = gx0 + 4.4;
-    box(gx0, gx1, 0.15, 0.3, 0.3, 0.45, M.metal); box(gx0, gx1, 0.15, 0.3, 5.3, 5.45, M.metal);
-    box(gx0, gx0 + 0.12, 0.15, 0.3, 0.3, 5.45, M.metal); box(gx1 - 0.12, gx1, 0.15, 0.3, 0.3, 5.45, M.metal);
-    for (let z = 0.7; z < 5.2; z += 0.42) box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, z, z + 0.26, M.metal);
-    if (leaf === 0) box(gx0 + 0.5, gx1 - 0.5, 0.12, 0.17, 1.2, 3.0, M.wood);
+    const gx0 = 1.15 + leaf * 4.45, gx1 = gx0 + 4.35;
+    box(gx0, gx1, 0.15, 0.3, 0.3, 0.45, M.metal); box(gx0, gx1, 0.15, 0.3, 5.5, 5.65, M.metal);
+    box(gx0, gx0 + 0.12, 0.15, 0.3, 0.3, 5.65, M.metal); box(gx1 - 0.12, gx1, 0.15, 0.3, 0.3, 5.65, M.metal);
+    for (let z = 0.7; z < 4.2; z += 0.42) box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, z, z + 0.28, M.metal);
+    box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, 4.25, 4.4, M.metal);
+    for (let x = gx0 + 0.35; x < gx1 - 0.2; x += 0.35) box(x, x + 0.08, 0.2, 0.25, 4.4, 5.5, M.metal);
   }
 
   // ---------------- house body ----------------
@@ -301,53 +366,81 @@
   box(2.6, 10, 9.6, 10.1, PZ, PZ + PH, M.frame);
   box(2.5, 10, 9.5, 10.2, PZ + PH, PZ + PH + 0.2, M.coping);
 
-  // ---------------- entrance bay (recessed, under canopy) ----------------
+  // ---------------- entrance bay (recessed porch, wood ceiling, wave feature wall) ----------------
   box(4, 7.5, 9.5, 9.62, 0.2, 7.6, M.wood);                    // teak main door
-  box(3.85, 7.65, 9.45, 9.6, 7.6, 7.85, M.metal);              // door head frame
+  box(3.85, 7.65, 9.45, 9.6, 7.6, 7.85, M.accent);             // door head frame
   box(4.6, 4.7, 9.4, 9.45, 3.2, 4.6, M.metal);                 // handle
   box(8, 9.5, 9.5, 9.62, 0.6, 7.6, M.glass);                   // glass side light
-  box(7.95, 9.55, 9.45, 9.58, 0.55, 0.65, M.metal); box(7.95, 9.55, 9.45, 9.58, 7.55, 7.65, M.metal);
-  box(8.7, 8.8, 9.45, 9.58, 0.6, 7.6, M.metal);
-  // projecting canopy slab over the porch (to the front line) + side cheek
+  box(7.95, 9.55, 9.45, 9.58, 0.55, 0.65, M.accent); box(7.95, 9.55, 9.45, 9.58, 7.55, 7.65, M.accent);
+  // porch roof slab + wood slat ceiling + thick fascia
   box(2.6, 10, 5.4, 9.6, 8.8, 9.35, M.slab);
-  box(2.6, 10, 5.4, 5.6, 8.55, 9.35, M.frame);                 // drop edge (hides cove strip)
-  box(2.6, 3.1, 5.4, 9.6, 0, 1.5, M.plinth);                   // low cheek wall at porch side
-  // step
-  box(3, 10, 8.2, 9.6, 0, 0.5, M.stone);
+  box(3, 9.95, 5.6, 9.55, 8.68, 8.8, M.wood, false);            // wood ceiling
+  box(2.6, 10, 5.2, 5.6, 8.2, 9.6, M.frame);                    // fascia band
+  box(2.6, 3.1, 5.4, 9.6, 0, 1.5, M.plinth);                   // low cheek wall
+  box(3, 10, 8.2, 9.6, 0, 0.5, M.tile);                         // porch step (tiled)
+  // grey screen frame on the porch roof (like the reference)
+  box(2.6, 9.6, 5.25, 5.55, 12.1, 12.45, M.accent); box(2.6, 2.95, 5.25, 5.55, 9.6, 12.1, M.accent);
+  for (let x = 3.4; x < 9.3; x += 0.55) box(x, x + 0.14, 5.33, 5.47, 9.6, 12.1, M.accent);
 
-  // ---------------- right feature block ----------------
-  const FZ = 17;                                   // tall frame height
-  box(10, 11.8, 5.2, 6.05, 0, 15.5, M.stone);      // stone fin
-  box(9.6, 21.5, 4.9, 6.1, 15.5, FZ, M.frame);     // top band of frame
-  box(20.3, 21.5, 4.9, 6.1, 0, 15.5, M.frame);     // right leg of frame
-  box(11.8, 20.3, 5.95, 6.05, 10.45, 15.5, M.frame); // infill above roof inside frame (behind the glass)
-  box(11.8, 13.4, 5.75, 5.85, 2.2, 14.6, M.wood);  // teak panel
-  box(13.4, 17.6, 5.8, 5.9, 2.2, 14.6, M.glass);   // tall window glass
-  [[13.4, 13.55], [15.43, 15.57], [17.45, 17.6]].forEach(([a, b]) => box(a, b, 5.7, 5.8, 2.2, 14.6, M.metal));
-  [2.2, 6.3, 10.4, 14.45].forEach((z) => box(13.4, 17.6, 5.7, 5.8, z, z + 0.15, M.metal));
-  box(18.2, 19.8, 5.8, 5.9, 3.5, 13.5, M.glass);   // stair slit window
-  box(18.1, 19.9, 5.7, 5.8, 3.4, 3.55, M.metal); box(18.1, 19.9, 5.7, 5.8, 13.45, 13.6, M.metal);
-  box(16.4, 20.3, 5.85, 5.95, 0.2, 2.2, M.stone);  // stone base panel
-  // raised planter with plants
-  box(11, 21, 3.5, 3.85, 0, 2, M.frame); box(11, 21, 5.15, 5.5, 0, 2, M.frame);
-  box(11, 11.35, 3.5, 5.5, 0, 2, M.frame); box(20.65, 21, 3.5, 5.5, 0, 2, M.frame);
-  box(11.35, 20.65, 3.85, 5.15, 0, 1.75, M.soil, false);
+  // ---------------- right feature block: sloped white fascia, wood soffit, stone-block cladding ----------------
+  const XL = 9.6, XR = 21.6, ZL = 13.6, ZR = 17.2, FT = 0.9, ST = 0.22;
+  const zAt = (x) => ZL + (x - XL) * (ZR - ZL) / (XR - XL);
+  prism([[XL, ZL - FT], [XR, ZR - FT], [XR, ZR], [XL, ZL]], 4.3, 10.3, M.frame);                         // sloped fascia slab
+  prism([[XL + 0.05, ZL - FT - ST], [XR - 0.05, ZR - FT - ST], [XR - 0.05, ZR - FT], [XL + 0.05, ZL - FT]], 4.35, 10.2, M.woodW, false); // wood soffit
+  prism([[XL + 0.1, ZL - FT - ST - 0.06], [XR - 0.1, ZR - FT - ST - 0.06], [XR - 0.1, ZR - FT - ST], [XL + 0.1, ZL - FT - ST]], 4.35, 4.55, M.lampOn, false); // soffit cove strip
+  const CT = (x) => zAt(x) - FT - ST;                                     // underside of soffit
+  prism([[10, 0], [21, 0], [21, CT(21)], [10, CT(10)]], 5.65, 6.05, M.clad);      // front cladding skin
+  cbox(9.65, 10.05, 6.05, 10, 0, CT(10));                                         // porch-side cladding
+  box(21, 21.6, 4.3, 10.3, 0, ZR - FT, M.frame);                                 // white right leg
+  box(21.6, 21.78, 4.3, 9, 0.6, ZR - FT - 0.3, M.wood);                          // wood edge strip
+  prism([[21.05, ROOF], [21.05, CT(21)], [21.55, CT(21.55)], [21.55, ROOF]], 6.05, 10.3, M.frame); // side fill above roof
+  // twin grey fins at the left edge
+  [[10.35, 10.65], [11.05, 11.35]].forEach(([a, b]) => box(a, b, 5.2, 5.65, 0.4, CT(a) - 0.1, M.accent));
+  // deep white box around the tall window, wood lining, glass
+  const WX0 = 15.6, WX1 = 20.1, WZ0 = 2.6, WZ1 = 12.4, BT = 0.45;
+  box(WX0, WX1, 4.85, 5.65, WZ1 - BT, WZ1, M.frame); box(WX0, WX1, 4.85, 5.65, WZ0, WZ0 + BT, M.frame);
+  box(WX0, WX0 + BT, 4.85, 5.65, WZ0, WZ1, M.frame); box(WX1 - BT, WX1, 4.85, 5.65, WZ0, WZ1, M.frame);
+  box(WX0 + BT, WX1 - BT, 5.3, 5.65, WZ1 - BT - 0.15, WZ1 - BT, M.wood); box(WX0 + BT, WX0 + BT + 0.15, 5.3, 5.65, WZ0 + BT, WZ1 - BT, M.wood);
+  box(WX1 - BT - 0.15, WX1 - BT, 5.3, 5.65, WZ0 + BT, WZ1 - BT, M.wood);
+  box(WX0 + 0.6, WX1 - 0.6, 5.58, 5.64, WZ0 + 0.5, WZ1 - 0.6, M.glass);
+  box((WX0 + WX1) / 2 - 0.06, (WX0 + WX1) / 2 + 0.06, 5.5, 5.58, WZ0 + 0.5, WZ1 - 0.6, M.accent);
+  [5.6, 8.9].forEach((z) => box(WX0 + 0.6, WX1 - 0.6, 5.5, 5.58, z, z + 0.12, M.accent));
+  // up-down light fittings on the cladding
+  [12.6, 14.3].forEach((x) => box(x - 0.18, x + 0.18, 5.45, 5.65, 6.6, 7.4, M.accent));
+  // raised planter (clad) with shrubs
+  cbox(12.6, 21, 3.4, 3.75, 0, 1.8); cbox(12.6, 21, 5.2, 5.55, 0, 1.8);
+  cbox(12.6, 12.95, 3.4, 5.55, 0, 1.8); cbox(20.65, 21, 3.4, 5.55, 0, 1.8);
+  box(12.95, 20.65, 3.75, 5.2, 0, 1.6, M.soil, false);
+  for (let i = 0; i < 14; i++) {
+    const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45 + rnd() * 0.35, 0), i % 3 ? M.leaf : M.leaf2);
+    b.position.set(W(13.4 + rnd() * 6.8), 1.9 + rnd() * 0.3, D(3.95 + rnd() * 1.05)); b.scale.y = 0.8 + rnd() * 0.6; b.castShadow = true; house.add(b);
+  }
   const leafGeo = new THREE.ConeGeometry(0.12, 1.6, 4);
-  for (let i = 0; i < 26; i++) {
-    const cx = 11.8 + rnd() * 8.4, cy = 4.0 + rnd() * 1.0;
+  for (let i = 0; i < 10; i++) {
     const tuft = new THREE.Group();
     for (let k = 0; k < 7; k++) { const l = new THREE.Mesh(leafGeo, k % 2 ? M.leaf : M.leaf2);
       l.position.y = 0.6; l.rotation.z = (rnd() - 0.5) * 1.2; l.rotation.x = (rnd() - 0.5) * 1.2; l.castShadow = true; tuft.add(l); }
-    tuft.position.set(W(cx), 1.75, D(cy)); tuft.scale.setScalar(0.7 + rnd() * 0.7); house.add(tuft);
+    tuft.position.set(W(13.2 + rnd() * 7.2), 1.6, D(3.9 + rnd() * 1.1)); tuft.scale.setScalar(0.8 + rnd() * 0.6); house.add(tuft);
   }
-  // side windows (left wall) with chajja sunshades
+
+  // left side elevation: grey box-framed windows, stone-block panels, twin fins, cove line, terrace railing
   [[14, 18.5], [21.5, 25.5], [33.5, 35], [42, 47]].forEach(([a, b]) => {
-    box(2.92, 3.0, a, b, 3, 7.5, M.glass); box(2.85, 2.95, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
-    box(1.6, 3, a - 0.6, b + 0.6, 7.9, 8.15, M.slab);
+    box(2.92, 3.0, a, b, 3, 7.5, M.glass);
+    box(2.3, 3.0, a - 0.4, b + 0.4, 7.5, 7.9, M.accent); box(2.3, 3.0, a - 0.4, b + 0.4, 2.6, 3.0, M.accent);
+    box(2.3, 3.0, a - 0.4, a, 2.6, 7.9, M.accent); box(2.3, 3.0, b, b + 0.4, 2.6, 7.9, M.accent);
+  });
+  [[10.1, 12.6], [27.2, 31.4], [36.3, 40.6]].forEach(([a, b]) => cbox(2.75, 3.0, a, b, 0, PZ + 3));
+  [[19.2, 19.5], [19.9, 20.2], [47.6, 47.9], [48.3, 48.6]].forEach(([a, b]) => box(2.5, 3.0, a, b, 0.4, PZ + 2.6, M.accent));
+  box(2.5, 3.2, 9.6, 49.4, PZ + 3, PZ + 3.2, M.accent);                          // side parapet coping
+  box(2.62, 2.7, 10, 49, PZ + 2.75, PZ + 2.82, M.lampOn, false);                 // cove line under coping
+  for (let y = 11; y <= 48; y += 4) box(2.8, 2.92, y, y + 0.12, PZ + 3.2, PZ + 6.2, M.metal); // railing posts
+  box(2.78, 2.94, 10.5, 48.6, PZ + 6.1, PZ + 6.3, M.metal); box(2.8, 2.92, 10.5, 48.6, PZ + 4.7, PZ + 4.8, M.metal);
+  // potted plants on the terrace, behind the porch
+  [[4.2, 11.5], [6.4, 11.5], [8.6, 11.5]].forEach(([x, y]) => {
+    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.4, 1.1, 12), M.accent); pot.position.set(W(x), PZ + 0.55, D(y)); pot.castShadow = true; house.add(pot);
+    const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.85, 0), M.leaf2); b.position.set(W(x), PZ + 1.7, D(y)); b.castShadow = true; house.add(b);
   });
   // ---------------- completed walls ----------------
-  box(9.6, 10.1, 5.6, 9.6, PZ, PZ + PH, M.frame);             // parapet over the porch side of the window block
-  box(9.5, 10.2, 5.5, 9.7, PZ + PH, PZ + PH + 0.2, M.coping);
   box(10.1, 20.9, 9.4, 9.6, PZ, PZ + 1.2, M.frame);           // low upstand where block roof meets main roof
   // right side wall: passage ventilators with sunshades
   [[22, 24], [30, 32], [40, 42]].forEach(([a, b]) => {
@@ -413,7 +506,8 @@
     t.position.set(W(x), 2.5 * s, D(y)); t.castShadow = true; house.add(t);
     const c = new THREE.Mesh(new THREE.IcosahedronGeometry(3 * s, 1), M.leaf); c.position.set(W(x), 6 * s, D(y)); c.castShadow = true; house.add(c);
   }
-  tree(2.6, 56.6, 0.7); tree(21.6, 51.8, 0.5);
+  palm(2.4, 56.8, 1.05); palm(21.8, 52.2, 0.9);
+  palm(-6, 5, 1.25); palm(30, 9, 1.1); palm(-8, 40, 1.3); palm(32, 46, 1.15);   // neighbourhood palms
 
   // ---------------- lights ----------------
   const hemi = new THREE.HemisphereLight('#dbe9ff', '#6b6150', 0.6); scene.add(hemi);
@@ -433,18 +527,21 @@
     const p = new THREE.PointLight(WARM, 0, dist || 8, 2); p.position.set(W(x), z, D(y)); scene.add(p); decor.push({ light: p, on: intensity }); return p;
   }
   // canopy downlights
-  [5.8, 8.75].forEach((x) => { lamp(x, 7.6, 8.78, 0.18); spot(x, 7.6, 8.7, x, 8.6, 0, 26, 0.75, 14); });
+  [5.8, 8.75].forEach((x) => { lamp(x, 7.6, 8.62, 0.12); spot(x, 7.6, 8.7, x, 8.6, 0, 26, 0.75, 14); });
   // canopy edge cove
   box(2.7, 9.9, 5.62, 5.7, 8.6, 8.66, M.lampOn, false); point(4.5, 5.9, 8.3, 4, 7); point(8.3, 5.9, 8.3, 4, 7);
-  // up-down washer on the stone fin
-  lamp(10.9, 5.05, 8, 0.2); spot(10.9, 4.9, 8.3, 10.9, 5.4, 15.5, 30, 0.22, 12); spot(10.9, 4.9, 7.7, 10.9, 5.4, 0, 30, 0.22, 12);
-  // feature frame cove (under top band) washing wood + window
-  box(11.9, 20.2, 5.0, 5.1, 15.42, 15.48, M.lampOn, false);
-  spot(12.6, 4.7, 15.3, 12.6, 5.8, 2, 18, 0.35, 16); spot(15.5, 4.7, 15.3, 15.5, 5.8, 2, 14, 0.45, 16); spot(19, 4.7, 15.3, 19, 5.8, 2, 10, 0.4, 16);
+  // up-down washers on the cladding
+  [12.6, 14.3].forEach((x) => { spot(x, 5.3, 7.5, x, 5.7, CT(x), 24, 0.2, 10); spot(x, 5.3, 6.5, x, 5.7, 0, 24, 0.2, 10); });
+  // cove under the sloped soffit
+  [12, 16, 20].forEach((x) => point(x, 4.6, CT(x) - 0.4, 3.5, 7));
+  // window box glow strip
+  box(WX0 + BT, WX1 - BT, 5.0, 5.08, WZ1 - BT - 0.08, WZ1 - BT, M.lampOn, false);
   // planter spikes
   [13, 16, 19].forEach((x) => { lamp(x, 4.5, 1.85, 0.08); spot(x, 4.3, 1.9, x, 5.7, 6, 10, 0.55, 8); });
   // gate pillar lights
-  [0.5, 10.5].forEach((x) => { lamp(x, 0.35, 6.5, 0.22); point(x, 0.1, 6.5, 6, 9); });
+  [0.55, 11.25].forEach((x) => { lamp(x, 0.35, 6.75, 0.22); point(x, 0.1, 6.7, 6, 9); });
+  // side cove line
+  [16, 30, 44].forEach((y) => point(2.2, y, PZ + 2.6, 3, 8));
   // parapet strip
   box(2.7, 9.9, 9.42, 9.5, PZ + PH - 0.05, PZ + PH, M.lampOn, false); point(6.3, 9.0, PZ + PH - 0.4, 3, 6);
   // wall lights at the back
@@ -477,7 +574,7 @@
     const n = mix(A.n, B.n, t);
     decor.forEach((d) => { d.light.intensity = d.on * n; });
     glow.intensity = 3 * n; glow2.intensity = 3 * n;
-    M.lampOn.emissiveIntensity = n * 2.2;
+    M.lampOn.emissiveIntensity = n * 2.2; M.plate.emissiveIntensity = n * 0.45;
     M.glass.emissive.copy(lin('#e8a35a')); M.glass.emissiveIntensity = n * 0.32;
     renderer.toneMappingExposure = mix(A.exp, B.exp, t);
   }
@@ -488,16 +585,16 @@
 
   function applyScheme(key) {
     const s = SCHEMES[key];
-    ['body', 'frame', 'recess', 'plinth', 'compound', 'coping', 'metal', 'wood'].forEach((k) => M[k].color.copy(lin(s[k])));
-    M.slab.color.copy(lin(key === 'modern' ? '#f1f1f0' : s.frame));
+    ['body', 'frame', 'plinth', 'compound', 'coping', 'metal', 'wood', 'clad', 'accent'].forEach((k) => M[k].color.copy(lin(s[k])));
+    M.recess.color.copy(lin(s.wave)); M.woodW.color.copy(lin(s.wood)); M.slab.color.copy(lin(s.frame));
     document.querySelectorAll('#schemes button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.k === key));
     document.getElementById('scheme-title').textContent = s.title;
     document.getElementById('scheme-note').textContent = s.note;
     document.getElementById('finishes').innerHTML = FINISH_ROWS.map(([k, name, where]) => {
-      const hex = k === 'stone' ? STONE : s[k];
+      const hex = s[k];
       return `<tr><td style="width:36px"><div class="sw" style="background:${hex}"></div></td><td><b>${name}</b><div class="where">${where}</div></td><td class="code">${hex.toUpperCase()}</td></tr>`;
     }).join('');
-    try { localStorage.setItem('ext-scheme', key); } catch (e) {}
+    try { localStorage.setItem('ext-scheme-v2', key); } catch (e) {}
   }
   const schemesEl = document.getElementById('schemes');
   Object.keys(SCHEMES).forEach((k) => {
@@ -519,8 +616,8 @@
   }
   new ResizeObserver(resize).observe(stage);
 
-  let saved = 'classic'; try { saved = localStorage.getItem('ext-scheme') || 'classic'; } catch (e) {}
-  applyScheme(SCHEMES[saved] ? saved : 'classic'); setMode('day'); setView('angle'); resize();
+  let saved = 'sand'; try { saved = localStorage.getItem('ext-scheme-v2') || 'sand'; } catch (e) {}
+  applyScheme(SCHEMES[saved] ? saved : 'sand'); setMode('day'); setView('angle'); resize();
   // ---------------- video export ----------------
   // Camera path (plan coords, ft): left corner -> front -> right corner -> entrance close-up
   const P = (x, y, z) => new THREE.Vector3(W(x), z, D(y));
