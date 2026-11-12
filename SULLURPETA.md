@@ -26,7 +26,15 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 | P5 | Royal Mahal plan (latest) | `demo/src/sullurpeta/plan-data.js` (re-exported as `versions/P5.js`) |
 | E1 | Modern White & Teak | `demo/exterior/versions/E1-modern-white-teak.html` |
 | E2 | Sandstone Block & Sloped Frame | `demo/exterior/versions/E2-sandstone-block.html` |
-| E3 | Royal Rajasthani Mahal (latest) | `demo/exterior/index.html` = `versions/E3-royal-rajasthani-mahal.html` |
+| E3 | Royal Rajasthani Mahal | `demo/exterior/index.html` = `versions/E3-royal-rajasthani-mahal.html` |
+| E4 | Kerala Tharavad | `demo/colony/index.html` (design E4) |
+| E5 | Mediterranean Villa | `demo/colony/index.html` (design E5) |
+| E6 | Monochrome Box | `demo/colony/index.html` (design E6) |
+| E7 | Chettinad Heritage | `demo/colony/index.html` (design E7) |
+| E8 | Colonial Palace | `demo/colony/index.html` (design E8) |
+| E9 | Marble Portal Luxe | `demo/colony/index.html` (design E9) |
+
+**Design Colony** (`/react-planner/colony/`): all nine designs side by side on one street, each on plan P5. Open one with `#E1` … `#E9`.
 
 Open a plan with `#P1` … `#P5` after the planner link, or use the **Plan version** menu at the top.
 Rule for new work: a new design gets the next code (P6, E4 …); old files are never edited.
