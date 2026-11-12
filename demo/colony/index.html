@@ -59,6 +59,9 @@
   .item .st { font-size: 12px; color: var(--muted); }
   .chips { display: flex; gap: 4px; }
   .chips i { width: 18px; height: 18px; border-radius: 5px; border: 1px solid rgba(0,0,0,.12); display: block; }
+  .walk { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .walk input { flex: 1 1 260px; max-width: none; }
+  .walk span { font-weight: 600; color: var(--fg); min-width: 12ch; }
   .solo { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; background: var(--chip); padding: 7px 12px; border-radius: 999px; cursor: pointer; }
   .chead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: end; margin-bottom: 12px; }
   .cgrid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
@@ -78,7 +81,7 @@
     <div>
       <p class="eyebrow">Same plan P5 on every plot · 24' × 60' · Sullurpeta</p>
       <h1>Sullurpeta Design Colony</h1>
-      <p class="sub"><span id="count">Eighteen</span> exterior designs for your house on two sides of one street. Pick one, view it alone, or change its colours and parts.</p>
+      <p class="sub"><span id="count">Eighteen</span> exterior designs for your house, side by side in one row. Pick one, view it alone, or change its colours and parts.</p>
     </div>
     <div class="controls">
       <button class="navbtn" id="prev" aria-label="Previous design">‹</button>
@@ -104,6 +107,11 @@
       <button data-view="colony">Whole colony</button>
     </div>
     <div class="hint">Drag to rotate · scroll or pinch to zoom</div>
+  </div>
+  <div class="walk" id="walkbox">
+    <label for="walk">Slide along the street for a close look</label>
+    <input type="range" id="walk" min="0" max="1000" value="500" aria-label="Position along the street">
+    <span id="walk-at"></span>
   </div>
 
   <section class="card detail" aria-live="polite">
@@ -157,9 +165,9 @@
   renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping;
   stage.prepend(renderer.domElement);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1.7, 0.5, 1500);
+  const camera = new THREE.PerspectiveCamera(40, 1.7, 1.5, 2400);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.495; controls.minDistance = 6; controls.maxDistance = 480;
+  controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.495; controls.minDistance = 6; controls.maxDistance = 760;
 
   // plan coords (ft): x 0..24 across a plot (left→right from the road), y 0..60 from the road, z up. OX = plot offset.
   let OX = 0;
@@ -246,7 +254,7 @@
   TX.paver = canvasTex(256, 256, (g, w, h) => { g.fillStyle = '#b8b2a8'; g.fillRect(0, 0, w, h);
     for (let y = 0; y < h; y += 32) for (let x = (y / 32) % 2 ? 0 : -32; x < w; x += 64) { const v = 165 + rnd() * 25; g.fillStyle = `rgb(${v},${v - 4},${v - 12})`; g.fillRect(x + 2, y + 2, 60, 28); } }, 6, 2);
   TX.grass = canvasTex(256, 256, (g, w, h) => { g.fillStyle = '#5f8a3e'; g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 3000; i++) { const v = rnd(); g.fillStyle = `rgba(${40 + v * 60},${90 + v * 70},${30 + v * 30},.6)`; g.fillRect(rnd() * w, rnd() * h, 2, 2); } }, 60, 60);
+    for (let i = 0; i < 3000; i++) { const v = rnd(); g.fillStyle = `rgba(${40 + v * 60},${90 + v * 70},${30 + v * 30},.6)`; g.fillRect(rnd() * w, rnd() * h, 2, 2); } }, 160, 160);
   TX.plate = canvasTex(512, 256, (g, w, h) => { g.fillStyle = '#f7f5f0'; g.fillRect(0, 0, w, h); g.fillStyle = '#5a5248';
     g.font = 'italic 600 78px Georgia, serif'; g.textAlign = 'center'; g.fillText('House', w / 2, 110); g.font = 'italic 600 62px Georgia, serif'; g.fillText('No.', w / 2, 196); }, 1, 1);
 
@@ -1016,14 +1024,14 @@
       point(6.3, 7.2, 8.4, 7, 11); spot(13.2, 3.4, 0.3, 13.2, 5.6, 6, 10, 0.5, 10); spot(15.6, 3.0, 0.3, 15.6, 5.6, 14, 20, 0.35, 20); box(18.45, 18.65, 5.2, 5.32, 5.9, 6.3, S.lantern); point(18.55, 5.0, 6.1, 4, 8);
     } });
 
-  // ================= build the street: two rows facing each other =================
-  const N = DESIGNS.length, PLOT = 24, PER = Math.ceil(N / 2), ROWZ = 76;
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), mat({ map: TX.grass })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  // ================= build the street: one row, all houses side by side =================
+  const N = DESIGNS.length, PLOT = 24, PER = N, ROWZ = 0;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400), mat({ map: TX.grass })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
   OX = 0; M = S; G = scene; LG = scene;
   const half = (PER * PLOT) / 2 + 30, roadM = mat({ color: '#4b4d50', roughness: 0.95 }), kerbM = mat({ color: '#8d8f91', roughness: 0.9 });
-  box(-half + 12, half + 12, -30, -2, -0.05, 0.02, roadM, false);
+  box(-half + 12, half + 12, -30, -2, -0.05, 0.14, roadM, false);
   box(-half + 12, half + 12, -2, 0, 0, 0.35, kerbM, false); box(-half + 12, half + 12, -32, -30, 0, 0.35, kerbM, false);
-  box(-half + 12, half + 12, -16.2, -15.8, 0.03, 0.04, mat({ color: '#e8e2c8' }), false);
+  box(-half + 12, half + 12, -16.25, -15.75, 0.14, 0.17, mat({ color: '#e8e2c8' }), false);
   const streetRig = [], poleM = mat({ color: '#3a3c3f', metalness: 0.5, roughness: 0.4 });
   for (let i = 0; i <= PER; i++) {                                     // street lights, alternating sides
     OX = (i - PER / 2) * PLOT - 12; const y = i % 2 ? -29.6 : -2.45, arm = i % 2 ? -1 : 1;
@@ -1090,7 +1098,7 @@
   function setTime(k) {
     tod = k; const i = Math.min(1, Math.floor(k)), t = k - i, A = KEYS[i], B = KEYS[i + 1];
     const sky = cA.set(A.sky).lerp(cB.set(B.sky), t).clone(); scene.background = sky; stage.style.background = '#' + sky.getHexString();
-    scene.fog = new THREE.Fog(sky, focus ? 200 : 480, focus ? 640 : 1300);
+    scene.fog = new THREE.Fog(sky, focus ? 200 : 700, focus ? 640 : 2200);
     sun.intensity = mix(A.sun, B.sun, t); sun.color.copy(cA.set(A.sunCol).lerp(cB.set(B.sunCol), t)); hemi.intensity = mix(A.hemi, B.hemi, t); hemi.color.copy(cA.set(A.hemiCol).lerp(cB.set(B.hemiCol), t));
     const n = mix(A.n, B.n, t);
     // sun: a house in row B faces the other way, so mirror the sun's front/back offset for it
@@ -1171,7 +1179,7 @@
     if (v === 'top') return [P(12, 95, 31), P(12, 0, 30)];
     return [P(31, 13, -21), P(12, 7, 10)];
   }
-  const COLONY = { street: [new THREE.Vector3(-(PER * PLOT / 2 + 62), 34, ROWZ / 2), new THREE.Vector3(0, 9, ROWZ / 2)], top: [new THREE.Vector3(0, 330, ROWZ / 2 + 1), new THREE.Vector3(0, 0, ROWZ / 2)] };
+  const COLONY = { street: [new THREE.Vector3(0, 62, 372), new THREE.Vector3(0, 9, 0)], top: [new THREE.Vector3(0, 560, -7), new THREE.Vector3(0, 0, -8)] };
   const sel = document.getElementById('design');
   const optC = document.createElement('option'); optC.value = 'colony'; optC.textContent = 'Whole colony (all designs)'; sel.appendChild(optC);
   DESIGNS.forEach((d) => { const o = document.createElement('option'); o.value = d.code; o.textContent = `${d.code} – ${d.name}`; sel.appendChild(o); });
@@ -1197,7 +1205,7 @@
       const [p, t] = COLONY[view === 'top' ? 'top' : 'street']; flyTo(p, t, 1400); tag.textContent = `Colony · ${N} designs on plan P5`;
       showDetail(null);
     }
-    renderCustom();
+    renderCustom(); if (!h) walkAt.textContent = 'whole row';
     document.querySelectorAll('.item').forEach((b) => b.setAttribute('aria-current', b.dataset.code === code));
     try { history.replaceState(null, '', '#' + (h ? code : 'colony')); } catch (e) {}
     try { localStorage.setItem('colony-design', h ? code : 'colony'); } catch (e) {}
@@ -1206,7 +1214,7 @@
     const $ = (id) => document.getElementById(id);
     if (!d) {
       $('d-style').textContent = 'Plan P5 · 24 × 60 ft · same rooms on every plot'; $('d-code').textContent = 'Colony'; $('d-name').textContent = 'All designs';
-      $('d-desc').textContent = `Every house on this street has exactly the same floor plan (P5): 18 × 43 ft house, 6 ft front setback, 11 ft back garden. Only the exterior changes, so you can compare looks fairly. ${PER} houses stand on each side of the road. Pick any house to see it close up, alone, or to change it.`;
+      $('d-desc').textContent = `Every house on this street has exactly the same floor plan (P5): 18 × 43 ft house, 6 ft front setback, 11 ft back garden. Only the exterior changes, so you can compare looks fairly. All ${N} houses stand side by side in one row. Pick any house to see it close up, alone, or to change it.`;
       $('d-feat').innerHTML = ''; $('d-links').innerHTML = ''; $('d-sw').innerHTML = '';
       DESIGNS.forEach((x) => { const li = document.createElement('li'); li.textContent = `${x.code} · ${x.name} (${x.style})`; $('d-feat').appendChild(li); });
       return;
@@ -1217,6 +1225,13 @@
     if (d.detail) { const a = document.createElement('a'); a.href = d.detail; a.target = '_blank'; a.rel = 'noopener'; a.textContent = `Open ${d.code} detailed page (video export, colour schemes)`; $('d-links').appendChild(a); }
     $('d-sw').innerHTML = d.sw.map(([k, label]) => `<i style="background:${cur(d, k)}"></i><span>${label}</span><span>${cur(d, k).toUpperCase()}</span>`).join('');
   }
+  // street slider: glide along the row at close range (colony mode)
+  const walk = document.getElementById('walk'), walkAt = document.getElementById('walk-at');
+  function walkTo(v, ms) {
+    const span = (N - 1) * PLOT, x = -span / 2 + span * v / 1000, near = HOUSES.reduce((a, h) => Math.abs(h.center.x - x) < Math.abs(a.center.x - x) ? h : a, HOUSES[0]);
+    flyTo(new THREE.Vector3(x, 20, 112), new THREE.Vector3(x, 9, 0), ms); walkAt.textContent = `${near.d.code} ${near.d.name}`;
+  }
+  walk.addEventListener('input', () => { if (focus) { document.getElementById('solo').checked = false; solo = false; select('colony'); } walkTo(parseFloat(walk.value), 350); });
   sel.addEventListener('change', () => select(sel.value));
   const step = (k) => { const codes = ['colony'].concat(DESIGNS.map((d) => d.code)); const i = codes.indexOf(sel.value); select(codes[(i + k + codes.length) % codes.length]); };
   document.getElementById('prev').addEventListener('click', () => step(-1)); document.getElementById('next').addEventListener('click', () => step(1));

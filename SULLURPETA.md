@@ -43,7 +43,7 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 | E17 | Tropical Modern | colony design E17 |
 | E18 | Nordic Gable | colony design E18 |
 
-**Design Colony** (`/react-planner/colony/`): all 18 designs on two sides of one street, each on plan P5. Open one with `#E1` … `#E18`. It has a solo view, live colour pickers, part switches (gate, plants, head room, garden, name board), sun direction and Save picture. To add a design, add one `def({...})` block with the next code.
+**Design Colony** (`/react-planner/colony/`): all 18 designs side by side in one row, each on plan P5, with a street slider for a close look. Open one with `#E1` … `#E18`. It has a solo view, live colour pickers, part switches (gate, plants, head room, garden, name board), sun direction and Save picture. To add a design, add one `def({...})` block with the next code.
 
 Open a plan with `#P1` … `#P5` after the planner link, or use the **Plan version** menu at the top.
 Rule for new work: a new design gets the next code (P6, E4 …); old files are never edited.
