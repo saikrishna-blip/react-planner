@@ -131,7 +131,7 @@ export function buildPlan(plannerState) {
     let ax = pts.reduce((s, p) => s + p.x, 0) / pts.size;
     let ay = pts.reduce((s, p) => s + p.y, 0) / pts.size;
     let room = area.holes.size ? null : PLAN.rooms.find(r => !r.open && pointInRoom(r, ax, ay));
-    let name = area.holes.size ? 'Open space / Parking' : (room ? room.name : null);
+    let name = area.holes.size ? 'Garden / Open space' : (room ? room.name : null);
     if (name) state = state.setIn(['scene', 'layers', LAYER, 'areas', area.id, 'name'], name);
   });
 

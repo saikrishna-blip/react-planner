@@ -18,18 +18,18 @@ export default {
     compound: { thickness: 6, height: 5 * 12 }     // inches: 5 ft compound wall
   },
 
-  // rooms with open: true get no walls (e.g. front parking)
+  // rooms with open: true get no walls
+  // Layout v2: no front parking — house starts at the 6 ft front setback, ~11 ft back garden
   rooms: [
-    { name: 'Parking / Sit-out', x: 3,  y: 6,  w: 18, d: 8, open: true },
-    { name: 'Living Hall',       x: 3,  y: 14, w: 14, d: 13 },
-    { name: 'Staircase',         x: 17, y: 14, w: 4,  d: 12 },
-    { name: 'Kitchen',           x: 3,  y: 27, w: 8,  d: 9 },
-    { name: 'Dining',            x: 11, y: 27, w: 6,  d: 9 },
-    { name: 'Passage',           x: 17, y: 26, w: 4,  d: 31 },
-    { name: 'Bath 1',            x: 3,  y: 36, w: 5,  d: 5 },
-    { name: 'Bedroom 1',         x: 8,  y: 36, w: 9,  d: 11 },
-    { name: 'Bath 2',            x: 3,  y: 41, w: 5,  d: 6 },
-    { name: 'Master Bedroom',    x: 3,  y: 47, w: 14, d: 10 }
+    { name: 'Living Hall',       x: 3,  y: 6, w: 14, d: 13 },
+    { name: 'Staircase',         x: 17, y: 6, w: 4,  d: 12 },
+    { name: 'Kitchen',           x: 3,  y: 19, w: 8,  d: 9 },
+    { name: 'Dining',            x: 11, y: 19, w: 6,  d: 9 },
+    { name: 'Passage',           x: 17, y: 18, w: 4,  d: 31 },
+    { name: 'Bath 1',            x: 3,  y: 28, w: 5,  d: 5 },
+    { name: 'Bedroom 1',         x: 8,  y: 28, w: 9,  d: 11 },
+    { name: 'Bath 2',            x: 3,  y: 33, w: 5,  d: 6 },
+    { name: 'Master Bedroom',    x: 3,  y: 39, w: 14, d: 10 }
   ],
 
   // Doors / openings / windows / gate.
@@ -37,22 +37,22 @@ export default {
   //   x, y = START of the opening, w = width (ft)
   //   type: door | opening | window | gate | sliding-door | door-double ...
   doors: [
-    { name: 'Main door',      x: 7,  y: 14, w: 3.5, wall: 'h', type: 'door' },
-    { name: 'Hall-Dining',    x: 12, y: 27, w: 4,   wall: 'h', type: 'opening' },
-    { name: 'Kitchen-Dining', x: 11, y: 29, w: 3,   wall: 'v', type: 'opening' },
-    { name: 'Dining-Passage', x: 17, y: 28, w: 4,   wall: 'v', type: 'opening' },
-    { name: 'Hall-Stair',     x: 17, y: 15, w: 3,   wall: 'v', type: 'opening' },
-    { name: 'Bedroom 1',      x: 17, y: 38, w: 3,   wall: 'v', type: 'door' },
-    { name: 'Bath 1',         x: 8,  y: 37, w: 2.5, wall: 'v', type: 'door' },
-    { name: 'Bath 2',         x: 4,  y: 47, w: 2.5, wall: 'h', type: 'door' },
-    { name: 'Master Bedroom', x: 17, y: 49, w: 3,   wall: 'v', type: 'door' },
-    { name: 'Back door',      x: 18, y: 57, w: 3,   wall: 'h', type: 'door' },
-    { name: 'Living window',  x: 3,  y: 18, w: 5,   wall: 'v', type: 'window' },
-    { name: 'Kitchen window', x: 3,  y: 29, w: 4,   wall: 'v', type: 'window' },
-    { name: 'Bath 1 vent',    x: 3,  y: 38, w: 1.5, wall: 'v', type: 'window' },
-    { name: 'Bath 2 vent',    x: 3,  y: 43, w: 1.5, wall: 'v', type: 'window' },
-    { name: 'Master window',  x: 3,  y: 50, w: 5,   wall: 'v', type: 'window' },
-    { name: 'Master rear window', x: 7, y: 57, w: 5, wall: 'h', type: 'window' },
-    { name: 'Front gate',     x: 4,  y: 0,  w: 10,  wall: 'h', type: 'gate' }
+    { name: 'Main door',      x: 7,  y: 6, w: 3.5, wall: 'h', type: 'door' },
+    { name: 'Hall-Dining',    x: 12, y: 19, w: 4,   wall: 'h', type: 'opening' },
+    { name: 'Kitchen-Dining', x: 11, y: 21, w: 3,   wall: 'v', type: 'opening' },
+    { name: 'Dining-Passage', x: 17, y: 20, w: 4,   wall: 'v', type: 'opening' },
+    { name: 'Hall-Stair',     x: 17, y: 7, w: 3,   wall: 'v', type: 'opening' },
+    { name: 'Bedroom 1',      x: 17, y: 30, w: 3,   wall: 'v', type: 'door' },
+    { name: 'Bath 1',         x: 8,  y: 29, w: 2.5, wall: 'v', type: 'door' },
+    { name: 'Bath 2',         x: 4,  y: 39, w: 2.5, wall: 'h', type: 'door' },
+    { name: 'Master Bedroom', x: 17, y: 41, w: 3,   wall: 'v', type: 'door' },
+    { name: 'Back door',      x: 18, y: 49, w: 3,   wall: 'h', type: 'door' },
+    { name: 'Living window',  x: 3,  y: 10, w: 5,   wall: 'v', type: 'window' },
+    { name: 'Kitchen window', x: 3,  y: 21, w: 4,   wall: 'v', type: 'window' },
+    { name: 'Bath 1 vent',    x: 3,  y: 30, w: 1.5, wall: 'v', type: 'window' },
+    { name: 'Bath 2 vent',    x: 3,  y: 35, w: 1.5, wall: 'v', type: 'window' },
+    { name: 'Master window',  x: 3,  y: 42, w: 5,   wall: 'v', type: 'window' },
+    { name: 'Master rear window', x: 7, y: 49, w: 5, wall: 'h', type: 'window' },
+    { name: 'Front gate',     x: 6,  y: 0,  w: 4,  wall: 'h', type: 'gate' }
   ]
 };

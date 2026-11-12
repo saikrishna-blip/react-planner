@@ -135,6 +135,9 @@ class Layer{
       }
     });
 
+    // Sullurpeta fork: a cycle can be found twice; keep each area once so holes aren't doubled
+    areaIDs = Array.from(new Set(areaIDs.filter(Boolean)));
+
     // Build a relationship between areas and their coordinates
     let verticesCoordsForArea = areaIDs.map(id => {
       let vertices = state.getIn(['scene', 'layers', layerID, 'areas', id]).vertices.map(vertexID => {
