@@ -97,6 +97,7 @@
       <button data-view="front">Front</button>
       <button data-view="angle">Corner</button>
       <button data-view="entry">Entrance</button>
+      <button data-view="back">Back garden</button>
       <button data-view="top">Top</button>
     </div>
     <div class="hint">Drag to rotate · scroll to zoom</div>
@@ -271,6 +272,7 @@
   box(0, CW, 0, 60, 0, CH, M.compound); box(0, CW, 0, 60, CH, CH + 0.25, M.coping);
   box(24 - CW, 24, 0, 60, 0, CH, M.compound); box(24 - CW, 24, 0, 60, CH, CH + 0.25, M.coping);
   box(0, 24, 60 - CW, 60, 0, CH, M.compound);
+  box(0, 24, 60 - CW, 60, CH, CH + 0.25, M.coping);
   box(10, 24, 0, CW, 0, 3.5, M.compound); box(10, 24, 0, CW, 3.5, 3.75, M.coping);      // lower front wall (right)
   box(0, 1, 0, CW + 0.2, 0, 6, M.compound); box(0, 1, 0, CW + 0.2, 6, 6.25, M.coping);  // gate pillar L
   box(10, 11, 0, CW + 0.2, 0, 6, M.compound); box(10, 11, 0, CW + 0.2, 6, 6.25, M.coping); // gate pillar R
@@ -343,13 +345,75 @@
     box(2.92, 3.0, a, b, 3, 7.5, M.glass); box(2.85, 2.95, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
     box(1.6, 3, a - 0.6, b + 0.6, 7.9, 8.15, M.slab);
   });
+  // ---------------- completed walls ----------------
+  box(9.6, 10.1, 5.6, 9.6, PZ, PZ + PH, M.frame);             // parapet over the porch side of the window block
+  box(9.5, 10.2, 5.5, 9.7, PZ + PH, PZ + PH + 0.2, M.coping);
+  box(10.1, 20.9, 9.4, 9.6, PZ, PZ + 1.2, M.frame);           // low upstand where block roof meets main roof
+  // right side wall: passage ventilators with sunshades
+  [[22, 24], [30, 32], [40, 42]].forEach(([a, b]) => {
+    box(21.0, 21.08, a, b, 5.5, 7.5, M.glass); box(21.05, 21.15, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
+    box(21.0, 22.2, a - 0.5, b + 0.5, 7.9, 8.15, M.slab);
+  });
+
+  // ---------------- staircase (inside, seen through the tall stair window) + head room on the roof ----------------
+  const RISERS = 15, RISE = ROOF / RISERS, GOING = 0.75;
+  for (let i = 0; i < RISERS; i++) {
+    const y0 = 6.6 + i * GOING;
+    box(17.2, 20.8, y0, y0 + GOING + 0.05, i * RISE, (i + 1) * RISE, M.stone, false);
+  }
+  for (let i = 0; i <= RISERS; i += 3) box(17.25, 17.35, 6.6 + i * GOING, 6.7 + i * GOING, i * RISE, i * RISE + 3, M.metal, false); // balusters
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, Math.hypot(RISERS * GOING, ROOF)), M.metal);
+  rail.position.set(W(17.3), ROOF / 2 + 3, D(6.6 + RISERS * GOING / 2)); rail.rotation.x = Math.atan2(ROOF, RISERS * GOING); house.add(rail);
+  // head room (mumty): walls, slab, door to the terrace, small window
+  const HR = PZ + 8;
+  box(16.7, 21.2, 9.8, 18.6, PZ, HR, M.body);
+  box(16.4, 21.5, 9.5, 18.9, HR, HR + 0.4, M.slab);
+  box(16.3, 21.6, 9.4, 19.0, HR + 0.4, HR + 0.6, M.coping);
+  box(17.6, 20.4, 18.6, 18.7, PZ, PZ + 7, M.wood);              // terrace door (faces the back)
+  box(17.3, 20.7, 18.6, 19.9, PZ + 7.3, PZ + 7.5, M.slab);       // door sunshade
+  box(16.62, 16.7, 12.5, 15, PZ + 4, PZ + 6, M.glass);           // side window
+  box(16.0, 16.7, 12.2, 15.3, PZ + 6.3, PZ + 6.5, M.slab);
+  // overhead water tank on the head room
+  const tank = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 3.2, 20), mat({ color: '#e9e6e0', roughness: 0.6 }));
+  tank.position.set(W(19), HR + 0.6 + 1.6, D(15.5)); tank.castShadow = true; house.add(tank);
+
+  // ---------------- back side: door, windows, utility ----------------
+  box(18, 21, 49.0, 49.12, 0.3, 7.3, M.wood);                    // back door (from the passage)
+  box(17.85, 21.15, 49.05, 49.2, 7.3, 7.5, M.metal);
+  box(17.5, 21.5, 49.1, 51.6, 7.9, 8.2, M.slab);                 // back door canopy
+  box(17.6, 21.4, 49.1, 50.8, 0, 0.5, M.stone);                  // back step
+  box(7, 12, 49.0, 49.1, 3, 7.5, M.glass);                       // master bedroom rear window
+  box(6.9, 12.1, 49.05, 49.15, 7.4, 7.6, M.metal); box(6.9, 12.1, 49.05, 49.15, 2.9, 3.1, M.metal);
+  [8.65, 10.35].forEach((x) => box(x, x + 0.1, 49.05, 49.15, 3, 7.5, M.metal));
+  box(6.5, 12.5, 49.1, 50.8, 7.9, 8.15, M.slab);                 // rear window sunshade
+  box(3, 21, 49, 49.4, 0, 1.5, M.plinth);                        // plinth band, back
+
+  // ---------------- back garden flooring ----------------
+  box(3, 21, 49.4, 53.5, 0.02, 0.15, M.paver, false);            // paved sit-out along the back wall
+  box(15, 23.7, 53.5, 57.5, 0.02, 0.15, M.paver, false);         // utility / washing area
+  box(15.4, 18.4, 55.3, 57.3, 0.15, 2.6, M.frame);               // washing stone platform
+  box(15.4, 18.4, 55.3, 57.3, 2.6, 2.75, M.stone);
+  box(21.2, 23.2, 57.6, 59.5, 0, 0.35, M.plinth);                // rainwater pit cover
+  for (let y = 54; y < 59; y += 1.6) box(9.4, 11.4, y, y + 1.1, 0.02, 0.12, M.stone, false); // stepping stones
+  // raised kitchen-garden beds and edge beds along the compound wall
+  [[3.2, 8.8, 54, 58.9], [12, 14.4, 54, 58.9]].forEach(([x0, x1, y0, y1]) => {
+    box(x0, x1, y0, y0 + 0.3, 0, 1.2, M.plinth); box(x0, x1, y1 - 0.3, y1, 0, 1.2, M.plinth);
+    box(x0, x0 + 0.3, y0, y1, 0, 1.2, M.plinth); box(x1 - 0.3, x1, y0, y1, 0, 1.2, M.plinth);
+    box(x0 + 0.3, x1 - 0.3, y0 + 0.3, y1 - 0.3, 0, 1.05, M.soil, false);
+    for (let i = 0; i < 8; i++) {
+      const bush = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45 + rnd() * 0.25, 0), i % 2 ? M.leaf : M.leaf2);
+      bush.position.set(W(x0 + 0.8 + rnd() * (x1 - x0 - 1.6)), 1.35, D(y0 + 0.8 + rnd() * (y1 - y0 - 1.6))); bush.castShadow = true; house.add(bush);
+    }
+  });
+  box(0.5, 2.9, 10, 49, 0.02, 0.14, M.paver, false);             // left side passage paving (full length)
+
   // trees in back garden
   function tree(x, y, s) {
     const t = new THREE.Mesh(new THREE.CylinderGeometry(0.25 * s, 0.35 * s, 5 * s, 6), mat({ color: '#6b4f36' }));
     t.position.set(W(x), 2.5 * s, D(y)); t.castShadow = true; house.add(t);
     const c = new THREE.Mesh(new THREE.IcosahedronGeometry(3 * s, 1), M.leaf); c.position.set(W(x), 6 * s, D(y)); c.castShadow = true; house.add(c);
   }
-  tree(5, 55, 1.1); tree(19, 54.5, 0.9); tree(12, 56.5, 0.8);
+  tree(2.6, 56.6, 0.7); tree(21.6, 51.8, 0.5);
 
   // ---------------- lights ----------------
   const hemi = new THREE.HemisphereLight('#dbe9ff', '#6b6150', 0.6); scene.add(hemi);
@@ -383,6 +447,12 @@
   [0.5, 10.5].forEach((x) => { lamp(x, 0.35, 6.5, 0.22); point(x, 0.1, 6.5, 6, 9); });
   // parapet strip
   box(2.7, 9.9, 9.42, 9.5, PZ + PH - 0.05, PZ + PH, M.lampOn, false); point(6.3, 9.0, PZ + PH - 0.4, 3, 6);
+  // wall lights at the back
+  lamp(16.9, 49.25, 6.8, 0.2); point(16.9, 49.6, 6.8, 5, 9);
+  // garden lights along the sit-out
+  [6, 12].forEach((x) => { box(x - 0.15, x + 0.15, 53.4, 53.7, 0, 2.2, M.metal); lamp(x, 53.55, 2.3, 0.18); point(x, 53.55, 2.3, 3, 7); });
+  // head room terrace light
+  lamp(19, 18.75, PZ + 7.8, 0.15); point(19, 19.2, PZ + 7.6, 3, 7);
   // interior glow behind glass
   const glow = point(15.5, 8.5, 8, 0, 12); const glow2 = point(8.7, 11, 5, 0, 10);
 
@@ -438,7 +508,7 @@
 
   const VIEWS = {
     front: [[12, 7, -26], [12, 8, 6]], angle: [[30, 13, -20], [12, 7, 10]],
-    entry: [[3.5, 5, 1.5], [7.5, 5, 9.6]], top: [[-6, 46, -24], [12, 2, 22]]
+    entry: [[3.5, 5, 1.5], [7.5, 5, 9.6]], back: [[24, 17, 74], [11, 3, 52]], top: [[-6, 46, -24], [12, 2, 22]]
   };
   function setView(v) { const [p, t] = VIEWS[v]; camera.position.set(W(p[0]), p[1], D(p[2])); controls.target.set(W(t[0]), t[1], D(t[2])); controls.update(); }
   document.querySelectorAll('.views button').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
@@ -535,6 +605,6 @@
     if (rec && !rec.stopping) stepRecording(now || performance.now()); else if (!rec) controls.update();
     renderer.render(scene, camera); requestAnimationFrame(loop);
   })();
-  window.__ext = { setMode, setView, applyScheme, setTime, startRecording };
+  window.__ext = { setMode, setView, applyScheme, setTime, startRecording, lookAt: (p, t) => { camera.position.set(W(p[0]), p[1], D(p[2])); controls.target.set(W(t[0]), t[1], D(t[2])); controls.update(); } };
 })();
 </script>
