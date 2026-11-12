@@ -29,7 +29,8 @@ function mergeIntervals(list) {
   return out;
 }
 
-// Collect unique wall segments (in feet) from the room rectangles.
+// Collect wall pieces (in feet) from the room rectangles: merge overlaps, split at every
+// junction, and mark a piece external when either side of it is outside the house.
 function wallSegments(rooms) {
   let walled = rooms.filter(r => !r.open);
   let H = {}, V = {};
@@ -40,25 +41,38 @@ function wallSegments(rooms) {
     add(V, r.x, r.y, r.y + r.d);
     add(V, r.x + r.w, r.y, r.y + r.d);
   });
-  let xs = walled.map(r => r.x).concat(walled.map(r => r.x + r.w));
-  let ys = walled.map(r => r.y).concat(walled.map(r => r.y + r.d));
-  let box = { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+  let hs = [], vs = [];
+  Object.keys(H).forEach(k => mergeIntervals(H[k]).forEach(([a, b]) => hs.push({ y: parseFloat(k), a, b })));
+  Object.keys(V).forEach(k => mergeIntervals(V[k]).forEach(([a, b]) => vs.push({ x: parseFloat(k), a, b })));
+
+  const inside = (x, y) => walled.some(r => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.d);
+  const split = (a, b, cuts) => {
+    let pts = [a, b].concat(cuts.filter(c => c > a + EPS && c < b - EPS)).sort((m, n) => m - n);
+    let out = [];
+    for (let i = 0; i < pts.length - 1; i++) if (pts[i + 1] - pts[i] > EPS) out.push([pts[i], pts[i + 1]]);
+    return out;
+  };
 
   let segs = [];
-  Object.keys(H).forEach(k => {
-    let y = parseFloat(k);
-    let ext = Math.abs(y - box.y0) < EPS || Math.abs(y - box.y1) < EPS;
-    mergeIntervals(H[k]).forEach(([a, b]) => segs.push({ x0: a, y0: y, x1: b, y1: y, ext }));
+  hs.forEach(h => {
+    let cuts = vs.filter(v => v.a <= h.y + EPS && v.b >= h.y - EPS).map(v => v.x);
+    split(h.a, h.b, cuts).forEach(([a, b]) => {
+      let m = (a + b) / 2;
+      let ext = !inside(m, h.y + 0.2) || !inside(m, h.y - 0.2);
+      segs.push({ x0: a, y0: h.y, x1: b, y1: h.y, ext });
+    });
   });
-  Object.keys(V).forEach(k => {
-    let x = parseFloat(k);
-    let ext = Math.abs(x - box.x0) < EPS || Math.abs(x - box.x1) < EPS;
-    mergeIntervals(V[k]).forEach(([a, b]) => segs.push({ x0: x, y0: a, x1: x, y1: b, ext }));
+  vs.forEach(v => {
+    let cuts = hs.filter(h => h.a <= v.x + EPS && h.b >= v.x - EPS).map(h => h.y);
+    split(v.a, v.b, cuts).forEach(([a, b]) => {
+      let m = (a + b) / 2;
+      let ext = !inside(v.x + 0.2, m) || !inside(v.x - 0.2, m);
+      segs.push({ x0: v.x, y0: a, x1: v.x, y1: b, ext });
+    });
   });
   return segs;
 }
 
-// white plaster look (painted texture) like the reference elevation
 const wallProps = spec => fromJS({
   thickness: { length: spec.thickness * IN },
   height: { length: spec.height * IN },
@@ -110,9 +124,14 @@ export function buildPlan(plannerState) {
   });
 
   // 2. house walls from the rooms
+  const inZone = (s, z) => Math.min(s.x0, s.x1) >= z.x0 - EPS && Math.max(s.x0, s.x1) <= z.x1 + EPS &&
+                          Math.min(s.y0, s.y1) >= z.y0 - EPS && Math.max(s.y0, s.y1) <= z.y1 + EPS;
   wallSegments(PLAN.rooms).forEach(s => {
-    let props = wallProps(s.ext ? PLAN.wall.external : PLAN.wall.internal);
-    state = Line.createAvoidingIntersections(state, LAYER, 'wall', cx(s.x0), cy(s.y0), cx(s.x1), cy(s.y1), props).updatedState;
+    let spec = Object.assign({}, s.ext ? PLAN.wall.external : PLAN.wall.internal);
+    let zone = (PLAN.wallHeights || []).find(z => inZone(s, z));
+    if (zone) spec.height = zone.height;
+    let props = wallProps(spec);
+    state = Line.create(state, LAYER, 'wall', cx(s.x0), cy(s.y0), cx(s.x1), cy(s.y1), props).updatedState;
   });
 
   // 2b. low walls (planters)
