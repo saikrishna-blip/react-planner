@@ -14,6 +14,11 @@ A customized version of react-planner for planning a house on a **24' × 60' plo
 | Walls use Indian sizes: 9" external, 4.5" internal, 10 ft height, 5 ft compound wall | `plan-data.js` → `wall` |
 | GitHub Pages auto-publish on every push | `.github/workflows/pages.yml` |
 
+## Exterior 3D view
+`demo/exterior/index.html` is a standalone 3D front elevation (three.js) with colour schemes, roof and canopy slabs,
+stone and wood cladding, and day/dusk/night decorative lighting. It's published at `/react-planner/exterior/`.
+Colours live in the `SCHEMES` object at the top of its script.
+
 ## Publish your fork (one time)
 1. In your fork on GitHub, go to **Settings → Pages → Source: GitHub Actions**.
 2. Go to the **Actions** tab, open **Build and publish planner**, and click **Run workflow** (about 3 minutes).
