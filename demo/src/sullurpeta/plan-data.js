@@ -37,7 +37,11 @@ export default {
   //   x, y = START of the opening, w = width (ft)
   //   type: door | opening | window | gate | sliding-door | door-double ...
   doors: [
-    { name: 'Main door',      x: 7,  y: 6, w: 3.5, wall: 'h', type: 'door' },
+    // --- Front entrance (modern elevation) ---
+    { name: 'Main door (wood panel)', x: 4,    y: 6, w: 3.5, wall: 'h', type: 'door' },
+    { name: 'Glass side light',       x: 8,    y: 6, w: 1.5, wall: 'h', type: 'window', h: 6.5, alt: 0.5 },
+    { name: 'Living feature window',  x: 12,   y: 6, w: 4,   wall: 'h', type: 'window', h: 6,   alt: 1.5 },
+    { name: 'Stair tall window',      x: 17.5, y: 6, w: 3,   wall: 'h', type: 'window', h: 8,   alt: 1 },
     { name: 'Hall-Dining',    x: 12, y: 19, w: 4,   wall: 'h', type: 'opening' },
     { name: 'Kitchen-Dining', x: 11, y: 21, w: 3,   wall: 'v', type: 'opening' },
     { name: 'Dining-Passage', x: 17, y: 20, w: 4,   wall: 'v', type: 'opening' },
@@ -53,6 +57,19 @@ export default {
     { name: 'Bath 2 vent',    x: 3,  y: 35, w: 1.5, wall: 'v', type: 'window' },
     { name: 'Master window',  x: 3,  y: 42, w: 5,   wall: 'v', type: 'window' },
     { name: 'Master rear window', x: 7, y: 49, w: 5, wall: 'h', type: 'window' },
-    { name: 'Front gate',     x: 6,  y: 0,  w: 4,  wall: 'h', type: 'gate' }
-  ]
+    { name: 'Front gate (wide, with wicket)', x: 1, y: 0, w: 9, wall: 'h', type: 'gate' }
+  ],
+
+  // Low walls (planter boxes, kerbs). height/thickness in inches.
+  lowWalls: [
+    { name: 'Planter', x: 12, y: 1, w: 9, d: 2, thickness: 4.5, height: 18 }
+  ],
+
+  // Catalog items placed on the plan. Sizes in feet.
+  items: [
+    { name: 'Stone-clad pillar', type: 'square column', x: 10.75, y: 5.6, w: 2, d: 1.5, h: 11 }
+  ],
+
+  // Front porch: covered by a projecting slab (canopy) from the left gate to the main door.
+  porch: { x: 0, y: 0, w: 10.5, d: 6, note: 'Covered porch under projecting slab' }
 };

@@ -12,7 +12,7 @@ import ToolbarScreenshotButton from './ui/toolbar-screenshot-button';
 import ToolbarLoadPlotButton from './ui/toolbar-load-plot-button';
 import { buildPlan, LOAD_SULLURPETA_PLAN, loadSullurpetaPlan } from './sullurpeta/load-plan';
 
-const AUTOSAVE_KEY = 'sullurpeta-house_v2';
+const AUTOSAVE_KEY = 'sullurpeta-house_v3';
 
 import {
   Models as PlannerModels,

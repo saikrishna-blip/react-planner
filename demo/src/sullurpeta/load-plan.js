@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import { ReactPlannerClasses } from 'react-planner';
 import PLAN from './plan-data';
 
-const { Project, Line, Hole, Layer } = ReactPlannerClasses;
+const { Project, Line, Hole, Layer, Item } = ReactPlannerClasses;
 
 export const LOAD_SULLURPETA_PLAN = 'LOAD_SULLURPETA_PLAN';
 export const loadSullurpetaPlan = () => ({ type: LOAD_SULLURPETA_PLAN });
@@ -58,9 +58,12 @@ function wallSegments(rooms) {
   return segs;
 }
 
+// white plaster look (painted texture) like the reference elevation
 const wallProps = spec => fromJS({
   thickness: { length: spec.thickness * IN },
-  height: { length: spec.height * IN }
+  height: { length: spec.height * IN },
+  textureA: 'painted',
+  textureB: 'painted'
 });
 
 const lenProp = cm => fromJS({ length: cm });
@@ -112,6 +115,15 @@ export function buildPlan(plannerState) {
     state = Line.createAvoidingIntersections(state, LAYER, 'wall', cx(s.x0), cy(s.y0), cx(s.x1), cy(s.y1), props).updatedState;
   });
 
+  // 2b. low walls (planters)
+  (PLAN.lowWalls || []).forEach(r => {
+    let props = wallProps({ thickness: r.thickness, height: r.height });
+    [[r.x, r.y, r.x + r.w, r.y], [r.x + r.w, r.y, r.x + r.w, r.y + r.d],
+     [r.x + r.w, r.y + r.d, r.x, r.y + r.d], [r.x, r.y + r.d, r.x, r.y]].forEach(([a, b, c, d]) => {
+      state = Line.createAvoidingIntersections(state, LAYER, 'wall', cx(a), cy(b), cx(c), cy(d), props).updatedState;
+    });
+  });
+
   // 3. doors, windows, openings, gate
   PLAN.doors.forEach(d => {
     let mx = d.wall === 'h' ? d.x + d.w / 2 : d.x;
@@ -120,7 +132,23 @@ export function buildPlan(plannerState) {
     if (!hit) { console.warn('No wall found for', d.name); return; }
     if (!state.catalog.elements.has(d.type)) { console.warn('Unknown type', d.type, 'for', d.name); return; }
     let props = fromJS({}).set('width', lenProp(d.w * FT));
+    if (d.h) props = props.set('height', lenProp(d.h * FT));
+    if (d.alt !== undefined) props = props.set('altitude', lenProp(d.alt * FT));
     state = Hole.create(state, LAYER, d.type, hit.lineID, hit.offset, props).updatedState;
+  });
+
+  // 3b. items (pillar, furniture)
+  (PLAN.items || []).forEach(it => {
+    if (!state.catalog.elements.has(it.type)) { console.warn('Unknown item', it.type); return; }
+    let res = Item.create(state, LAYER, it.type, cx(it.x), cy(it.y), 0, 0, it.rotation || 0);
+    state = res.updatedState;
+    let path = ['scene', 'layers', LAYER, 'items', res.item.id];
+    state = state.setIn(path.concat('name'), it.name || it.type);
+    let props = state.getIn(path.concat('properties'));
+    if (it.w && props.has('width')) props = props.set('width', lenProp(it.w * FT));
+    if (it.d && props.has('depth')) props = props.set('depth', lenProp(it.d * FT));
+    if (it.h && props.has('height')) props = props.set('height', lenProp(it.h * FT));
+    state = state.setIn(path.concat('properties'), props);
   });
 
   // 4. detect rooms (areas) and name them
@@ -130,7 +158,8 @@ export function buildPlan(plannerState) {
     let pts = area.vertices.map(id => layer.vertices.get(id));
     let ax = pts.reduce((s, p) => s + p.x, 0) / pts.size;
     let ay = pts.reduce((s, p) => s + p.y, 0) / pts.size;
-    let room = area.holes.size ? null : PLAN.rooms.find(r => !r.open && pointInRoom(r, ax, ay));
+    let named = PLAN.rooms.filter(r => !r.open).concat(PLAN.lowWalls || []);
+    let room = area.holes.size ? null : named.find(r => pointInRoom(r, ax, ay));
     let name = area.holes.size ? 'Garden / Open space' : (room ? room.name : null);
     if (name) state = state.setIn(['scene', 'layers', LAYER, 'areas', area.id, 'name'], name);
   });
