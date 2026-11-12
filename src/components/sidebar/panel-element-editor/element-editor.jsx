@@ -79,7 +79,7 @@ export default class ElementEditor extends Component {
         let v_b = layer.vertices.get(element.vertices.get(1));
 
         let distance = GeometryUtils.pointsDistance(v_a.x, v_a.y, v_b.x, v_b.y);
-        let _unit = element.misc.get('_unitLength') || this.context.catalog.unit;
+        let _unit = element.misc.get('_unitLength') || 'ft';
         let _length = convert(distance).from(this.context.catalog.unit).to(_unit);
 
         return new Map({
@@ -95,11 +95,11 @@ export default class ElementEditor extends Component {
         let lineLength = GeometryUtils.pointsDistance(x0, y0, x1, y1);
         let startAt = lineLength * element.offset - element.properties.get('width').get('length') / 2;
 
-        let _unitA = element.misc.get('_unitA') || this.context.catalog.unit;
+        let _unitA = element.misc.get('_unitA') || 'ft';
         let _lengthA = convert(startAt).from(this.context.catalog.unit).to(_unitA);
 
         let endAt = lineLength - lineLength * element.offset - element.properties.get('width').get('length') / 2;
-        let _unitB = element.misc.get('_unitB') || this.context.catalog.unit;
+        let _unitB = element.misc.get('_unitB') || 'ft';
         let _lengthB = convert(endAt).from(this.context.catalog.unit).to(_unitB);
 
         return new Map({

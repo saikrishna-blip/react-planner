@@ -14,8 +14,9 @@ const unitContainerStyle = {width: '5em'};
 export default function PropertyLengthMeasure({value, onUpdate, onValid, configs, sourceElement, internalState, state}, {catalog}) {
 
   let length = value.get('length') || 0;
-  let _length = value.get('_length') || length;
-  let _unit = value.get('_unit') || UNIT_CENTIMETER;
+  // Sullurpeta fork: default display unit is feet
+  let _unit = value.get('_unit') || 'ft';
+  let _length = value.get('_unit') ? (value.get('_length') || length) : toFixedFloat(convert(length).from(UNIT_CENTIMETER).to(_unit));
   let { hook, label, ...configRest} = configs;
 
   let update = (lengthInput, unitInput) => {

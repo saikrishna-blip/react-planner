@@ -24,7 +24,10 @@ const STYLE_TEXT = {
 
 export default function Ruler({length, unit, transform}) {
 
-  let distanceText = `${length.toFixed(2)} ${unit}`;
+  // Sullurpeta fork: show feet-inches (scene works in cm)
+  let cm = unit === 'cm' ? length : unit === 'm' ? length * 100 : unit === 'mm' ? length / 10 : unit === 'in' ? length * 2.54 : unit === 'ft' ? length * 30.48 : length;
+  let totalIn = Math.round(cm / 2.54);
+  let distanceText = `${Math.floor(totalIn / 12)}' ${totalIn % 12}" (${(cm / 100).toFixed(2)} m)`;
 
   return (
     <g transform={transform}>

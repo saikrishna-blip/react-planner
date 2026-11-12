@@ -1,3 +1,5 @@
+import polylabel from 'polylabel';
+import areapolygon from 'area-polygon';
 import { List } from 'immutable';
 import { Project, Area, Line, Hole, Item, Vertex } from './export';
 import {
@@ -149,9 +151,13 @@ class Layer{
       let areaVerticesList = verticesCoordsForArea[i].vertices.flatten().toArray();
       for (j = 0; j < verticesCoordsForArea.length; j++) {
         if (i !== j) {
-          let isHole = GeometryUtils.ContainsPoint(areaVerticesList,
-            verticesCoordsForArea[j].vertices.get(0).get(0),
-            verticesCoordsForArea[j].vertices.get(0).get(1));
+          // Sullurpeta fork: test a point strictly inside area j (not a vertex that may
+          // sit on a shared wall), and only smaller areas can be holes of bigger ones
+          let polyJ = verticesCoordsForArea[j].vertices.map(v => [v.get(0), v.get(1)]).toArray();
+          let polyI = verticesCoordsForArea[i].vertices.map(v => [v.get(0), v.get(1)]).toArray();
+          let inner = polylabel([polyJ], 1.0);
+          let isHole = Math.abs(areapolygon(polyJ, false)) < Math.abs(areapolygon(polyI, false)) &&
+            GeometryUtils.ContainsPoint(areaVerticesList, inner[0], inner[1]);
           if (isHole) {
             holesList = holesList.push(verticesCoordsForArea[j].id);
           }

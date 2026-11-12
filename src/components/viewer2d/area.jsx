@@ -25,7 +25,7 @@ export default function Area({layer, area, catalog}) {
 
   let renderedAreaSize = null;
 
-  if (area.selected) {
+  {
     let polygon = area.vertices.toArray().map(vertexID => {
       let {x, y} = layer.vertices.get(vertexID);
       return [x, y];
@@ -56,10 +56,16 @@ export default function Area({layer, area, catalog}) {
       areaSize -= areapolygon(holePolygon, false);
     });
 
+    // Sullurpeta fork: always show room name + size in sq ft
+    let sqft = areaSize / 929.0304;
+    let showName = area.name && !/^area\b/i.test(area.name);
     renderedAreaSize = (
-      <text x="0" y="0" transform={`translate(${center[0]} ${center[1]}) scale(1, -1)`} style={STYLE_TEXT}>
-        {(areaSize / 10000).toFixed(2)} m{String.fromCharCode(0xb2)}
-      </text>
+      <g transform={`translate(${center[0]} ${center[1]}) scale(1, -1)`}>
+        {showName ? <text x="0" y="-8" style={{...STYLE_TEXT, fontFamily: 'Arial, sans-serif', fontSize: '15px'}}>{area.name}</text> : null}
+        <text x="0" y={showName ? 10 : 0} style={STYLE_TEXT}>
+          {sqft.toFixed(0)} sq ft{area.selected ? ` (${(areaSize / 10000).toFixed(2)} m${String.fromCharCode(0xb2)})` : ''}
+        </text>
+      </g>
     )
   }
 

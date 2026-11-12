@@ -9,6 +9,10 @@ import {Provider} from 'react-redux';
 import MyCatalog from './catalog/mycatalog';
 
 import ToolbarScreenshotButton from './ui/toolbar-screenshot-button';
+import ToolbarLoadPlotButton from './ui/toolbar-load-plot-button';
+import { buildPlan, LOAD_SULLURPETA_PLAN, loadSullurpetaPlan } from './sullurpeta/load-plan';
+
+const AUTOSAVE_KEY = 'sullurpeta-house_v1';
 
 import {
   Models as PlannerModels,
@@ -25,6 +29,9 @@ let AppState = Map({
 //define reducer
 let reducer = (state, action) => {
   state = state || AppState;
+  if (action.type === LOAD_SULLURPETA_PLAN) {
+    return state.update('react-planner', plannerState => buildPlan(plannerState));
+  }
   state = state.update('react-planner', plannerState => PlannerReducer(plannerState, action));
   return state;
 };
@@ -67,11 +74,12 @@ let store = createStore(
 
 let plugins = [
   PlannerPlugins.Keyboard(),
-  PlannerPlugins.Autosave('react-planner_v0'),
+  PlannerPlugins.Autosave(AUTOSAVE_KEY),
   PlannerPlugins.ConsoleDebugger(),
 ];
 
 let toolbarButtons = [
+  ToolbarLoadPlotButton,
   ToolbarScreenshotButton,
 ];
 
@@ -96,3 +104,9 @@ ReactDOM.render(
   document.getElementById('app')
 );
 
+// First visit: pre-draw the Sullurpeta plot
+setTimeout(() => {
+  let saved = null;
+  try { saved = window.localStorage.getItem(AUTOSAVE_KEY); } catch (e) {}
+  if (!saved) store.dispatch(loadSullurpetaPlan());
+}, 300);
