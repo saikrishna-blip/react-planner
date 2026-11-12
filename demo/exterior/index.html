@@ -78,7 +78,7 @@
 <div class="wrap">
   <header>
     <div>
-      <p class="eyebrow">24' × 60' plot · Sullurpeta · front elevation</p>
+      <p class="eyebrow">24' × 60' plot · Sullurpeta · Royal Rajasthani elevation</p>
       <h1>Sullurpeta House Exterior</h1>
       <p class="sub">Drag to orbit, scroll or pinch to zoom. Built to the dimensions in your floor plan.</p>
     </div>
@@ -137,13 +137,13 @@
       <p class="eyebrow">Decorative lighting · warm white 2700–3000 K</p>
       <h2>Lighting plan</h2>
       <ul class="light">
-        <li><span class="dot"></span><div><b>Soffit cove</b> · concealed LED strip along the front edge of the sloped wood soffit, plus 3 recessed spots.</div></li>
-        <li><span class="dot"></span><div><b>Up–down washers</b> · 2 × 6 W on the stone-block cladding, grazing the texture.</div></li>
-        <li><span class="dot"></span><div><b>Window box glow</b> · LED strip inside the top of the white box frame.</div></li>
-        <li><span class="dot"></span><div><b>Porch ceiling</b> · 2 × 7 W COB downlights in the wood ceiling, lighting the wave wall and door.</div></li>
-        <li><span class="dot"></span><div><b>Side cove line</b> · LED strip under the side parapet coping, the warm line from the reference.</div></li>
-        <li><span class="dot"></span><div><b>Name plate & gate</b> · backlit name plate and cube lights on both gate pillars.</div></li>
-        <li><span class="dot"></span><div><b>Planter spikes</b> · 3 × 3 W spike lights in the front planter.</div></li>
+        <li><span class="dot"></span><div><b>Hanging brass lantern</b> · in the centre of the cusped arch, the first thing a visitor sees.</div></li>
+        <li><span class="dot"></span><div><b>Pilaster lanterns</b> · 2 brass wall lanterns on the arch pillars.</div></li>
+        <li><span class="dot"></span><div><b>Arch & jharokha uplights</b> · narrow-beam ground spots grazing the marble arch and the carved jharokha.</div></li>
+        <li><span class="dot"></span><div><b>Chhatri glow</b> · a small warm lamp inside each chhatri, so the domes glow on the skyline at night.</div></li>
+        <li><span class="dot"></span><div><b>Eave cove</b> · LED strip under the marble chhajja, washing the sandstone facade.</div></li>
+        <li><span class="dot"></span><div><b>Porch ceiling</b> · 2 downlights in the teak ceiling over the carved door.</div></li>
+        <li><span class="dot"></span><div><b>Gate pillar lanterns</b> · lantern boxes under small domes on both gate pillars, plus a backlit name plate.</div></li>
       </ul>
       <p class="note">Put the outdoor lights on a timer or dusk-to-dawn sensor. All fittings should be outdoor-rated, IP65 or better.</p>
     </section>
@@ -159,32 +159,31 @@
 
   // ---------------- colour schemes ----------------
   const SCHEMES = {
-    sand: {
-      label: 'Sandstone', title: 'Sandstone Block & Wood',
-      note: 'The look from your reference. Warm sandstone-block cladding, grey fins and wood soffits on a white base. The light body keeps the house cool, and the cladding hides dust and rain marks.',
-      body: '#f3f0eb', frame: '#fbfaf8', clad: '#a8846a', accent: '#55595e', wood: '#b8743c', wave: '#c9773a', plinth: '#4a4d51', compound: '#f0ece6', coping: '#55595e', metal: '#2b2d30'
+    rose: {
+      label: 'Jaipur Rose', title: 'Rose Sandstone & White Marble',
+      note: 'Recommended. The classic palace look: pink-red sandstone, white marble arches and domes, with brass lanterns and finials. The warm stone hides dust and monsoon stains well.',
+      body: '#ead6be', frame: '#f4f0e8', clad: '#c98f6b', accent: '#b8893a', wood: '#5a3420', plinth: '#7a4a35', compound: '#ead6be', coping: '#f4f0e8', metal: '#3a2b20'
     },
-    grey: {
-      label: 'Grey Stone', title: 'Grey Stone & Walnut',
-      note: 'A cooler, more modern version. Grey stone cladding with charcoal fins and darker walnut wood.',
-      body: '#eeeeec', frame: '#fafafa', clad: '#8b8d8f', accent: '#34373b', wood: '#8c5a35', wave: '#9c6a45', plinth: '#34373b', compound: '#ececea', coping: '#34373b', metal: '#1f2124'
+    gold: {
+      label: 'Jaisalmer Gold', title: 'Golden Sandstone & Marble',
+      note: 'Golden-yellow sandstone like the Jaisalmer havelis. Bright and royal in daylight, and it glows at dusk.',
+      body: '#f0dfbf', frame: '#f7f2e8', clad: '#d6b276', accent: '#a4782e', wood: '#6a4328', plinth: '#8a6a3c', compound: '#f0dfbf', coping: '#f7f2e8', metal: '#2e2620'
     },
-    beige: {
-      label: 'Beige & Teak', title: 'Beige Stone & Teak',
-      note: 'Softer and traditional. Light beige cladding with teak wood and bronze-brown frames.',
-      body: '#efe7da', frame: '#fbf8f2', clad: '#c2a988', accent: '#5b4a3c', wood: '#8a5a34', wave: '#a5683a', plinth: '#4a3e35', compound: '#ece4d6', coping: '#5b4a3c', metal: '#3a322b'
+    white: {
+      label: 'Udaipur White', title: 'White Palace & Gold',
+      note: 'The lake-palace look: mostly white and ivory with gold trims. Very elegant, but needs repainting more often to stay bright.',
+      body: '#f6f2ea', frame: '#ffffff', clad: '#e6ddcd', accent: '#b08a3e', wood: '#4a2c1a', plinth: '#9a8a74', compound: '#f6f2ea', coping: '#ffffff', metal: '#2a2420'
     }
   };
   const FINISH_ROWS = [
-    ['body', 'Main walls', 'Exterior emulsion on all plastered walls'],
-    ['frame', 'Sloped fascia & window box', 'White band of the sloped frame and the deep box around the tall window'],
-    ['clad', 'Stone-block cladding', '2 ft × 1 ft sandstone/porcelain cladding on the feature block, pillars, side panels and planter'],
-    ['accent', 'Fins, box frames & roof screen', 'Grey ACP/MS vertical fins, side window box frames and the screen on the porch roof'],
-    ['wood', 'Wood soffit, porch ceiling & door', 'HPL/WPC wood-look under the sloped fascia and the porch ceiling; teak main door'],
-    ['wave', 'Porch feature wall', '3D wave-pattern wood/HPL panel behind the main door'],
-    ['metal', 'Gate & railings', 'Powder-coated MS, matte finish'],
-    ['plinth', 'Plinth band', 'Bottom 1.5 ft band, hides splash dirt'],
-    ['compound', 'Compound wall', 'Main wall colour with grey coping']
+    ['clad', 'Sandstone cladding', '1.5 ft × 0.75 ft dressed sandstone (or porcelain look-alike) on the facade, jharokha, pillars and planter'],
+    ['frame', 'Marble work', 'Arches, mouldings, chhajjas (eaves), chhatri domes and window frames: white marble or GRC'],
+    ['accent', 'Brass & gold details', 'Lanterns, dome finials, door studs, rosettes: brass or gold-finish metal'],
+    ['wood', 'Main door', 'Carved teak double door with brass studs'],
+    ['body', 'Plastered walls', 'Exterior emulsion on sides and back, matched to the stone'],
+    ['metal', 'Gate & grills', 'Ornamental MS, dark bronze powder coat with brass finials'],
+    ['plinth', 'Plinth band', 'Darker stone band at the base, hides splash dirt'],
+    ['compound', 'Compound wall', 'Plaster in body colour with marble coping']
   ];
   const STONE = '#5b5e61';
 
@@ -239,15 +238,31 @@
     for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(0,0,0,${rnd() * 0.035})`; g.fillRect(rnd() * w, rnd() * h, 1.5, 1.5); }
   }, 4, 4);
 
-  // stone-block cladding (world-unit UVs: 512 px = 4 ft, blocks 2 ft x 1 ft)
-  const cladTex = canvasTex(512, 512, (g, w, h) => {
-    g.fillStyle = '#6e6e6e'; g.fillRect(0, 0, w, h);
+  // dressed sandstone ashlar (world-unit UVs: 384 px = 3 ft, blocks 1.5 ft x 0.75 ft)
+  const cladTex = canvasTex(384, 384, (g, w, h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h);
     for (let r = 0; r < 4; r++) for (let c = -1; c < 3; c++) {
-      const x = c * 256 + (r % 2 ? 128 : 0), y = r * 128, v = 190 + rnd() * 55;
-      g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(x + 3, y + 3, 250, 122);
-      for (let k = 0; k < 260; k++) { const d = rnd() * 40 - 20; g.fillStyle = `rgba(${v + d},${v + d},${v + d},.7)`; g.fillRect(x + 3 + rnd() * 246, y + 3 + rnd() * 118, 3, 3); }
+      const x = c * 192 + (r % 2 ? 96 : 0), y = r * 96, v = 205 + rnd() * 35;
+      g.fillStyle = `rgb(${v},${v - 2},${v - 4})`; g.fillRect(x + 3, y + 3, 186, 90);
+      for (let k = 0; k < 140; k++) { const d = rnd() * 26 - 13; g.fillStyle = `rgba(${v + d},${v + d},${v + d},.55)`; g.fillRect(x + 4 + rnd() * 182, y + 4 + rnd() * 84, 2, 2); }
+      g.strokeStyle = 'rgba(0,0,0,.06)'; g.lineWidth = 1;
+      for (let k = 0; k < 7; k++) { const yy = y + 10 + rnd() * 76; g.beginPath(); g.moveTo(x + 6, yy); g.lineTo(x + 184, yy + rnd() * 4 - 2); g.stroke(); }
     }
-  }, 0.25, 0.25);
+  }, 1 / 3, 1 / 3);
+  // carved jali (solid relief: dark = deep carving)
+  const jaliTex = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#efe7da'; g.fillRect(0, 0, w, h);
+    const n = 4, c = w / n;
+    for (let i = 0; i < n; i++) for (let k = 0; k < n; k++) {
+      const cx = i * c + c / 2, cy = k * c + c / 2;
+      g.fillStyle = '#7d6a58';
+      for (let a = 0; a < 8; a++) {
+        const t = a * Math.PI / 4; g.beginPath(); g.ellipse(cx + Math.cos(t) * c * 0.22, cy + Math.sin(t) * c * 0.22, c * 0.14, c * 0.06, t, 0, Math.PI * 2); g.fill();
+      }
+      g.beginPath(); g.arc(cx, cy, c * 0.07, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(i * c, k * c, c * 0.1, 0, Math.PI * 2); g.fill();
+    }
+  }, 1, 1);
   // porch feature wall: wavy grooves
   const waveTex = canvasTex(512, 512, (g, w, h) => {
     g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h);
@@ -281,9 +296,9 @@
   M.glass = new THREE.MeshStandardMaterial({ color: lin('#4a5b68'), roughness: 0.12, metalness: 0.55, emissive: '#000000' });
   M.paver = mat({ map: paverTex }); M.grass = mat({ map: grassTex }); M.road = mat({ color: '#4b4d50', roughness: 0.95 });
   M.soil = mat({ color: '#4a3525' }); M.leaf = mat({ color: '#3f7a35', roughness: 0.8 }); M.leaf2 = mat({ color: '#6aa346', roughness: 0.8 });
-  M.clad = mat({ map: cladTex, roughness: 0.9 }); M.accent = mat({ roughness: 0.55, metalness: 0.2 });
+  M.clad = mat({ map: cladTex, roughness: 0.9 }); M.accent = mat({ roughness: 0.32, metalness: 0.75 });
   M.woodW = mat({ map: woodWTex, roughness: 0.6 }); M.tile = mat({ map: tileTex, roughness: 0.5 });
-  M.recess.map = waveTex; M.recess.roughness = 0.6;
+  M.jali = mat({ map: jaliTex, roughness: 0.85 }); M.dome = mat({ roughness: 0.35 }); M.lantern = new THREE.MeshStandardMaterial({ color: lin('#ffe2b0'), emissive: lin('#ffb45e'), emissiveIntensity: 0.15, roughness: 0.4 });
   M.plate = new THREE.MeshStandardMaterial({ map: plateTex, emissiveMap: plateTex, emissive: lin('#ffd9a0'), emissiveIntensity: 0, roughness: 0.6 });
   M.trunk = mat({ color: '#7a6248', roughness: 0.9 }); M.frond = mat({ color: '#4f8a3a', roughness: 0.8, side: THREE.DoubleSide });
   M.lampOn = new THREE.MeshStandardMaterial({ color: lin('#2a2c2f'), emissive: lin('#ffb45e'), emissiveIntensity: 0 });
@@ -303,6 +318,54 @@
     mesh.position.z = D(y1); mesh.castShadow = cast; mesh.receiveShadow = true; house.add(mesh); return mesh;
   }
   const cbox = (x0, x1, y0, y1, z0, z1, m = M.clad) => prism([[x0, z0], [x1, z0], [x1, z1], [x0, z1]], y0, y1, m);
+  // cusped (multifoil) pointed arch outline from (x0, zs) to (x1, zs)
+  function archPts(x0, x1, zs, rise, lobes, depth, n = 48) {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, u = Math.abs(2 * t - 1);
+      let z = zs + rise * Math.pow(Math.max(0, 1 - Math.pow(u, 1.7)), 0.6);
+      if (lobes) z -= depth * Math.pow(1 - Math.abs(Math.sin(Math.PI * lobes * t)), 3) * (1 - Math.pow(u, 6));
+      pts.push([x0 + (x1 - x0) * t, z]);
+    }
+    return pts;
+  }
+  // wall with an arched opening (opening from ground)
+  function archWall(X0, X1, Ztop, x0, x1, zs, rise, lobes, depth, y0, y1, m) {
+    const pts = [[X0, 0], [x0, 0]].concat(archPts(x0, x1, zs, rise, lobes, depth), [[x1, 0], [X1, 0], [X1, Ztop], [X0, Ztop]]);
+    return prism(pts, y0, y1, m);
+  }
+  // moulded band around an arch, down to zBase
+  function archRing(x0, x1, zs, rise, lobes, depth, b, zBase, y0, y1, m) {
+    const outer = archPts(x0 - b, x1 + b, zs, rise + b, 0, 0), inner = archPts(x0, x1, zs, rise, lobes, depth).reverse();
+    return prism([[x0 - b, zBase]].concat(outer, [[x1 + b, zBase], [x1, zBase]], inner, [[x0, zBase]]), y0, y1, m);
+  }
+  // sloping stone eave (chhajja) on a front wall at plan y = yWall, projecting toward the road, with brackets
+  function chhajja(x0, x1, yWall, proj, z, m, brackets = true) {
+    const ang = 0.32, L = proj / Math.cos(ang);
+    const e = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 0.22, L), m);
+    e.position.set(W((x0 + x1) / 2), z - Math.sin(ang) * L / 2, D(yWall - proj / 2)); e.rotation.x = ang;
+    e.castShadow = true; e.receiveShadow = true; house.add(e);
+    if (brackets) for (let x = x0 + 0.4; x < x1 - 0.2; x += 1.1) box(x, x + 0.25, yWall - 0.55, yWall, z - 0.85, z - 0.25, m);
+  }
+  function chhatri(x, y, z, s) {
+    box(x - 1.3 * s, x + 1.3 * s, y - 1.3 * s, y + 1.3 * s, z, z + 0.35 * s, M.frame);
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => {
+      const c = new THREE.Mesh(new THREE.CylinderGeometry(0.11 * s, 0.14 * s, 2.3 * s, 10), M.frame);
+      c.position.set(W(x + a * 0.95 * s), z + 0.35 * s + 1.15 * s, D(y + b * 0.95 * s)); c.castShadow = true; house.add(c);
+    });
+    const top = z + 2.65 * s;
+    box(x - 1.45 * s, x + 1.45 * s, y - 1.45 * s, y + 1.45 * s, top, top + 0.18 * s, M.frame);
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(1.05 * s, 1.1 * s, 0.3 * s, 24), M.frame); drum.position.set(W(x), top + 0.33 * s, D(y)); house.add(drum);
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(1.05 * s, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), M.dome);
+    dome.position.set(W(x), top + 0.48 * s, D(y)); dome.scale.y = 1.15; dome.castShadow = true; house.add(dome);
+    const f1 = new THREE.Mesh(new THREE.CylinderGeometry(0.05 * s, 0.09 * s, 0.6 * s, 8), M.accent); f1.position.set(W(x), top + 1.75 * s, D(y)); house.add(f1);
+    const f2 = new THREE.Mesh(new THREE.SphereGeometry(0.13 * s, 10, 8), M.accent); f2.position.set(W(x), top + 2.1 * s, D(y)); house.add(f2);
+    return top;
+  }
+  // kangura: pointed merlons along a parapet top (front face at plan y)
+  function merlons(x0, x1, y, z, m) {
+    for (let x = x0; x < x1 - 0.3; x += 0.75) prism([[x, z], [x + 0.55, z], [x + 0.55, z + 0.35], [x + 0.275, z + 0.7], [x, z + 0.35]], y, y + 0.45, m);
+  }
   function palm(x, y, s) {
     const g = new THREE.Group(); let px = 0, pz = 0, h = 0;
     for (let i = 0; i < 6; i++) {
@@ -322,7 +385,7 @@
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), M.grass);
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
   box(-60, 84, -26, -2, -0.05, 0.02, M.road, false);                 // road
-  box(-60, 84, -2, 0, 0, 0.35, M.plinth, false);                     // kerb
+  box(-60, 84, -2, 0, 0, 0.35, mat({ color: '#8d8f91', roughness: 0.9 }), false); // kerb
   box(0.3, 23.7, 0.3, 10, 0.02, 0.12, M.paver, false);               // front paving
   box(0.3, 2.9, 10, 59.7, 0.02, 0.1, M.paver, false);                // left side path
   box(1, 10, 0.4, 9.6, 0.1, 0.2, M.tile, false);                    // white tiled entrance path
@@ -335,26 +398,35 @@
   box(0, 24, 60 - CW, 60, 0, CH, M.compound);
   box(0, 24, 60 - CW, 60, CH, CH + 0.25, M.coping);
   box(12.5, 24, 0, CW, 0, 3.5, M.compound); box(12.5, 24, 0, CW, 3.5, 3.75, M.coping);     // low front wall (right)
-  // gate pillars: stone-block cladding with grey caps; right one carries the name plate
-  cbox(0, 1.1, -0.1, 0.8, 0, 6.2); box(-0.1, 1.2, -0.2, 0.9, 6.2, 6.5, M.accent);
-  cbox(10, 12.5, -0.1, 0.8, 0, 6.2); box(9.9, 12.6, -0.2, 0.9, 6.2, 6.5, M.accent);
-  box(10.55, 11.95, -0.16, -0.1, 3.4, 4.9, M.plate);                  // name plate
-  box(10.45, 12.05, -0.12, -0.08, 3.3, 5.0, M.accent);
-  // gate: two leaves, horizontal slats + top picket row
-  for (let leaf = 0; leaf < 2; leaf++) {
-    const gx0 = 1.15 + leaf * 4.45, gx1 = gx0 + 4.35;
-    box(gx0, gx1, 0.15, 0.3, 0.3, 0.45, M.metal); box(gx0, gx1, 0.15, 0.3, 5.5, 5.65, M.metal);
-    box(gx0, gx0 + 0.12, 0.15, 0.3, 0.3, 5.65, M.metal); box(gx1 - 0.12, gx1, 0.15, 0.3, 0.3, 5.65, M.metal);
-    for (let z = 0.7; z < 4.2; z += 0.42) box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, z, z + 0.28, M.metal);
-    box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, 4.25, 4.4, M.metal);
-    for (let x = gx0 + 0.35; x < gx1 - 0.2; x += 0.35) box(x, x + 0.08, 0.2, 0.25, 4.4, 5.5, M.metal);
+  // gate pillars: sandstone with marble cap, lantern and small dome
+  function gatePillar(x0, x1) {
+    cbox(x0, x1, -0.1, 0.8, 0, 5.6); box(x0 - 0.1, x1 + 0.1, -0.2, 0.9, 5.6, 5.85, M.frame);
+    box(x0 - 0.05, x1 + 0.05, -0.15, 0.85, 0, 0.6, M.plinth);
+    const cx = (x0 + x1) / 2, cy = 0.35;
+    box(cx - 0.3, cx + 0.3, cy - 0.3, cy + 0.3, 5.85, 6.75, M.lantern);
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([a, b]) => box(cx + a * 0.33 - 0.04, cx + a * 0.33 + 0.04, cy + b * 0.33 - 0.04, cy + b * 0.33 + 0.04, 5.85, 6.75, M.accent));
+    box(cx - 0.45, cx + 0.45, cy - 0.45, cy + 0.45, 6.75, 6.9, M.frame);
+    const d = new THREE.Mesh(new THREE.SphereGeometry(0.42, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), M.dome); d.position.set(W(cx), 6.9, D(cy)); d.scale.y = 1.2; house.add(d);
+    const f = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 6), M.accent); f.position.set(W(cx), 7.45, D(cy)); house.add(f);
   }
+  gatePillar(0, 1.1); gatePillar(10, 12.5);
+  box(10.55, 11.95, -0.16, -0.1, 3.2, 4.7, M.plate); box(10.45, 12.05, -0.12, -0.08, 3.1, 4.8, M.accent); // name plate with brass frame
+  // ornamental gate: arched top across both leaves, bronze bars, brass finials
+  const GX0 = 1.15, GX1 = 9.95;
+  box(GX0, GX1, 0.15, 0.3, 0.3, 0.45, M.metal); box(GX0, GX1, 0.15, 0.3, 1.9, 2.0, M.metal); box(GX0, GX1, 0.15, 0.3, 4.3, 4.4, M.metal);
+  box(5.5, 5.6, 0.15, 0.3, 0.3, 5.9, M.metal);
+  for (let x = GX0 + 0.05, k = 0; x < GX1 - 0.05; x += 0.32, k++) {
+    const t = (x - GX0) / (GX1 - GX0), top = 4.6 + 1.3 * Math.sin(Math.PI * t);
+    box(x, x + 0.07, 0.19, 0.26, 0.45, top, M.metal);
+    if (k % 2 === 0) { const f = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.3, 6), M.accent); f.position.set(W(x + 0.035), top + 0.15, D(0.225)); house.add(f); }
+  }
+  for (let x = GX0 + 0.45; x < GX1 - 0.3; x += 0.75) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.035, 6, 16), M.accent); r.position.set(W(x), 1.15, D(0.225)); house.add(r); }
 
   // ---------------- house body ----------------
   const ROOF = 10, SLAB = 0.45;
   box(3, 21, 10, 49, 0, ROOF, M.body);          // main body (behind the entrance line)
   box(10, 21, 6, 10, 0, ROOF, M.body);          // projecting window block
-  box(3, 10, 9.6, 10, 0, ROOF, M.recess);       // entrance bay recess face
+  cbox(3, 10, 9.6, 10, 0, ROOF);                // porch back wall (sandstone)
   // plinth band
   box(2.9, 21.1, 9.9, 49.1, 0, 1.5, M.plinth); box(9.9, 21.1, 5.9, 10, 0, 1.5, M.plinth);
   // roof slab with drip edge
@@ -363,85 +435,104 @@
   const PZ = ROOF + SLAB, PH = 3;
   box(2.6, 3.1, 9.6, 49.4, PZ, PZ + PH, M.frame); box(20.9, 21.4, 9.6, 49.4, PZ, PZ + PH, M.frame);
   box(2.6, 21.4, 48.9, 49.4, PZ, PZ + PH, M.frame);
-  box(2.6, 10, 9.6, 10.1, PZ, PZ + PH, M.frame);
-  box(2.5, 10, 9.5, 10.2, PZ + PH, PZ + PH + 0.2, M.coping);
 
-  // ---------------- entrance bay (recessed porch, wood ceiling, wave feature wall) ----------------
-  box(4, 7.5, 9.5, 9.62, 0.2, 7.6, M.wood);                    // teak main door
-  box(3.85, 7.65, 9.45, 9.6, 7.6, 7.85, M.accent);             // door head frame
-  box(4.6, 4.7, 9.4, 9.45, 3.2, 4.6, M.metal);                 // handle
-  box(8, 9.5, 9.5, 9.62, 0.6, 7.6, M.glass);                   // glass side light
-  box(7.95, 9.55, 9.45, 9.58, 0.55, 0.65, M.accent); box(7.95, 9.55, 9.45, 9.58, 7.55, 7.65, M.accent);
-  // porch roof slab + wood slat ceiling + thick fascia
-  box(2.6, 10, 5.4, 9.6, 8.8, 9.35, M.slab);
-  box(3, 9.95, 5.6, 9.55, 8.68, 8.8, M.wood, false);            // wood ceiling
-  box(2.6, 10, 5.2, 5.6, 8.2, 9.6, M.frame);                    // fascia band
-  box(2.6, 3.1, 5.4, 9.6, 0, 1.5, M.plinth);                   // low cheek wall
-  box(3, 10, 8.2, 9.6, 0, 0.5, M.tile);                         // porch step (tiled)
-  // grey screen frame on the porch roof (like the reference)
-  box(2.6, 9.6, 5.25, 5.55, 12.1, 12.45, M.accent); box(2.6, 2.95, 5.25, 5.55, 9.6, 12.1, M.accent);
-  for (let x = 3.4; x < 9.3; x += 0.55) box(x, x + 0.14, 5.33, 5.47, 9.6, 12.1, M.accent);
+  // ---------------- royal entrance: cusped marble arch portico ----------------
+  const AX0 = 4.0, AX1 = 8.6, AZS = 7.0, ARISE = 3.4;                   // arch opening
+  box(2.6, 10, 5.4, 9.6, ROOF, ROOF + SLAB, M.slab);                    // porch roof slab at roof level
+  box(3, 9.95, 6.0, 9.55, ROOF - 0.12, ROOF, M.wood, false);            // carved teak ceiling
+  archWall(2.6, 10.0, PZ + PH, AX0, AX1, AZS, ARISE, 7, 0.32, 5.5, 6.0, M.frame);   // marble arch wall up to parapet
+  archRing(AX0, AX1, AZS, ARISE, 7, 0.32, 0.5, 0, 5.3, 5.5, M.clad);    // sandstone moulding around the arch
+  prism(archPts(AX0 - 0.5, AX1 + 0.5, AZS, ARISE + 0.5, 0, 0).concat(archPts(AX0 - 0.68, AX1 + 0.68, AZS, ARISE + 0.68, 0, 0).reverse()), 5.22, 5.3, M.accent); // brass edge line
+  // pilasters with marble base and capital
+  [[2.6, 3.5], [9.1, 10.0]].forEach(([a, b]) => {
+    cbox(a, b, 5.0, 5.5, 0, 11.2); box(a - 0.12, b + 0.12, 4.9, 5.5, 0, 0.9, M.frame); box(a - 0.15, b + 0.15, 4.85, 5.5, 10.9, 11.5, M.frame);
+  });
+  // rosettes in the spandrels
+  [[3.4, 11.9], [9.2, 11.9]].forEach(([x, z]) => { const r = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.08, 20), M.accent); r.rotation.x = Math.PI / 2; r.position.set(W(x + 0.0), z, D(5.25)); house.add(r); });
+  chhajja(2.4, 10.2, 5.3, 1.6, 12.3, M.frame);                          // eave over the arch
+  box(2.6, 10.0, 5.25, 6.0, PZ + PH, PZ + PH + 0.2, M.frame);           // coping
+  merlons(2.6, 10.0, 5.4, PZ + PH + 0.2, M.frame);
+  box(2.6, 3.1, 5.4, 9.6, PZ, PZ + PH, M.body); box(20.9, 21.4, 5.6, 9.6, PZ, PZ + PH, M.body); // side parapets over the front bays
+  // steps: marble, in front of the arch
+  box(3.4, 9.2, 4.2, 5.5, 0, 0.35, M.frame); box(3.4, 9.2, 4.9, 9.6, 0.35, 0.7, M.frame);
+  // main door: carved teak double door in a marble architrave, cusped panel above
+  box(4.5, 8.1, 9.48, 9.62, 0.7, 8.0, M.wood); box(6.27, 6.33, 9.44, 9.48, 0.7, 8.0, M.metal);
+  for (let x = 4.85; x < 8.0; x += 0.45) for (let z = 1.3; z < 7.7; z += 0.75) { const st = new THREE.Mesh(new THREE.SphereGeometry(0.055, 6, 4), M.accent); st.position.set(W(x), z, D(9.47)); house.add(st); }
+  [5.9, 6.7].forEach((x) => { const r = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.03, 6, 14), M.accent); r.position.set(W(x), 4.2, D(9.44)); house.add(r); });
+  box(4.2, 8.4, 9.4, 9.6, 8.0, 8.45, M.frame); box(4.2, 4.5, 9.4, 9.6, 0.7, 8.0, M.frame); box(8.1, 8.4, 9.4, 9.6, 0.7, 8.0, M.frame);
+  archRing(4.9, 7.7, 8.45, 1.0, 5, 0.18, 0.22, 8.45, 9.42, 9.6, M.accent);
+  box(4.9, 7.7, 9.55, 9.6, 8.45, 9.2, M.jali);
+  // hanging brass lantern in the arch
+  box(6.27, 6.33, 6.55, 6.61, 8.4, ROOF - 0.12, M.metal);
+  box(5.95, 6.65, 6.25, 6.95, 7.4, 8.4, M.lantern); box(5.9, 6.7, 6.2, 7.0, 8.4, 8.5, M.accent); box(5.9, 6.7, 6.2, 7.0, 7.3, 7.4, M.accent);
+  // wall lanterns on the pilasters
+  [3.05, 9.55].forEach((x) => { box(x - 0.2, x + 0.2, 4.6, 5.0, 6.9, 7.7, M.lantern); box(x - 0.25, x + 0.25, 4.55, 5.0, 7.7, 7.85, M.accent); });
 
-  // ---------------- right feature block: sloped white fascia, wood soffit, stone-block cladding ----------------
-  const XL = 9.6, XR = 21.6, ZL = 13.6, ZR = 17.2, FT = 0.9, ST = 0.22;
-  const zAt = (x) => ZL + (x - XL) * (ZR - ZL) / (XR - XL);
-  prism([[XL, ZL - FT], [XR, ZR - FT], [XR, ZR], [XL, ZL]], 4.3, 10.3, M.frame);                         // sloped fascia slab
-  prism([[XL + 0.05, ZL - FT - ST], [XR - 0.05, ZR - FT - ST], [XR - 0.05, ZR - FT], [XL + 0.05, ZL - FT]], 4.35, 10.2, M.woodW, false); // wood soffit
-  prism([[XL + 0.1, ZL - FT - ST - 0.06], [XR - 0.1, ZR - FT - ST - 0.06], [XR - 0.1, ZR - FT - ST], [XL + 0.1, ZL - FT - ST]], 4.35, 4.55, M.lampOn, false); // soffit cove strip
-  const CT = (x) => zAt(x) - FT - ST;                                     // underside of soffit
-  prism([[10, 0], [21, 0], [21, CT(21)], [10, CT(10)]], 5.65, 6.05, M.clad);      // front cladding skin
-  cbox(9.65, 10.05, 6.05, 10, 0, CT(10));                                         // porch-side cladding
-  box(21, 21.6, 4.3, 10.3, 0, ZR - FT, M.frame);                                 // white right leg
-  box(21.6, 21.78, 4.3, 9, 0.6, ZR - FT - 0.3, M.wood);                          // wood edge strip
-  prism([[21.05, ROOF], [21.05, CT(21)], [21.55, CT(21.55)], [21.55, ROOF]], 6.05, 10.3, M.frame); // side fill above roof
-  // twin grey fins at the left edge
-  [[10.35, 10.65], [11.05, 11.35]].forEach(([a, b]) => box(a, b, 5.2, 5.65, 0.4, CT(a) - 0.1, M.accent));
-  // deep white box around the tall window, wood lining, glass
-  const WX0 = 15.6, WX1 = 20.1, WZ0 = 2.6, WZ1 = 12.4, BT = 0.45;
-  box(WX0, WX1, 4.85, 5.65, WZ1 - BT, WZ1, M.frame); box(WX0, WX1, 4.85, 5.65, WZ0, WZ0 + BT, M.frame);
-  box(WX0, WX0 + BT, 4.85, 5.65, WZ0, WZ1, M.frame); box(WX1 - BT, WX1, 4.85, 5.65, WZ0, WZ1, M.frame);
-  box(WX0 + BT, WX1 - BT, 5.3, 5.65, WZ1 - BT - 0.15, WZ1 - BT, M.wood); box(WX0 + BT, WX0 + BT + 0.15, 5.3, 5.65, WZ0 + BT, WZ1 - BT, M.wood);
-  box(WX1 - BT - 0.15, WX1 - BT, 5.3, 5.65, WZ0 + BT, WZ1 - BT, M.wood);
-  box(WX0 + 0.6, WX1 - 0.6, 5.58, 5.64, WZ0 + 0.5, WZ1 - 0.6, M.glass);
-  box((WX0 + WX1) / 2 - 0.06, (WX0 + WX1) / 2 + 0.06, 5.5, 5.58, WZ0 + 0.5, WZ1 - 0.6, M.accent);
-  [5.6, 8.9].forEach((z) => box(WX0 + 0.6, WX1 - 0.6, 5.5, 5.58, z, z + 0.12, M.accent));
-  // up-down light fittings on the cladding
-  [12.6, 14.3].forEach((x) => box(x - 0.18, x + 0.18, 5.45, 5.65, 6.6, 7.4, M.accent));
-  // raised planter (clad) with shrubs
-  cbox(12.6, 21, 3.4, 3.75, 0, 1.8); cbox(12.6, 21, 5.2, 5.55, 0, 1.8);
-  cbox(12.6, 12.95, 3.4, 5.55, 0, 1.8); cbox(20.65, 21, 3.4, 5.55, 0, 1.8);
+  // ---------------- right block: sandstone facade, arched living window, solid jharokha on the stair ----------------
+  cbox(10, 21.2, 5.65, 6.05, 1.5, PZ + PH);                                   // sandstone facade
+  box(10, 21.2, 5.5, 6.05, 0, 1.5, M.plinth); box(9.9, 21.3, 5.45, 6.05, 1.5, 1.75, M.frame); // plinth + marble string course
+  [[10, 10.6], [20.6, 21.2]].forEach(([a, b]) => { box(a, b, 5.45, 5.65, 1.75, PZ + PH, M.frame); });  // marble corner pilasters
+  chhajja(10, 21.2, 5.65, 1.5, 11.2, M.frame);                                // eave along the block
+  box(10, 21.2, 5.5, 6.05, PZ + PH, PZ + PH + 0.2, M.frame);
+  merlons(10.0, 21.2, 5.55, PZ + PH + 0.2, M.frame);
+  // arched living-room window with marble frame and brass grille
+  const LX0 = 11.6, LX1 = 15.0;
+  archRing(LX0, LX1, 7.4, 1.4, 5, 0.18, 0.35, 2.6, 5.4, 5.65, M.frame);
+  box(LX0 - 0.35, LX1 + 0.35, 5.35, 5.65, 2.25, 2.6, M.frame);                // sill
+  prism([[LX0, 2.6], [LX1, 2.6]].concat(archPts(LX0, LX1, 7.4, 1.4, 5, 0.18).reverse()), 5.58, 5.63, M.glass);
+  for (let x = LX0 + 0.42; x < LX1 - 0.2; x += 0.42) box(x, x + 0.05, 5.5, 5.56, 2.6, 7.4, M.accent);
+  box(LX0, LX1, 5.5, 5.56, 5.0, 5.06, M.accent);
+  // jharokha: solid projecting balcony on the staircase front (carved, no glass)
+  const JX0 = 16.2, JX1 = 20.4, JY = 4.3, JZ0 = 6.2, JZ1 = 10.3;
+  [[0, 0.6, 5.9], [0.35, 0.45, 5.55], [0.75, 0.3, 5.2]].forEach(([inset, h, zTop]) =>               // stepped corbels
+    box(JX0 + inset, JX1 - inset, JY + inset + 0.2, 5.65, zTop - h, zTop, M.frame));
+  box(JX0, JX1, JY, 5.65, JZ0 - 0.3, JZ0, M.frame);
+  const bud = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 8), M.accent); bud.position.set(W((JX0 + JX1) / 2), 4.75, D(5.3)); house.add(bud);
+  cbox(JX0, JX1, JY + 0.1, 5.65, JZ0, JZ1);                                   // solid stone body
+  const PW = (JX1 - JX0 - 0.6) / 3;
+  for (let k = 0; k < 3; k++) {                                                // three carved blind-arch panels
+    const x0 = JX0 + 0.3 + k * PW + 0.12, x1 = x0 + PW - 0.24;
+    box(x0, x1, JY + 0.02, JY + 0.1, JZ0 + 0.35, JZ1 - 1.15, M.jali);
+    archRing(x0, x1, JZ1 - 1.15, 0.65, 3, 0.1, 0.14, JZ0 + 0.35, JY - 0.04, JY + 0.1, M.frame);
+  }
+  box(JX0 - 0.1, JX1 + 0.1, JY - 0.1, 5.65, JZ0 + 0.25, JZ0 + 0.4, M.frame);   // sill band
+  // jharokha sides: carved jali relief (solid)
+  box(JX0 - 0.02, JX0, JY + 0.3, 5.5, JZ0 + 0.4, JZ1 - 0.3, M.jali); box(JX1, JX1 + 0.02, JY + 0.3, 5.5, JZ0 + 0.4, JZ1 - 0.3, M.jali);
+  chhajja(JX0 - 0.3, JX1 + 0.3, JY + 0.15, 0.9, JZ1 + 0.45, M.frame, false);
+  // bangaldar (curved) roof
+  const bang = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, JX1 - JX0 + 0.3, 24, 1, false, 0, Math.PI), M.dome);
+  bang.rotation.z = Math.PI / 2; bang.rotation.y = 0; bang.position.set(W((JX0 + JX1) / 2), JZ1 + 0.45, D(5.0)); bang.scale.set(1, 1, 1); bang.castShadow = true; house.add(bang);
+  [JX0 + 0.2, (JX0 + JX1) / 2, JX1 - 0.2].forEach((x) => { const f = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 6), M.accent); f.position.set(W(x), JZ1 + 1.45, D(5.0)); house.add(f); });
+  // chhatris on the parapet: over the jharokha and over the entrance
+  box(16.9, 20.1, 6.05, 9.2, PZ, PZ + PH + 0.2, M.frame);                     // pedestal for the chhatri
+  chhatri(18.5, 7.6, PZ + PH + 0.2, 1.05);
+  box(4.7, 7.9, 5.6, 8.8, ROOF + SLAB, PZ + PH + 0.2, M.frame);
+  chhatri(6.3, 7.2, PZ + PH + 0.2, 0.95);
+  // raised planter (sandstone) with shrubs
+  cbox(12.6, 21, 3.4, 3.75, 0, 1.8); cbox(12.6, 21, 5.2, 5.5, 0, 1.8);
+  cbox(12.6, 12.95, 3.4, 5.5, 0, 1.8); cbox(20.65, 21, 3.4, 5.5, 0, 1.8);
+  box(12.5, 21.1, 3.3, 5.5, 1.8, 1.95, M.frame);
   box(12.95, 20.65, 3.75, 5.2, 0, 1.6, M.soil, false);
   for (let i = 0; i < 14; i++) {
     const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45 + rnd() * 0.35, 0), i % 3 ? M.leaf : M.leaf2);
-    b.position.set(W(13.4 + rnd() * 6.8), 1.9 + rnd() * 0.3, D(3.95 + rnd() * 1.05)); b.scale.y = 0.8 + rnd() * 0.6; b.castShadow = true; house.add(b);
-  }
-  const leafGeo = new THREE.ConeGeometry(0.12, 1.6, 4);
-  for (let i = 0; i < 10; i++) {
-    const tuft = new THREE.Group();
-    for (let k = 0; k < 7; k++) { const l = new THREE.Mesh(leafGeo, k % 2 ? M.leaf : M.leaf2);
-      l.position.y = 0.6; l.rotation.z = (rnd() - 0.5) * 1.2; l.rotation.x = (rnd() - 0.5) * 1.2; l.castShadow = true; tuft.add(l); }
-    tuft.position.set(W(13.2 + rnd() * 7.2), 1.6, D(3.9 + rnd() * 1.1)); tuft.scale.setScalar(0.8 + rnd() * 0.6); house.add(tuft);
+    b.position.set(W(13.4 + rnd() * 6.8), 2.0 + rnd() * 0.3, D(3.95 + rnd() * 1.05)); b.scale.y = 0.8 + rnd() * 0.6; b.castShadow = true; house.add(b);
   }
 
-  // left side elevation: grey box-framed windows, stone-block panels, twin fins, cove line, terrace railing
+  // left side elevation: marble-framed windows with small chhajjas, sandstone panels, cove line, marble coping
   [[14, 18.5], [21.5, 25.5], [33.5, 35], [42, 47]].forEach(([a, b]) => {
     box(2.92, 3.0, a, b, 3, 7.5, M.glass);
-    box(2.3, 3.0, a - 0.4, b + 0.4, 7.5, 7.9, M.accent); box(2.3, 3.0, a - 0.4, b + 0.4, 2.6, 3.0, M.accent);
-    box(2.3, 3.0, a - 0.4, a, 2.6, 7.9, M.accent); box(2.3, 3.0, b, b + 0.4, 2.6, 7.9, M.accent);
+    box(2.6, 3.0, a - 0.35, b + 0.35, 7.5, 7.85, M.frame); box(2.6, 3.0, a - 0.35, b + 0.35, 2.65, 3.0, M.frame);
+    box(2.6, 3.0, a - 0.35, a, 2.65, 7.85, M.frame); box(2.6, 3.0, b, b + 0.35, 2.65, 7.85, M.frame);
+    box(1.7, 3.0, a - 0.6, b + 0.6, 8.1, 8.3, M.frame);
   });
   [[10.1, 12.6], [27.2, 31.4], [36.3, 40.6]].forEach(([a, b]) => cbox(2.75, 3.0, a, b, 0, PZ + 3));
-  [[19.2, 19.5], [19.9, 20.2], [47.6, 47.9], [48.3, 48.6]].forEach(([a, b]) => box(2.5, 3.0, a, b, 0.4, PZ + 2.6, M.accent));
-  box(2.5, 3.2, 9.6, 49.4, PZ + 3, PZ + 3.2, M.accent);                          // side parapet coping
+  box(2.5, 3.2, 9.6, 49.4, PZ + 3, PZ + 3.2, M.frame);                           // side parapet coping (marble)
   box(2.62, 2.7, 10, 49, PZ + 2.75, PZ + 2.82, M.lampOn, false);                 // cove line under coping
-  for (let y = 11; y <= 48; y += 4) box(2.8, 2.92, y, y + 0.12, PZ + 3.2, PZ + 6.2, M.metal); // railing posts
-  box(2.78, 2.94, 10.5, 48.6, PZ + 6.1, PZ + 6.3, M.metal); box(2.8, 2.92, 10.5, 48.6, PZ + 4.7, PZ + 4.8, M.metal);
-  // potted plants on the terrace, behind the porch
-  [[4.2, 11.5], [6.4, 11.5], [8.6, 11.5]].forEach(([x, y]) => {
-    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.4, 1.1, 12), M.accent); pot.position.set(W(x), PZ + 0.55, D(y)); pot.castShadow = true; house.add(pot);
+  [[9.5, 12.5], [12, 12.5]].forEach(([x, y]) => {
+    const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.4, 1.1, 12), M.plinth); pot.position.set(W(x), PZ + 0.55, D(y)); pot.castShadow = true; house.add(pot);
     const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.85, 0), M.leaf2); b.position.set(W(x), PZ + 1.7, D(y)); b.castShadow = true; house.add(b);
   });
   // ---------------- completed walls ----------------
-  box(10.1, 20.9, 9.4, 9.6, PZ, PZ + 1.2, M.frame);           // low upstand where block roof meets main roof
   // right side wall: passage ventilators with sunshades
   [[22, 24], [30, 32], [40, 42]].forEach(([a, b]) => {
     box(21.0, 21.08, a, b, 5.5, 7.5, M.glass); box(21.05, 21.15, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
@@ -526,20 +617,21 @@
   function point(x, y, z, intensity, dist) {
     const p = new THREE.PointLight(WARM, 0, dist || 8, 2); p.position.set(W(x), z, D(y)); scene.add(p); decor.push({ light: p, on: intensity }); return p;
   }
-  // canopy downlights
-  [5.8, 8.75].forEach((x) => { lamp(x, 7.6, 8.62, 0.12); spot(x, 7.6, 8.7, x, 8.6, 0, 26, 0.75, 14); });
-  // canopy edge cove
-  box(2.7, 9.9, 5.62, 5.7, 8.6, 8.66, M.lampOn, false); point(4.5, 5.9, 8.3, 4, 7); point(8.3, 5.9, 8.3, 4, 7);
-  // up-down washers on the cladding
-  [12.6, 14.3].forEach((x) => { spot(x, 5.3, 7.5, x, 5.7, CT(x), 24, 0.2, 10); spot(x, 5.3, 6.5, x, 5.7, 0, 24, 0.2, 10); });
-  // cove under the sloped soffit
-  [12, 16, 20].forEach((x) => point(x, 4.6, CT(x) - 0.4, 3.5, 7));
-  // window box glow strip
-  box(WX0 + BT, WX1 - BT, 5.0, 5.08, WZ1 - BT - 0.08, WZ1 - BT, M.lampOn, false);
+  // porch: lantern in the arch, ceiling downlights, pilaster lanterns
+  point(6.3, 6.6, 7.9, 9, 12);
+  [4.9, 7.7].forEach((x) => { lamp(x, 8.4, ROOF - 0.15, 0.1); spot(x, 8.4, ROOF - 0.2, x, 9.4, 1, 14, 0.6, 12); });
+  [3.05, 9.55].forEach((x) => point(x, 4.6, 7.3, 5, 9));
+  // facade grazers from the planter and the marble edge cove under the block eave
+  box(10.6, 20.6, 5.62, 5.66, 10.3, 10.36, M.lampOn, false);
+  [11.8, 15.2].forEach((x) => spot(x, 5.0, 10.2, x, 5.7, 3, 14, 0.42, 10));
+  spot(18.3, 3.6, 0.3, 18.3, 4.6, 10, 26, 0.32, 14);                          // uplight on the jharokha
+  spot(6.3, 3.0, 0.2, 6.3, 5.3, 12, 18, 0.3, 14);                             // uplight on the arch
+  // chhatri glows
+  point(18.5, 7.6, PZ + PH + 1.6, 5, 7); point(6.3, 7.2, PZ + PH + 1.5, 5, 7);
   // planter spikes
-  [13, 16, 19].forEach((x) => { lamp(x, 4.5, 1.85, 0.08); spot(x, 4.3, 1.9, x, 5.7, 6, 10, 0.55, 8); });
+  [13.5, 15].forEach((x) => { lamp(x, 4.5, 1.85, 0.08); spot(x, 4.3, 1.9, x, 5.7, 5, 8, 0.55, 8); });
   // gate pillar lights
-  [0.55, 11.25].forEach((x) => { lamp(x, 0.35, 6.75, 0.22); point(x, 0.1, 6.7, 6, 9); });
+  [0.55, 11.25].forEach((x) => point(x, 0.35, 6.3, 6, 9));
   // side cove line
   [16, 30, 44].forEach((y) => point(2.2, y, PZ + 2.6, 3, 8));
   // parapet strip
@@ -574,7 +666,7 @@
     const n = mix(A.n, B.n, t);
     decor.forEach((d) => { d.light.intensity = d.on * n; });
     glow.intensity = 3 * n; glow2.intensity = 3 * n;
-    M.lampOn.emissiveIntensity = n * 2.2; M.plate.emissiveIntensity = n * 0.45;
+    M.lampOn.emissiveIntensity = n * 2.2; M.plate.emissiveIntensity = n * 0.45; M.lantern.emissiveIntensity = 0.15 + n * 2.4;
     M.glass.emissive.copy(lin('#e8a35a')); M.glass.emissiveIntensity = n * 0.32;
     renderer.toneMappingExposure = mix(A.exp, B.exp, t);
   }
@@ -586,7 +678,7 @@
   function applyScheme(key) {
     const s = SCHEMES[key];
     ['body', 'frame', 'plinth', 'compound', 'coping', 'metal', 'wood', 'clad', 'accent'].forEach((k) => M[k].color.copy(lin(s[k])));
-    M.recess.color.copy(lin(s.wave)); M.woodW.color.copy(lin(s.wood)); M.slab.color.copy(lin(s.frame));
+    M.woodW.color.copy(lin(s.wood)); M.slab.color.copy(lin(s.frame)); M.dome.color.copy(lin(s.frame)); M.jali.color.copy(lin(s.clad));
     document.querySelectorAll('#schemes button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.k === key));
     document.getElementById('scheme-title').textContent = s.title;
     document.getElementById('scheme-note').textContent = s.note;
@@ -594,7 +686,7 @@
       const hex = s[k];
       return `<tr><td style="width:36px"><div class="sw" style="background:${hex}"></div></td><td><b>${name}</b><div class="where">${where}</div></td><td class="code">${hex.toUpperCase()}</td></tr>`;
     }).join('');
-    try { localStorage.setItem('ext-scheme-v2', key); } catch (e) {}
+    try { localStorage.setItem('ext-scheme-v3', key); } catch (e) {}
   }
   const schemesEl = document.getElementById('schemes');
   Object.keys(SCHEMES).forEach((k) => {
@@ -616,8 +708,8 @@
   }
   new ResizeObserver(resize).observe(stage);
 
-  let saved = 'sand'; try { saved = localStorage.getItem('ext-scheme-v2') || 'sand'; } catch (e) {}
-  applyScheme(SCHEMES[saved] ? saved : 'sand'); setMode('day'); setView('angle'); resize();
+  let saved = 'rose'; try { saved = localStorage.getItem('ext-scheme-v3') || 'rose'; } catch (e) {}
+  applyScheme(SCHEMES[saved] ? saved : 'rose'); setMode('day'); setView('angle'); resize();
   // ---------------- video export ----------------
   // Camera path (plan coords, ft): left corner -> front -> right corner -> entrance close-up
   const P = (x, y, z) => new THREE.Vector3(W(x), z, D(y));

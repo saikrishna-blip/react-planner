@@ -52,8 +52,8 @@ export default {
     { name: 'Glass side light',       x: 8,    y: 10, w: 1.5, wall: 'h', type: 'window', h: 6.5, alt: 0.5 },
     { name: 'Living-bay opening',     x: 10.5, y: 10, w: 6,   wall: 'h', type: 'opening' },
     // --- Right feature block (tall window + wood panel) ---
-    { name: 'Tall feature window',    x: 12.5, y: 6,  w: 4,   wall: 'h', type: 'window', h: 9,   alt: 1 },
-    { name: 'Stair tall window',      x: 17.5, y: 6,  w: 3,   wall: 'h', type: 'window', h: 9,   alt: 3 },
+    { name: 'Arched living window',   x: 11.6, y: 6,  w: 3.4, wall: 'h', type: 'window', h: 6.2, alt: 2.6 },
+    // staircase front: solid wall with a carved jharokha (no window)
     { name: 'Hall-Dining',    x: 12, y: 19, w: 4,   wall: 'h', type: 'opening' },
     { name: 'Kitchen-Dining', x: 11, y: 21, w: 3,   wall: 'v', type: 'opening' },
     { name: 'Dining-Passage', x: 17, y: 20, w: 4,   wall: 'v', type: 'opening' },
