@@ -1,12 +1,15 @@
 // Builds the Sullurpeta starter plan into a react-planner state.
 import { fromJS } from 'immutable';
 import { ReactPlannerClasses } from 'react-planner';
-import PLAN from './plan-data';
+import LATEST from './plan-data';
+import { findVersion } from './versions';
+
+let PLAN = LATEST;
 
 const { Project, Line, Hole, Layer, Item } = ReactPlannerClasses;
 
 export const LOAD_SULLURPETA_PLAN = 'LOAD_SULLURPETA_PLAN';
-export const loadSullurpetaPlan = () => ({ type: LOAD_SULLURPETA_PLAN });
+export const loadSullurpetaPlan = (versionId) => ({ type: LOAD_SULLURPETA_PLAN, versionId });
 
 const FT = 30.48;            // cm per foot (react-planner works in cm)
 const IN = 2.54;             // cm per inch
@@ -106,7 +109,8 @@ function pointInRoom(r, x, y) {
   return x > cx(r.x) && x < cx(r.x + r.w) && y > cy(r.y) && y < cy(r.y + r.d);
 }
 
-export function buildPlan(plannerState) {
+export function buildPlan(plannerState, versionId) {
+  PLAN = findVersion(versionId).data;
   const W = PLAN.plot.width, D = PLAN.plot.depth;
 
   // fresh scene (keeps the catalog)

@@ -27,10 +27,12 @@ jobs:
         env:
           NODE_OPTIONS: --openssl-legacy-provider
       - run: find demo/dist -name '*.map' -delete
-      - name: Add exterior 3D view
+      - name: Add exterior 3D views and the version register
         run: |
-          mkdir -p demo/dist/exterior
-          { printf '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}</style></head><body>\n'; cat demo/exterior/index.html; printf '\n</body></html>\n'; } > demo/dist/exterior/index.html
+          wrap() { mkdir -p "$(dirname "$2")"; { printf '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}</style></head><body>\n'; cat "$1"; printf '\n</body></html>\n'; } > "$2"; }
+          wrap demo/exterior/index.html demo/dist/exterior/index.html
+          for f in demo/exterior/versions/*.html; do code=$(basename "$f" | cut -d- -f1); wrap "$f" "demo/dist/exterior/$code/index.html"; done
+          wrap demo/versions.html demo/dist/versions/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo/dist

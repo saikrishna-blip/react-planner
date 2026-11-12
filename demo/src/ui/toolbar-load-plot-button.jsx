@@ -10,11 +10,12 @@ export default function ToolbarLoadPlotButton(props, { store }) {
   let onClick = event => {
     event.preventDefault();
     // replaces the drawing; use Undo or a saved .json to go back
-    store.dispatch(loadSullurpetaPlan());
+    const sel = document.getElementById('plan-version');
+    store.dispatch(loadSullurpetaPlan(sel && sel.value ? sel.value : undefined));
   };
 
   return (
-    <ToolbarButton active={false} tooltip="Reset to my plot plan (24' x 60') — replaces current drawing" onClick={onClick}>
+    <ToolbarButton active={false} tooltip="Reload the selected plan version (latest if none) — replaces current drawing" onClick={onClick}>
       <MdHome/>
     </ToolbarButton>
   );

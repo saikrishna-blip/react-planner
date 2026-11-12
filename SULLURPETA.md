@@ -14,6 +14,25 @@ A customized version of react-planner for planning a house on a **24' × 60' plo
 | Walls use Indian sizes: 9" external, 4.5" internal, 10 ft height, 5 ft compound wall | `plan-data.js` → `wall` |
 | GitHub Pages auto-publish on every push | `.github/workflows/pages.yml` |
 
+## Versions (never overwritten)
+All plans and exterior designs keep a fixed code. See the register at `/react-planner/versions/`.
+
+| Code | Name | Files |
+|---|---|---|
+| P1 | Starter 2BHK, front parking | `demo/src/sullurpeta/versions/P1.js` |
+| P2 | Back garden, no front parking | `versions/P2.js` |
+| P3 | Modern entrance | `versions/P3.js` |
+| P4 | Recessed entrance bay | `versions/P4.js` |
+| P5 | Royal Mahal plan (latest) | `demo/src/sullurpeta/plan-data.js` (re-exported as `versions/P5.js`) |
+| E1 | Modern White & Teak | `demo/exterior/versions/E1-modern-white-teak.html` |
+| E2 | Sandstone Block & Sloped Frame | `demo/exterior/versions/E2-sandstone-block.html` |
+| E3 | Royal Rajasthani Mahal (latest) | `demo/exterior/index.html` = `versions/E3-royal-rajasthani-mahal.html` |
+
+Open a plan with `#P1` … `#P5` after the planner link, or use the **Plan version** menu at the top.
+Rule for new work: a new design gets the next code (P6, E4 …); old files are never edited.
+Fixed specs since P2: plot 24 × 60, setbacks 6/3/3/3, house 18 × 43 (x 3–21, y 6–49), 11 ft back garden, no front parking,
+walls 9" / 4.5" / 10 ft, compound wall 5 ft.
+
 ## Exterior 3D view
 `demo/exterior/index.html` is a standalone 3D front elevation (three.js) with colour schemes, roof and canopy slabs,
 stone and wood cladding, and day/dusk/night decorative lighting. It's published at `/react-planner/exterior/`.

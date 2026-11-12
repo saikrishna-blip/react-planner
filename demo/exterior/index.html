@@ -78,7 +78,7 @@
 <div class="wrap">
   <header>
     <div>
-      <p class="eyebrow">24' × 60' plot · Sullurpeta · Royal Rajasthani elevation</p>
+      <p class="eyebrow">Version E3 · Royal Rajasthani Mahal · plan P5 · 24' × 60' plot, Sullurpeta</p>
       <h1>Sullurpeta House Exterior</h1>
       <p class="sub">Drag to orbit, scroll or pinch to zoom. Built to the dimensions in your floor plan.</p>
     </div>
@@ -519,13 +519,14 @@
   }
 
   // left side elevation: marble-framed windows with small chhajjas, sandstone panels, cove line, marble coping
-  [[14, 18.5], [21.5, 25.5], [33.5, 35], [42, 47]].forEach(([a, b]) => {
-    box(2.92, 3.0, a, b, 3, 7.5, M.glass);
-    box(2.6, 3.0, a - 0.35, b + 0.35, 7.5, 7.85, M.frame); box(2.6, 3.0, a - 0.35, b + 0.35, 2.65, 3.0, M.frame);
-    box(2.6, 3.0, a - 0.35, a, 2.65, 7.85, M.frame); box(2.6, 3.0, b, b + 0.35, 2.65, 7.85, M.frame);
+  // positions match plan P5: living 12–17, kitchen 21–25, bath vents 30–31.5 & 35–36.5, master 42–47
+  [[12, 17, 3], [21, 25, 3], [30, 31.5, 5.5], [35, 36.5, 5.5], [42, 47, 3]].forEach(([a, b, sill]) => {
+    box(2.92, 3.0, a, b, sill, 7.5, M.glass);
+    box(2.6, 3.0, a - 0.35, b + 0.35, 7.5, 7.85, M.frame); box(2.6, 3.0, a - 0.35, b + 0.35, sill - 0.35, sill, M.frame);
+    box(2.6, 3.0, a - 0.35, a, sill - 0.35, 7.85, M.frame); box(2.6, 3.0, b, b + 0.35, sill - 0.35, 7.85, M.frame);
     box(1.7, 3.0, a - 0.6, b + 0.6, 8.1, 8.3, M.frame);
   });
-  [[10.1, 12.6], [27.2, 31.4], [36.3, 40.6]].forEach(([a, b]) => cbox(2.75, 3.0, a, b, 0, PZ + 3));
+  [[10.1, 11.4], [25.9, 29.4], [37.4, 41.4]].forEach(([a, b]) => cbox(2.75, 3.0, a, b, 0, PZ + 3));
   box(2.5, 3.2, 9.6, 49.4, PZ + 3, PZ + 3.2, M.frame);                           // side parapet coping (marble)
   box(2.62, 2.7, 10, 49, PZ + 2.75, PZ + 2.82, M.lampOn, false);                 // cove line under coping
   [[9.5, 12.5], [12, 12.5]].forEach(([x, y]) => {

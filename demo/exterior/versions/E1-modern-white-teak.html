@@ -1,0 +1,610 @@
+<title>Sullurpeta Exterior E1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+  /* Layout: full-bleed 3D stage on top, finish schedule + lighting schedule below (two columns on desktop) */
+  :root {
+    --bg: #f4f3f1; --surface: #ffffff; --fg: #1f2124; --muted: #5d6166; --line: #e2e0dc;
+    --accent: #8a5a34; --accent-fg: #ffffff; --chip: #ecebe8;
+    --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #17181a; --surface: #202225; --fg: #ecebe8; --muted: #a3a6aa; --line: #34373b;
+    --accent: #c08a5a; --accent-fg: #17181a; --chip: #2a2c30; color-scheme: dark } }
+  :root[data-theme="dark"] {
+    --bg: #17181a; --surface: #202225; --fg: #ecebe8; --muted: #a3a6aa; --line: #34373b;
+    --accent: #c08a5a; --accent-fg: #17181a; --chip: #2a2c30; color-scheme: dark }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-block: 20px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid; gap: 18px; }
+  header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+  h1 { font-family: var(--font-display); font-size: 26px; line-height: 1.15; margin: 0; text-wrap: balance; }
+  .sub { color: var(--muted); margin: 4px 0 0; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg { display: inline-flex; background: var(--chip); border-radius: 999px; padding: 3px; gap: 2px; }
+  .seg button { border: 0; background: transparent; color: var(--fg); font: 500 13px var(--font-body);
+    padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+  .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .stage { position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 74vh; border-radius: 14px; overflow: hidden;
+    background: #a9c4dc; }
+  .stage canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+  .hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: #fff; background: rgba(0,0,0,.45);
+    padding: 4px 10px; border-radius: 999px; pointer-events: none; }
+  .views { position: absolute; right: 10px; top: 10px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: end; }
+  .views button { border: 0; font: 500 12px var(--font-body); padding: 6px 11px; border-radius: 999px; cursor: pointer;
+    background: rgba(255,255,255,.88); color: #1f2124; }
+  .views button:focus-visible { outline: 2px solid #fff; }
+  .err { position: absolute; inset: 0; display: grid; place-items: center; color: #1f2124; font-weight: 500; text-align: center; padding: 20px; }
+
+  .cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .cols { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; min-width: 0; }
+  h2 { font-family: var(--font-display); font-size: 17px; margin: 0 0 10px; }
+  .eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td { padding: 8px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:first-child td { border-top: 0; }
+  .sw { width: 26px; height: 26px; border-radius: 6px; border: 1px solid rgba(0,0,0,.12); }
+  .where { color: var(--muted); font-size: 13px; }
+  .code { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; white-space: nowrap; }
+  ul.light { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  ul.light li { display: grid; grid-template-columns: 12px 1fr; gap: 10px; align-items: start; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; background: #ffb45e; box-shadow: 0 0 8px #ffb45e; }
+  .note { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+  .rec { display: grid; gap: 10px; }
+  .rec h2 { margin-bottom: 4px; }
+  .rec-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: end; }
+  .rec-row > div:first-child { flex: 1 1 280px; min-width: 0; }
+  .rec-ctrls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .rec-ctrls label { font-size: 12px; color: var(--muted); }
+  select { font: 500 13px var(--font-body); color: var(--fg); background: var(--chip); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; }
+  button.primary { border: 0; background: var(--accent); color: var(--accent-fg); font: 600 13px var(--font-body); padding: 9px 16px; border-radius: 999px; cursor: pointer; }
+  button.primary:disabled, .seg button:disabled, .views button:disabled { opacity: .55; cursor: default; }
+  button.primary:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .track { height: 4px; background: var(--chip); border-radius: 999px; overflow: hidden; }
+  #rec-progress { height: 100%; width: 0; background: var(--accent); }
+  #rec-out { display: grid; gap: 10px; justify-items: start; }
+  #rec-video { width: 100%; max-width: 640px; max-height: 60vh; border-radius: 10px; background: #000; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">Version E1 · Modern White &amp; Teak · plan P4 · 24' × 60' plot, Sullurpeta</p>
+      <h1>Modern White &amp; Teak</h1>
+      <p class="sub">Drag to orbit, scroll or pinch to zoom. Built to the dimensions in your floor plan.</p>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Time of day">
+        <button id="btn-day" aria-pressed="true">Day</button>
+        <button id="btn-dusk" aria-pressed="false">Dusk</button>
+        <button id="btn-night" aria-pressed="false">Night</button>
+      </div>
+      <div class="seg" role="group" aria-label="Colour scheme" id="schemes"></div>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="views">
+      <button data-view="front">Front</button>
+      <button data-view="angle">Corner</button>
+      <button data-view="entry">Entrance</button>
+      <button data-view="back">Back garden</button>
+      <button data-view="top">Top</button>
+    </div>
+    <div class="hint">Drag to rotate · scroll to zoom</div>
+  </div>
+
+  <section class="card rec" aria-label="Export video">
+    <div class="rec-row">
+      <div>
+        <p class="eyebrow">Export video</p>
+        <h2>Walk-around film</h2>
+        <p class="where">The camera circles the front and ends at the main door, while the scene goes from day through dusk to night with the lights on.</p>
+      </div>
+      <div class="rec-ctrls">
+        <label for="rec-len">Length</label>
+        <select id="rec-len"><option value="10">10 s</option><option value="15" selected>15 s</option><option value="25">25 s</option></select>
+        <label for="rec-q">Quality</label>
+        <select id="rec-q"><option value="1280x720" selected>720p HD</option><option value="1920x1080">1080p Full HD</option><option value="1080x1920">Vertical 1080×1920 (Reels/Status)</option></select>
+        <button id="rec-btn" class="primary">Record video</button>
+      </div>
+    </div>
+    <div class="track"><div id="rec-progress"></div></div>
+    <p class="where" id="rec-status" aria-live="polite">Keep this tab open and visible while it records.</p>
+    <div id="rec-out" hidden>
+      <video id="rec-video" controls playsinline muted></video>
+      <button id="rec-save" class="primary">Save video</button>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section class="card">
+      <p class="eyebrow">Finish schedule</p>
+      <h2 id="scheme-title">Classic White &amp; Teak</h2>
+      <table id="finishes"></table>
+      <p class="note" id="scheme-note"></p>
+    </section>
+    <section class="card">
+      <p class="eyebrow">Decorative lighting · warm white 2700–3000 K</p>
+      <h2>Lighting plan</h2>
+      <ul class="light">
+        <li><span class="dot"></span><div><b>Canopy downlights</b> · 2 × 7 W recessed COB in the porch slab soffit, over the main door and the glass side light.</div></li>
+        <li><span class="dot"></span><div><b>Canopy edge cove</b> · concealed LED strip (IP65) along the front lip of the porch slab.</div></li>
+        <li><span class="dot"></span><div><b>Up–down wall washer</b> · 2 × 6 W on the stone fin, beams grazing the stone texture.</div></li>
+        <li><span class="dot"></span><div><b>Feature frame cove</b> · hidden LED strip under the top band of the tall frame, washing the teak panel and window.</div></li>
+        <li><span class="dot"></span><div><b>Planter spike lights</b> · 3 × 3 W spikes in the raised planter, aimed up at the plants.</div></li>
+        <li><span class="dot"></span><div><b>Gate pillar lights</b> · 2 × cube lights on the compound wall at both sides of the gate.</div></li>
+        <li><span class="dot"></span><div><b>Parapet strip</b> · LED strip under the parapet coping over the entrance bay.</div></li>
+      </ul>
+      <p class="note">Put the outdoor lights on a timer or dusk-to-dawn sensor. All fittings should be outdoor-rated, IP65 or better.</p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  const stage = document.getElementById('stage');
+  if (!window.THREE) { stage.insertAdjacentHTML('beforeend', '<div class="err">The 3D library could not load. Check your connection and reload the page.</div>'); return; }
+
+  // ---------------- colour schemes ----------------
+  const SCHEMES = {
+    classic: {
+      label: 'Classic', title: 'Classic White & Teak',
+      note: 'Recommended for Sullurpeta. Light walls reflect the coastal heat, the dark plinth hides monsoon splash marks, and teak with grey stone keeps it classy.',
+      body: '#efebe4', frame: '#fbfaf7', recess: '#d6ccbe', plinth: '#3f4245', metal: '#2a2c2f', wood: '#8a5a34', compound: '#ece7df', coping: '#3f4245'
+    },
+    sand: {
+      label: 'Sandstone', title: 'Warm Sandstone & Walnut',
+      note: 'Earthy and warm. The beige body hides dust well and goes with the walnut wood and bronze frames.',
+      body: '#e3d5bf', frame: '#f6f0e6', recess: '#b59c80', plinth: '#4a3e35', metal: '#3b332c', wood: '#6a4328', compound: '#e3d5bf', coping: '#4a3e35'
+    },
+    modern: {
+      label: 'Charcoal', title: 'Modern Charcoal Frame',
+      note: 'A bolder look, with a charcoal feature frame against light grey walls. Dark paint absorbs heat, so keep it to the frame only.',
+      body: '#e8e9e8', frame: '#3a3e43', recess: '#c8cacb', plinth: '#2d3033', metal: '#1d1f22', wood: '#a6744a', compound: '#e8e9e8', coping: '#3a3e43'
+    }
+  };
+  const FINISH_ROWS = [
+    ['body', 'Main walls', 'Exterior emulsion, smooth finish, on all plastered walls'],
+    ['frame', 'Feature frame & parapet bands', 'The tall window frame, top band and parapet edges'],
+    ['recess', 'Entrance bay wall', 'Recessed wall behind the door, for depth under the canopy'],
+    ['wood', 'Wood panels & main door', 'HPL/WPC exterior wood-look panel beside the tall window; teak main door'],
+    ['stone', 'Stone cladding', 'Grey slate or ledger stone on the fin, plus the base panel on the right'],
+    ['metal', 'Gate, grills, window frames', 'Powder-coated MS/aluminium, matte finish'],
+    ['plinth', 'Plinth band & coping', 'Bottom 1.5 ft band and compound wall coping (hides splash dirt)'],
+    ['compound', 'Compound wall', 'Same as main walls, with dark coping']
+  ];
+  const STONE = '#5b5e61';
+
+  // ---------------- three.js setup ----------------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  stage.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1.6, 0.5, 600);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.495; controls.minDistance = 8; controls.maxDistance = 140;
+
+  // plan coords (ft): x across 0..24 (left→right from the road), y from road 0..60, z up
+  const W = (x) => x - 12, D = (y) => 22 - y;
+
+  function canvasTex(w, h, draw, rx, ry) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    draw(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx || 1, ry || 1);
+    t.encoding = THREE.sRGBEncoding; t.anisotropy = 4; return t;
+  }
+  const rnd = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+  const stoneTex = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = STONE; g.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 10 + rnd() * 8) for (let x = 0; x < w;) {
+      const len = 30 + rnd() * 70, v = 70 + rnd() * 40;
+      g.fillStyle = `rgb(${v},${v + 3},${v + 6})`; g.fillRect(x, y, len - 2, 8 + rnd() * 6); x += len;
+    }
+  }, 1, 3);
+  const woodTex = canvasTex(128, 512, (g, w, h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 160; i++) { const x = rnd() * w; g.strokeStyle = `rgba(0,0,0,${0.05 + rnd() * 0.12})`; g.lineWidth = 0.5 + rnd() * 1.5;
+      g.beginPath(); g.moveTo(x, 0); g.bezierCurveTo(x + rnd() * 6 - 3, h / 3, x + rnd() * 6 - 3, 2 * h / 3, x + rnd() * 4 - 2, h); g.stroke(); }
+    for (let x = 0; x < w; x += 16) { g.fillStyle = 'rgba(0,0,0,.22)'; g.fillRect(x, 0, 1.5, h); }
+  }, 1, 1);
+  const paverTex = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#b8b2a8'; g.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 32) for (let x = (y / 32) % 2 ? 0 : -32; x < w; x += 64) {
+      const v = 165 + rnd() * 25; g.fillStyle = `rgb(${v},${v - 4},${v - 12})`; g.fillRect(x + 2, y + 2, 60, 28); }
+  }, 6, 2);
+  const grassTex = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#5f8a3e'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 3000; i++) { const v = rnd(); g.fillStyle = `rgba(${40 + v * 60},${90 + v * 70},${30 + v * 30},.6)`; g.fillRect(rnd() * w, rnd() * h, 2, 2); }
+  }, 20, 20);
+  const plasterTex = canvasTex(128, 128, (g, w, h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(0,0,0,${rnd() * 0.035})`; g.fillRect(rnd() * w, rnd() * h, 1.5, 1.5); }
+  }, 4, 4);
+
+  const M = {};
+  const lin = (hex) => new THREE.Color(hex).convertSRGBToLinear();
+  const mat = (o) => { if (o.color) o.color = lin(o.color); return new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.85, metalness: 0 }, o)); };
+  M.body = mat({ map: plasterTex }); M.frame = mat({ map: plasterTex }); M.recess = mat({ map: plasterTex });
+  M.plinth = mat({ roughness: 0.7 }); M.compound = mat({ map: plasterTex }); M.coping = mat({ roughness: 0.6 });
+  M.metal = mat({ roughness: 0.45, metalness: 0.6 }); M.wood = mat({ map: woodTex, roughness: 0.6 });
+  M.stone = mat({ map: stoneTex, roughness: 0.95 }); M.slab = mat({ color: '#f7f6f3', map: plasterTex });
+  M.glass = new THREE.MeshStandardMaterial({ color: lin('#4a5b68'), roughness: 0.12, metalness: 0.55, emissive: '#000000' });
+  M.paver = mat({ map: paverTex }); M.grass = mat({ map: grassTex }); M.road = mat({ color: '#4b4d50', roughness: 0.95 });
+  M.soil = mat({ color: '#4a3525' }); M.leaf = mat({ color: '#3f7a35', roughness: 0.8 }); M.leaf2 = mat({ color: '#6aa346', roughness: 0.8 });
+  M.lampOn = new THREE.MeshStandardMaterial({ color: lin('#2a2c2f'), emissive: lin('#ffb45e'), emissiveIntensity: 0 });
+
+  const house = new THREE.Group(); scene.add(house);
+  function box(x0, x1, y0, y1, z0, z1, m, cast = true) {
+    const g = new THREE.BoxGeometry(Math.abs(x1 - x0), Math.abs(z1 - z0), Math.abs(y1 - y0));
+    const mesh = new THREE.Mesh(g, m);
+    mesh.position.set(W((x0 + x1) / 2), (z0 + z1) / 2, D((y0 + y1) / 2));
+    mesh.castShadow = cast; mesh.receiveShadow = m !== M.glass; house.add(mesh); return mesh;
+  }
+
+  // ---------------- ground ----------------
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), M.grass);
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  box(-60, 84, -26, -2, -0.05, 0.02, M.road, false);                 // road
+  box(-60, 84, -2, 0, 0, 0.35, M.plinth, false);                     // kerb
+  box(0.3, 23.7, 0.3, 10, 0.02, 0.12, M.paver, false);               // front paving
+  box(0.3, 2.9, 10, 59.7, 0.02, 0.1, M.paver, false);                // left side path
+  box(21.1, 23.7, 6, 59.7, 0.02, 0.1, M.paver, false);               // right side path
+
+  // ---------------- compound wall + gate ----------------
+  const CW = 0.5, CH = 5;
+  box(0, CW, 0, 60, 0, CH, M.compound); box(0, CW, 0, 60, CH, CH + 0.25, M.coping);
+  box(24 - CW, 24, 0, 60, 0, CH, M.compound); box(24 - CW, 24, 0, 60, CH, CH + 0.25, M.coping);
+  box(0, 24, 60 - CW, 60, 0, CH, M.compound);
+  box(0, 24, 60 - CW, 60, CH, CH + 0.25, M.coping);
+  box(10, 24, 0, CW, 0, 3.5, M.compound); box(10, 24, 0, CW, 3.5, 3.75, M.coping);      // lower front wall (right)
+  box(0, 1, 0, CW + 0.2, 0, 6, M.compound); box(0, 1, 0, CW + 0.2, 6, 6.25, M.coping);  // gate pillar L
+  box(10, 11, 0, CW + 0.2, 0, 6, M.compound); box(10, 11, 0, CW + 0.2, 6, 6.25, M.coping); // gate pillar R
+  // gate: two leaves, horizontal slats with a wood inset
+  for (let leaf = 0; leaf < 2; leaf++) {
+    const gx0 = 1.05 + leaf * 4.5, gx1 = gx0 + 4.4;
+    box(gx0, gx1, 0.15, 0.3, 0.3, 0.45, M.metal); box(gx0, gx1, 0.15, 0.3, 5.3, 5.45, M.metal);
+    box(gx0, gx0 + 0.12, 0.15, 0.3, 0.3, 5.45, M.metal); box(gx1 - 0.12, gx1, 0.15, 0.3, 0.3, 5.45, M.metal);
+    for (let z = 0.7; z < 5.2; z += 0.42) box(gx0 + 0.12, gx1 - 0.12, 0.18, 0.27, z, z + 0.26, M.metal);
+    if (leaf === 0) box(gx0 + 0.5, gx1 - 0.5, 0.12, 0.17, 1.2, 3.0, M.wood);
+  }
+
+  // ---------------- house body ----------------
+  const ROOF = 10, SLAB = 0.45;
+  box(3, 21, 10, 49, 0, ROOF, M.body);          // main body (behind the entrance line)
+  box(10, 21, 6, 10, 0, ROOF, M.body);          // projecting window block
+  box(3, 10, 9.6, 10, 0, ROOF, M.recess);       // entrance bay recess face
+  // plinth band
+  box(2.9, 21.1, 9.9, 49.1, 0, 1.5, M.plinth); box(9.9, 21.1, 5.9, 10, 0, 1.5, M.plinth);
+  // roof slab with drip edge
+  box(2.6, 21.4, 9.6, 49.4, ROOF, ROOF + SLAB, M.slab); box(9.6, 21.4, 5.6, 9.6, ROOF, ROOF + SLAB, M.slab);
+  // parapet over the main body (3 ft) with coping
+  const PZ = ROOF + SLAB, PH = 3;
+  box(2.6, 3.1, 9.6, 49.4, PZ, PZ + PH, M.frame); box(20.9, 21.4, 9.6, 49.4, PZ, PZ + PH, M.frame);
+  box(2.6, 21.4, 48.9, 49.4, PZ, PZ + PH, M.frame);
+  box(2.6, 10, 9.6, 10.1, PZ, PZ + PH, M.frame);
+  box(2.5, 10, 9.5, 10.2, PZ + PH, PZ + PH + 0.2, M.coping);
+
+  // ---------------- entrance bay (recessed, under canopy) ----------------
+  box(4, 7.5, 9.5, 9.62, 0.2, 7.6, M.wood);                    // teak main door
+  box(3.85, 7.65, 9.45, 9.6, 7.6, 7.85, M.metal);              // door head frame
+  box(4.6, 4.7, 9.4, 9.45, 3.2, 4.6, M.metal);                 // handle
+  box(8, 9.5, 9.5, 9.62, 0.6, 7.6, M.glass);                   // glass side light
+  box(7.95, 9.55, 9.45, 9.58, 0.55, 0.65, M.metal); box(7.95, 9.55, 9.45, 9.58, 7.55, 7.65, M.metal);
+  box(8.7, 8.8, 9.45, 9.58, 0.6, 7.6, M.metal);
+  // projecting canopy slab over the porch (to the front line) + side cheek
+  box(2.6, 10, 5.4, 9.6, 8.8, 9.35, M.slab);
+  box(2.6, 10, 5.4, 5.6, 8.55, 9.35, M.frame);                 // drop edge (hides cove strip)
+  box(2.6, 3.1, 5.4, 9.6, 0, 1.5, M.plinth);                   // low cheek wall at porch side
+  // step
+  box(3, 10, 8.2, 9.6, 0, 0.5, M.stone);
+
+  // ---------------- right feature block ----------------
+  const FZ = 17;                                   // tall frame height
+  box(10, 11.8, 5.2, 6.05, 0, 15.5, M.stone);      // stone fin
+  box(9.6, 21.5, 4.9, 6.1, 15.5, FZ, M.frame);     // top band of frame
+  box(20.3, 21.5, 4.9, 6.1, 0, 15.5, M.frame);     // right leg of frame
+  box(11.8, 20.3, 5.95, 6.05, 10.45, 15.5, M.frame); // infill above roof inside frame (behind the glass)
+  box(11.8, 13.4, 5.75, 5.85, 2.2, 14.6, M.wood);  // teak panel
+  box(13.4, 17.6, 5.8, 5.9, 2.2, 14.6, M.glass);   // tall window glass
+  [[13.4, 13.55], [15.43, 15.57], [17.45, 17.6]].forEach(([a, b]) => box(a, b, 5.7, 5.8, 2.2, 14.6, M.metal));
+  [2.2, 6.3, 10.4, 14.45].forEach((z) => box(13.4, 17.6, 5.7, 5.8, z, z + 0.15, M.metal));
+  box(18.2, 19.8, 5.8, 5.9, 3.5, 13.5, M.glass);   // stair slit window
+  box(18.1, 19.9, 5.7, 5.8, 3.4, 3.55, M.metal); box(18.1, 19.9, 5.7, 5.8, 13.45, 13.6, M.metal);
+  box(16.4, 20.3, 5.85, 5.95, 0.2, 2.2, M.stone);  // stone base panel
+  // raised planter with plants
+  box(11, 21, 3.5, 3.85, 0, 2, M.frame); box(11, 21, 5.15, 5.5, 0, 2, M.frame);
+  box(11, 11.35, 3.5, 5.5, 0, 2, M.frame); box(20.65, 21, 3.5, 5.5, 0, 2, M.frame);
+  box(11.35, 20.65, 3.85, 5.15, 0, 1.75, M.soil, false);
+  const leafGeo = new THREE.ConeGeometry(0.12, 1.6, 4);
+  for (let i = 0; i < 26; i++) {
+    const cx = 11.8 + rnd() * 8.4, cy = 4.0 + rnd() * 1.0;
+    const tuft = new THREE.Group();
+    for (let k = 0; k < 7; k++) { const l = new THREE.Mesh(leafGeo, k % 2 ? M.leaf : M.leaf2);
+      l.position.y = 0.6; l.rotation.z = (rnd() - 0.5) * 1.2; l.rotation.x = (rnd() - 0.5) * 1.2; l.castShadow = true; tuft.add(l); }
+    tuft.position.set(W(cx), 1.75, D(cy)); tuft.scale.setScalar(0.7 + rnd() * 0.7); house.add(tuft);
+  }
+  // side windows (left wall) with chajja sunshades
+  [[14, 18.5], [21.5, 25.5], [33.5, 35], [42, 47]].forEach(([a, b]) => {
+    box(2.92, 3.0, a, b, 3, 7.5, M.glass); box(2.85, 2.95, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
+    box(1.6, 3, a - 0.6, b + 0.6, 7.9, 8.15, M.slab);
+  });
+  // ---------------- completed walls ----------------
+  box(9.6, 10.1, 5.6, 9.6, PZ, PZ + PH, M.frame);             // parapet over the porch side of the window block
+  box(9.5, 10.2, 5.5, 9.7, PZ + PH, PZ + PH + 0.2, M.coping);
+  box(10.1, 20.9, 9.4, 9.6, PZ, PZ + 1.2, M.frame);           // low upstand where block roof meets main roof
+  // right side wall: passage ventilators with sunshades
+  [[22, 24], [30, 32], [40, 42]].forEach(([a, b]) => {
+    box(21.0, 21.08, a, b, 5.5, 7.5, M.glass); box(21.05, 21.15, a - 0.1, b + 0.1, 7.4, 7.6, M.metal);
+    box(21.0, 22.2, a - 0.5, b + 0.5, 7.9, 8.15, M.slab);
+  });
+
+  // ---------------- staircase (inside, seen through the tall stair window) + head room on the roof ----------------
+  const RISERS = 15, RISE = ROOF / RISERS, GOING = 0.75;
+  for (let i = 0; i < RISERS; i++) {
+    const y0 = 6.6 + i * GOING;
+    box(17.2, 20.8, y0, y0 + GOING + 0.05, i * RISE, (i + 1) * RISE, M.stone, false);
+  }
+  for (let i = 0; i <= RISERS; i += 3) box(17.25, 17.35, 6.6 + i * GOING, 6.7 + i * GOING, i * RISE, i * RISE + 3, M.metal, false); // balusters
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, Math.hypot(RISERS * GOING, ROOF)), M.metal);
+  rail.position.set(W(17.3), ROOF / 2 + 3, D(6.6 + RISERS * GOING / 2)); rail.rotation.x = Math.atan2(ROOF, RISERS * GOING); house.add(rail);
+  // head room (mumty): walls, slab, door to the terrace, small window
+  const HR = PZ + 8;
+  box(16.7, 21.2, 9.8, 18.6, PZ, HR, M.body);
+  box(16.4, 21.5, 9.5, 18.9, HR, HR + 0.4, M.slab);
+  box(16.3, 21.6, 9.4, 19.0, HR + 0.4, HR + 0.6, M.coping);
+  box(17.6, 20.4, 18.6, 18.7, PZ, PZ + 7, M.wood);              // terrace door (faces the back)
+  box(17.3, 20.7, 18.6, 19.9, PZ + 7.3, PZ + 7.5, M.slab);       // door sunshade
+  box(16.62, 16.7, 12.5, 15, PZ + 4, PZ + 6, M.glass);           // side window
+  box(16.0, 16.7, 12.2, 15.3, PZ + 6.3, PZ + 6.5, M.slab);
+  // overhead water tank on the head room
+  const tank = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 3.2, 20), mat({ color: '#e9e6e0', roughness: 0.6 }));
+  tank.position.set(W(19), HR + 0.6 + 1.6, D(15.5)); tank.castShadow = true; house.add(tank);
+
+  // ---------------- back side: door, windows, utility ----------------
+  box(18, 21, 49.0, 49.12, 0.3, 7.3, M.wood);                    // back door (from the passage)
+  box(17.85, 21.15, 49.05, 49.2, 7.3, 7.5, M.metal);
+  box(17.5, 21.5, 49.1, 51.6, 7.9, 8.2, M.slab);                 // back door canopy
+  box(17.6, 21.4, 49.1, 50.8, 0, 0.5, M.stone);                  // back step
+  box(7, 12, 49.0, 49.1, 3, 7.5, M.glass);                       // master bedroom rear window
+  box(6.9, 12.1, 49.05, 49.15, 7.4, 7.6, M.metal); box(6.9, 12.1, 49.05, 49.15, 2.9, 3.1, M.metal);
+  [8.65, 10.35].forEach((x) => box(x, x + 0.1, 49.05, 49.15, 3, 7.5, M.metal));
+  box(6.5, 12.5, 49.1, 50.8, 7.9, 8.15, M.slab);                 // rear window sunshade
+  box(3, 21, 49, 49.4, 0, 1.5, M.plinth);                        // plinth band, back
+
+  // ---------------- back garden flooring ----------------
+  box(3, 21, 49.4, 53.5, 0.02, 0.15, M.paver, false);            // paved sit-out along the back wall
+  box(15, 23.7, 53.5, 57.5, 0.02, 0.15, M.paver, false);         // utility / washing area
+  box(15.4, 18.4, 55.3, 57.3, 0.15, 2.6, M.frame);               // washing stone platform
+  box(15.4, 18.4, 55.3, 57.3, 2.6, 2.75, M.stone);
+  box(21.2, 23.2, 57.6, 59.5, 0, 0.35, M.plinth);                // rainwater pit cover
+  for (let y = 54; y < 59; y += 1.6) box(9.4, 11.4, y, y + 1.1, 0.02, 0.12, M.stone, false); // stepping stones
+  // raised kitchen-garden beds and edge beds along the compound wall
+  [[3.2, 8.8, 54, 58.9], [12, 14.4, 54, 58.9]].forEach(([x0, x1, y0, y1]) => {
+    box(x0, x1, y0, y0 + 0.3, 0, 1.2, M.plinth); box(x0, x1, y1 - 0.3, y1, 0, 1.2, M.plinth);
+    box(x0, x0 + 0.3, y0, y1, 0, 1.2, M.plinth); box(x1 - 0.3, x1, y0, y1, 0, 1.2, M.plinth);
+    box(x0 + 0.3, x1 - 0.3, y0 + 0.3, y1 - 0.3, 0, 1.05, M.soil, false);
+    for (let i = 0; i < 8; i++) {
+      const bush = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45 + rnd() * 0.25, 0), i % 2 ? M.leaf : M.leaf2);
+      bush.position.set(W(x0 + 0.8 + rnd() * (x1 - x0 - 1.6)), 1.35, D(y0 + 0.8 + rnd() * (y1 - y0 - 1.6))); bush.castShadow = true; house.add(bush);
+    }
+  });
+  box(0.5, 2.9, 10, 49, 0.02, 0.14, M.paver, false);             // left side passage paving (full length)
+
+  // trees in back garden
+  function tree(x, y, s) {
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(0.25 * s, 0.35 * s, 5 * s, 6), mat({ color: '#6b4f36' }));
+    t.position.set(W(x), 2.5 * s, D(y)); t.castShadow = true; house.add(t);
+    const c = new THREE.Mesh(new THREE.IcosahedronGeometry(3 * s, 1), M.leaf); c.position.set(W(x), 6 * s, D(y)); c.castShadow = true; house.add(c);
+  }
+  tree(2.6, 56.6, 0.7); tree(21.6, 51.8, 0.5);
+
+  // ---------------- lights ----------------
+  const hemi = new THREE.HemisphereLight('#dbe9ff', '#6b6150', 0.6); scene.add(hemi);
+  const sun = new THREE.DirectionalLight('#fff3df', 2.2);
+  sun.position.set(-30, 45, 40); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -40, right: 40, top: 40, bottom: -40, near: 1, far: 160 }); sun.shadow.bias = -0.0006;
+  scene.add(sun);
+
+  const decor = []; const WARM = '#ffb45e';
+  function lamp(x, y, z, size) { const m = box(x - size, x + size, y - size, y + size, z - size, z + size, M.lampOn, false); return m; }
+  function spot(x, y, z, tx, ty, tz, intensity, angle, dist) {
+    const s = new THREE.SpotLight(WARM, 0, dist || 14, angle || 0.6, 0.6, 2);
+    s.position.set(W(x), z, D(y)); s.target.position.set(W(tx), tz, D(ty)); scene.add(s); scene.add(s.target);
+    decor.push({ light: s, on: intensity }); return s;
+  }
+  function point(x, y, z, intensity, dist) {
+    const p = new THREE.PointLight(WARM, 0, dist || 8, 2); p.position.set(W(x), z, D(y)); scene.add(p); decor.push({ light: p, on: intensity }); return p;
+  }
+  // canopy downlights
+  [5.8, 8.75].forEach((x) => { lamp(x, 7.6, 8.78, 0.18); spot(x, 7.6, 8.7, x, 8.6, 0, 26, 0.75, 14); });
+  // canopy edge cove
+  box(2.7, 9.9, 5.62, 5.7, 8.6, 8.66, M.lampOn, false); point(4.5, 5.9, 8.3, 4, 7); point(8.3, 5.9, 8.3, 4, 7);
+  // up-down washer on the stone fin
+  lamp(10.9, 5.05, 8, 0.2); spot(10.9, 4.9, 8.3, 10.9, 5.4, 15.5, 30, 0.22, 12); spot(10.9, 4.9, 7.7, 10.9, 5.4, 0, 30, 0.22, 12);
+  // feature frame cove (under top band) washing wood + window
+  box(11.9, 20.2, 5.0, 5.1, 15.42, 15.48, M.lampOn, false);
+  spot(12.6, 4.7, 15.3, 12.6, 5.8, 2, 18, 0.35, 16); spot(15.5, 4.7, 15.3, 15.5, 5.8, 2, 14, 0.45, 16); spot(19, 4.7, 15.3, 19, 5.8, 2, 10, 0.4, 16);
+  // planter spikes
+  [13, 16, 19].forEach((x) => { lamp(x, 4.5, 1.85, 0.08); spot(x, 4.3, 1.9, x, 5.7, 6, 10, 0.55, 8); });
+  // gate pillar lights
+  [0.5, 10.5].forEach((x) => { lamp(x, 0.35, 6.5, 0.22); point(x, 0.1, 6.5, 6, 9); });
+  // parapet strip
+  box(2.7, 9.9, 9.42, 9.5, PZ + PH - 0.05, PZ + PH, M.lampOn, false); point(6.3, 9.0, PZ + PH - 0.4, 3, 6);
+  // wall lights at the back
+  lamp(16.9, 49.25, 6.8, 0.2); point(16.9, 49.6, 6.8, 5, 9);
+  // garden lights along the sit-out
+  [6, 12].forEach((x) => { box(x - 0.15, x + 0.15, 53.4, 53.7, 0, 2.2, M.metal); lamp(x, 53.55, 2.3, 0.18); point(x, 53.55, 2.3, 3, 7); });
+  // head room terrace light
+  lamp(19, 18.75, PZ + 7.8, 0.15); point(19, 19.2, PZ + 7.6, 3, 7);
+  // interior glow behind glass
+  const glow = point(15.5, 8.5, 8, 0, 12); const glow2 = point(8.7, 11, 5, 0, 10);
+
+  // ---------------- time of day: k = 0 day, 1 dusk, 2 night (blends in between) ----------------
+  const KEYS = [
+    { sky: '#a9c4dc', sun: 2.2, sunCol: '#fff3df', sunPos: [-30, 45, 40], hemi: 0.6, hemiCol: '#dbe9ff', n: 0, exp: 1.0 },
+    { sky: '#e6a77d', sun: 0.7, sunCol: '#ffb27a', sunPos: [45, 14, 40], hemi: 0.35, hemiCol: '#dbe9ff', n: 0.55, exp: 1.05 },
+    { sky: '#0d1424', sun: 0.0, sunCol: '#ffb27a', sunPos: [45, 8, 40], hemi: 0.12, hemiCol: '#4a5a80', n: 1, exp: 1.25 }
+  ];
+  const cA = new THREE.Color(), cB = new THREE.Color();
+  const mix = (a, b, t) => a + (b - a) * t;
+  const mixCol = (h1, h2, t) => cA.set(h1).lerp(cB.set(h2), t);
+  function setTime(k) {
+    k = Math.max(0, Math.min(2, k));
+    const i = Math.min(1, Math.floor(k)), t = k - i, A = KEYS[i], B = KEYS[i + 1];
+    const sky = mixCol(A.sky, B.sky, t).clone();
+    scene.background = sky; stage.style.background = '#' + sky.getHexString();
+    scene.fog = new THREE.Fog(sky, 90, 260);
+    sun.intensity = mix(A.sun, B.sun, t); sun.color.copy(mixCol(A.sunCol, B.sunCol, t));
+    sun.position.set(mix(A.sunPos[0], B.sunPos[0], t), mix(A.sunPos[1], B.sunPos[1], t), 40);
+    hemi.intensity = mix(A.hemi, B.hemi, t); hemi.color.copy(mixCol(A.hemiCol, B.hemiCol, t));
+    const n = mix(A.n, B.n, t);
+    decor.forEach((d) => { d.light.intensity = d.on * n; });
+    glow.intensity = 3 * n; glow2.intensity = 3 * n;
+    M.lampOn.emissiveIntensity = n * 2.2;
+    M.glass.emissive.copy(lin('#e8a35a')); M.glass.emissiveIntensity = n * 0.32;
+    renderer.toneMappingExposure = mix(A.exp, B.exp, t);
+  }
+  function setMode(mode) {
+    ['day', 'dusk', 'night'].forEach((k) => document.getElementById('btn-' + k).setAttribute('aria-pressed', k === mode));
+    setTime({ day: 0, dusk: 1, night: 2 }[mode]);
+  }
+
+  function applyScheme(key) {
+    const s = SCHEMES[key];
+    ['body', 'frame', 'recess', 'plinth', 'compound', 'coping', 'metal', 'wood'].forEach((k) => M[k].color.copy(lin(s[k])));
+    M.slab.color.copy(lin(key === 'modern' ? '#f1f1f0' : s.frame));
+    document.querySelectorAll('#schemes button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.k === key));
+    document.getElementById('scheme-title').textContent = s.title;
+    document.getElementById('scheme-note').textContent = s.note;
+    document.getElementById('finishes').innerHTML = FINISH_ROWS.map(([k, name, where]) => {
+      const hex = k === 'stone' ? STONE : s[k];
+      return `<tr><td style="width:36px"><div class="sw" style="background:${hex}"></div></td><td><b>${name}</b><div class="where">${where}</div></td><td class="code">${hex.toUpperCase()}</td></tr>`;
+    }).join('');
+    try { localStorage.setItem('ext-scheme', key); } catch (e) {}
+  }
+  const schemesEl = document.getElementById('schemes');
+  Object.keys(SCHEMES).forEach((k) => {
+    const b = document.createElement('button'); b.textContent = SCHEMES[k].label; b.dataset.k = k;
+    b.addEventListener('click', () => applyScheme(k)); schemesEl.appendChild(b);
+  });
+  ['day', 'dusk', 'night'].forEach((k) => document.getElementById('btn-' + k).addEventListener('click', () => setMode(k)));
+
+  const VIEWS = {
+    front: [[12, 7, -26], [12, 8, 6]], angle: [[30, 13, -20], [12, 7, 10]],
+    entry: [[3.5, 5, 1.5], [7.5, 5, 9.6]], back: [[24, 17, 74], [11, 3, 52]], top: [[-6, 46, -24], [12, 2, 22]]
+  };
+  function setView(v) { const [p, t] = VIEWS[v]; camera.position.set(W(p[0]), p[1], D(p[2])); controls.target.set(W(t[0]), t[1], D(t[2])); controls.update(); }
+  document.querySelectorAll('.views button').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+
+  function resize() {
+    const r = stage.getBoundingClientRect(); renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage);
+
+  let saved = 'classic'; try { saved = localStorage.getItem('ext-scheme') || 'classic'; } catch (e) {}
+  applyScheme(SCHEMES[saved] ? saved : 'classic'); setMode('day'); setView('angle'); resize();
+  // ---------------- video export ----------------
+  // Camera path (plan coords, ft): left corner -> front -> right corner -> entrance close-up
+  const P = (x, y, z) => new THREE.Vector3(W(x), z, D(y));
+  const camPath = new THREE.CatmullRomCurve3([P(-16, -18, 11), P(-4, -24, 9), P(12, -26, 7.5), P(28, -22, 10), P(34, -10, 13), P(18, -6, 8), P(6, 1.5, 5)], false, 'centripetal');
+  const tgtPath = new THREE.CatmullRomCurve3([P(12, 10, 7), P(12, 8, 7.5), P(12, 7, 8), P(12, 9, 7.5), P(13, 10, 7), P(10, 8, 6), P(7.5, 9.6, 5)], false, 'centripetal');
+  const ease = (t) => t * t * (3 - 2 * t);
+  // lighting along the clip: day until 30%, dusk by 55%, night from 75%
+  const timeAt = (u) => u < 0.3 ? 0 : u < 0.55 ? ease((u - 0.3) / 0.25) : u < 0.75 ? 1 + ease((u - 0.55) / 0.2) : 2;
+  let rec = null;
+  const $ = (id) => document.getElementById(id);
+  const recBtn = $('rec-btn'), recStatus = $('rec-status'), recBar = $('rec-progress'), recOut = $('rec-out');
+
+  function pickMime() {
+    const list = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+    for (const m of list) { try { if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m; } catch (e) {} }
+    return '';
+  }
+  function startRecording() {
+    if (rec) return;
+    const mime = pickMime();
+    if (!renderer.domElement.captureStream || !window.MediaRecorder || !mime) {
+      recStatus.textContent = 'This browser cannot record video. Try Chrome, Edge or Firefox on a computer.'; return;
+    }
+    const secs = parseInt($('rec-len').value, 10) || 15;
+    const [vw, vh] = $('rec-q').value.split('x').map(Number);
+    renderer.setPixelRatio(1); renderer.setSize(vw, vh, false); camera.aspect = vw / vh; camera.fov = vh > vw ? 62 : 40; camera.updateProjectionMatrix();
+    const stream = renderer.domElement.captureStream(30);
+    const mr = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: vh >= 1080 ? 12e6 : 6e6 });
+    const chunks = [];
+    mr.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    mr.onstop = () => finishRecording(new Blob(chunks, { type: mime.split(';')[0] }), mime);
+    rec = { mr, start: performance.now(), secs, prevTime: currentTime };
+    controls.enabled = false; recBtn.disabled = true; recBtn.textContent = 'Recording…';
+    document.querySelectorAll('.views button, .seg button').forEach((b) => (b.disabled = true));
+    recOut.hidden = true; mr.start(250);
+  }
+  function stepRecording(now) {
+    const u = Math.min(1, (now - rec.start) / (rec.secs * 1000)), e = ease(u);
+    camera.position.copy(camPath.getPoint(e)); camera.lookAt(tgtPath.getPoint(e));
+    setTime(timeAt(u));
+    recBar.style.width = (u * 100).toFixed(1) + '%';
+    recStatus.textContent = `Recording ${Math.ceil(u * rec.secs)} / ${rec.secs} s`;
+    if (u >= 1 && rec.mr.state === 'recording') { rec.mr.stop(); rec.stopping = true; }
+  }
+  let lastVideo = null;
+  function finishRecording(blob, mime) {
+    const ext = mime.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+    const prev = rec.prevTime; rec = null;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); camera.fov = 40; resize();
+    controls.enabled = true; recBtn.disabled = false; recBtn.textContent = 'Record video';
+    document.querySelectorAll('.views button, .seg button').forEach((b) => (b.disabled = false));
+    setTime(prev); setView('angle'); recBar.style.width = '0%';
+    if (lastVideo) URL.revokeObjectURL(lastVideo.url);
+    lastVideo = { blob, ext, url: URL.createObjectURL(blob) };
+    $('rec-video').src = lastVideo.url; recOut.hidden = false;
+    recStatus.textContent = `Ready: ${(blob.size / 1048576).toFixed(1)} MB ${ext.toUpperCase()}. Preview it below, then save.`;
+  }
+  async function saveVideo() {
+    if (!lastVideo) return;
+    const name = `sullurpeta-house-exterior.${lastVideo.ext}`;
+    const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    if (dl) {
+      try { await dl.save({ filename: name, data: lastVideo.blob }); recStatus.textContent = 'Video saved.'; }
+      catch (e) {
+        if (e && e.code === 'declined') recStatus.textContent = 'Save cancelled. Press Save video to try again.';
+        else if (e && e.code === 'rate_limited') recStatus.textContent = 'A save is already in progress. Wait a moment, then try again.';
+        else recStatus.textContent = 'Saving is not available in this view. Open the page on your GitHub site to download.';
+      }
+      return;
+    }
+    const a = document.createElement('a'); a.href = lastVideo.url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); recStatus.textContent = 'Video downloaded.';
+  }
+  recBtn.addEventListener('click', startRecording);
+  $('rec-save').addEventListener('click', saveVideo);
+
+  let currentTime = 0;
+  const _setTime = setTime;
+  setTime = function (k) { currentTime = k; _setTime(k); };
+
+  (function loop(now) {
+    if (rec && !rec.stopping) stepRecording(now || performance.now()); else if (!rec) controls.update();
+    renderer.render(scene, camera); requestAnimationFrame(loop);
+  })();
+  window.__ext = { setMode, setView, applyScheme, setTime, startRecording, lookAt: (p, t) => { camera.position.set(W(p[0]), p[1], D(p[2])); controls.target.set(W(t[0]), t[1], D(t[2])); controls.update(); } };
+})();
+</script>
