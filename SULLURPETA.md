@@ -33,8 +33,17 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 | E7 | Chettinad Heritage | `demo/colony/index.html` (design E7) |
 | E8 | Colonial Palace | `demo/colony/index.html` (design E8) |
 | E9 | Marble Portal Luxe | `demo/colony/index.html` (design E9) |
+| E10 | Goan Portuguese Casa | colony design E10 |
+| E11 | Japandi Zen House | colony design E11 |
+| E12 | Brick Jali House | colony design E12 |
+| E13 | Bombay Art Deco | colony design E13 |
+| E14 | Santorini White | colony design E14 |
+| E15 | Moroccan Riad | colony design E15 |
+| E16 | Industrial Loft | colony design E16 |
+| E17 | Tropical Modern | colony design E17 |
+| E18 | Nordic Gable | colony design E18 |
 
-**Design Colony** (`/react-planner/colony/`): all nine designs side by side on one street, each on plan P5. Open one with `#E1` … `#E9`.
+**Design Colony** (`/react-planner/colony/`): all 18 designs on two sides of one street, each on plan P5. Open one with `#E1` … `#E18`. It has a solo view, live colour pickers, part switches (gate, plants, head room, garden, name board), sun direction and Save picture. To add a design, add one `def({...})` block with the next code.
 
 Open a plan with `#P1` … `#P5` after the planner link, or use the **Plan version** menu at the top.
 Rule for new work: a new design gets the next code (P6, E4 …); old files are never edited.
