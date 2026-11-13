@@ -34,6 +34,7 @@ jobs:
           for f in demo/exterior/versions/*.html; do code=$(basename "$f" | cut -d- -f1); wrap "$f" "demo/dist/exterior/$code/index.html"; done
           wrap demo/versions.html demo/dist/versions/index.html
           wrap demo/colony/index.html demo/dist/colony/index.html
+          wrap demo/interior/index.html demo/dist/interior/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: demo/dist

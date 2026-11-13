@@ -13,7 +13,7 @@ import ToolbarLoadPlotButton from './ui/toolbar-load-plot-button';
 import { buildPlan, LOAD_SULLURPETA_PLAN, loadSullurpetaPlan } from './sullurpeta/load-plan';
 import { PLAN_VERSIONS, LATEST_ID } from './sullurpeta/versions';
 
-const AUTOSAVE_KEY = 'sullurpeta-house_v5';
+const AUTOSAVE_KEY = 'sullurpeta-house_v6';
 
 import {
   Models as PlannerModels,
@@ -106,7 +106,7 @@ ReactDOM.render(
 );
 
 // ---------- plan version picker (top centre) ----------
-// Open a named version with #P1 … #P5 at the end of the link; no hash = your last drawing (autosaved).
+// Open a named version with #P1 … #P6 at the end of the link; no hash = your last drawing (autosaved).
 const hashVersion = () => { const m = (window.location.hash || '').match(/^#(P\d+)$/i); return m ? m[1].toUpperCase() : null; };
 const picker = document.createElement('div');
 picker.style.cssText = 'position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:9000;display:flex;gap:6px;align-items:center;' +

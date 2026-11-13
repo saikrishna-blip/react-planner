@@ -23,7 +23,9 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 | P2 | Back garden, no front parking | `versions/P2.js` |
 | P3 | Modern entrance | `versions/P3.js` |
 | P4 | Recessed entrance bay | `versions/P4.js` |
-| P5 | Royal Mahal plan (latest) | `demo/src/sullurpeta/plan-data.js` (re-exported as `versions/P5.js`) |
+| P5 | Royal Mahal plan | `demo/src/sullurpeta/versions/P5.js` (frozen snapshot) |
+| P6 | Vastu plan, south-facing (latest) | `demo/src/sullurpeta/plan-data.js` (re-exported as `versions/P6.js`) |
+| I1 | Vastu Interior, fully furnished (plan P6) | `demo/interior/index.html` |
 | E1 | Modern White & Teak | `demo/exterior/versions/E1-modern-white-teak.html` |
 | E2 | Sandstone Block & Sloped Frame | `demo/exterior/versions/E2-sandstone-block.html` |
 | E3 | Royal Rajasthani Mahal | `demo/exterior/index.html` = `versions/E3-royal-rajasthani-mahal.html` |
@@ -45,7 +47,7 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 
 **Design Colony** (`/react-planner/colony/`): all 18 designs side by side in one row, each on plan P5, with a street slider for a close look. Open one with `#E1` … `#E18`. It has a solo view, live colour pickers, part switches (gate, plants, head room, garden, name board), sun direction and Save picture. To add a design, add one `def({...})` block with the next code.
 
-Open a plan with `#P1` … `#P5` after the planner link, or use the **Plan version** menu at the top.
+Open a plan with `#P1` … `#P6` after the planner link, or use the **Plan version** menu at the top.
 Rule for new work: a new design gets the next code (P6, E4 …); old files are never edited.
 Fixed specs since P2: plot 24 × 60, setbacks 6/3/3/3, house 18 × 43 (x 3–21, y 6–49), 11 ft back garden, no front parking,
 walls 9" / 4.5" / 10 ft, compound wall 5 ft.
@@ -78,3 +80,23 @@ NODE_OPTIONS=--openssl-legacy-provider npm start      # http://localhost:9000
 ```
 
 > Draft layouts for discussion only. The setbacks are placeholders. Structural, electrical, plumbing and approval drawings must come from a licensed engineer or architect.
+
+## Plot facing and Vastu (P6 / I1)
+
+The plot (13°42'02.5"N 80°02'01.4"E) faces **south**: road on the south, a neighbour's house on the east, garden on the north. From P6 onward `x` runs west to east and `y` runs south (road) to north.
+
+| Zone | Room in P6 |
+|---|---|
+| South-West | Master bedroom (bed head south), dressing, bath |
+| South | Porch, main door east of the centre line, foyer |
+| South-East | Kitchen, cooking facing east |
+| West | Staircase, dining side of the hall, both baths |
+| Centre | Open floor of the hall |
+| East | Living, two large east windows |
+| North-West | Bedroom 2 |
+| North | Study, passage, back door, garden |
+| North-East | Pooja; tulsi and rainwater pit in the garden |
+
+**Interior I1** (`/react-planner/interior/`): furnished 3D view with Dollhouse, Plan and Walk-inside modes, day/evening, a Vastu zone overlay, and each room's palette and finishes. Open a room with `#living`, `#kitchen`, `#master`, `#pooja`, `#dining`, `#bed2`, `#study`, `#foyer`.
+
+Exteriors E1–E18 were drawn on plan P5 (entrance on the left of the front). They have not been redrawn for P6.
