@@ -25,7 +25,14 @@ All plans and exterior designs keep a fixed code. See the register at `/react-pl
 | P4 | Recessed entrance bay | `versions/P4.js` |
 | P5 | Royal Mahal plan | `demo/src/sullurpeta/versions/P5.js` (frozen snapshot) |
 | P6 | Vastu plan, south-facing (latest) | `demo/src/sullurpeta/plan-data.js` (re-exported as `versions/P6.js`) |
-| I1 | Vastu Interior, fully furnished (plan P6) | `demo/interior/index.html` |
+| I1 | Earthy Terracotta interior (plan P6) | `demo/interior/index.html` (default style; frozen copy `demo/interior/versions/I1-earthy-terracotta.html`) |
+| I2 | Scandi Light Sage | interior style |
+| I3 | Royal Rajasthani | interior style |
+| I4 | Chettinad Heritage | interior style |
+| I5 | Coastal Teal | interior style |
+| I6 | Contemporary Charcoal & Brass | interior style |
+| I7 | Japandi Calm | interior style |
+| I8 | Boho Jaipur | interior style |
 | E1 | Modern White & Teak | `demo/exterior/versions/E1-modern-white-teak.html` |
 | E2 | Sandstone Block & Sloped Frame | `demo/exterior/versions/E2-sandstone-block.html` |
 | E3 | Royal Rajasthani Mahal | `demo/exterior/index.html` = `versions/E3-royal-rajasthani-mahal.html` |
@@ -97,6 +104,6 @@ The plot (13°42'02.5"N 80°02'01.4"E) faces **south**: road on the south, a nei
 | North | Study, passage, back door, garden |
 | North-East | Pooja; tulsi and rainwater pit in the garden |
 
-**Interior I1** (`/react-planner/interior/`): furnished 3D view with Dollhouse, Plan and Walk-inside modes, day/evening, a Vastu zone overlay, and each room's palette and finishes. Open a room with `#living`, `#kitchen`, `#master`, `#pooja`, `#dining`, `#bed2`, `#study`, `#foyer`.
+**Interior I1** (`/react-planner/interior/`): furnished 3D view with Dollhouse, Plan and Walk-inside modes, day/evening, a Vastu zone overlay, and each room's palette and finishes. Pick a style with the chips or `#living-I3` (room then style code). Open a room with `#living`, `#kitchen`, `#master`, `#pooja`, `#dining`, `#bed2`, `#study`, `#foyer`.
 
 Exteriors E1–E18 were drawn on plan P5 (entrance on the left of the front). They have not been redrawn for P6.

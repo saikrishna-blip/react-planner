@@ -34,6 +34,11 @@
   .tog { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; background: var(--chip); padding: 7px 12px; border-radius: 999px; cursor: pointer; }
   input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
   button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .styles { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: 500 13px var(--font-body); padding: 6px 12px 6px 8px; border-radius: 999px; cursor: pointer; }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .chip .dots { display: inline-flex; } .chip .dots i { width: 12px; height: 18px; border: 1px solid rgba(0,0,0,.15); margin-left: -3px; border-radius: 4px; } .chip .dots i:first-child { margin-left: 0; }
+  .chip b { font-family: var(--font-display); color: var(--accent); font-weight: 600; }
   .stage { position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 76vh; border-radius: 14px; overflow: hidden; background: #cfe0ee; }
   .stage canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
   .tag { position: absolute; left: 12px; top: 10px; background: rgba(20,18,16,.72); color: #fff; padding: 6px 12px; border-radius: 10px; font-size: 13px; pointer-events: none; }
@@ -88,6 +93,12 @@
     </div>
   </header>
 
+  <div>
+    <p class="eyebrow">Interior style: same Vastu plan P6, different looks</p>
+    <div class="styles" id="styles" role="group" aria-label="Interior style"></div>
+    <p class="note" id="style-note" style="margin-top:8px"></p>
+  </div>
+
   <div class="stage" id="stage">
     <div class="tag" id="tag"></div>
     <svg class="compass" viewBox="0 0 64 64" aria-label="Compass" id="compass">
@@ -106,7 +117,7 @@
       <ul class="tips" id="d-tips"></ul>
     </div>
     <div>
-      <p class="eyebrow">Colour palette</p>
+      <p class="eyebrow" id="d-palh">Colour palette</p>
       <div class="sw" id="d-sw"></div>
       <p class="eyebrow" style="margin-top:14px">Furniture and finishes</p>
       <ul class="items" id="d-items"></ul>
@@ -147,10 +158,13 @@
   const lin = (hex) => new THREE.Color(hex).convertSRGBToLinear();
   const rnd = (() => { let s = 11; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
   const MC = new Map();
-  function m(hex, rough = 0.8, metal = 0) { const k = hex + rough + metal; if (!MC.has(k)) MC.set(k, new THREE.MeshStandardMaterial({ color: lin(hex), roughness: rough, metalness: metal })); return MC.get(k); }
+  let SMAP = {}, styleIdx = 0, LAMP;
+  const RM = (h) => SMAP[String(h).toLowerCase()] || h;
+  function COVE() { if (!COVE.m) COVE.m = new THREE.MeshStandardMaterial({ color: lin('#fff1d6'), emissive: lin('#ffd9a0'), emissiveIntensity: 1.4 }); return COVE.m; }
+  function m(hex, rough = 0.8, metal = 0) { hex = RM(hex); const k = hex + rough + metal; if (!MC.has(k)) MC.set(k, new THREE.MeshStandardMaterial({ color: lin(hex), roughness: rough, metalness: metal })); return MC.get(k); }
   function canvasTex(w, h, draw, rx, ry) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx || 1, ry || 1); t.encoding = THREE.sRGBEncoding; t.anisotropy = 4; return t; }
-  const tm = (tex, hex = '#ffffff', rough = 0.7) => new THREE.MeshStandardMaterial({ map: tex, color: lin(hex), roughness: rough });
+  const tm = (tex, hex = '#ffffff', rough = 0.7) => new THREE.MeshStandardMaterial({ map: tex, color: lin(RM(hex)), roughness: rough });
 
   // ---- textures ----
   const T = {};
@@ -188,10 +202,14 @@
   // floor panel with tile-size-aware texture
   function floor(x0, x1, y0, y1, tex, hex, tile, z = 0.06, rough = 0.5, grp = G.base) {
     const t = tex.clone(); t.needsUpdate = true; t.repeat.set((x1 - x0) / tile, (y1 - y0) / tile);
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), new THREE.MeshStandardMaterial({ map: t, color: lin(hex), roughness: rough }));
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), new THREE.MeshStandardMaterial({ map: t, color: lin(RM(hex)), roughness: rough }));
     mesh.rotation.x = -Math.PI / 2; mesh.position.set(W((x0 + x1) / 2), z, D((y0 + y1) / 2)); mesh.receiveShadow = true; grp.add(mesh); return mesh;
   }
 
+  const STYLES = [{"code": "I1", "name": "Earthy Terracotta", "blurb": "Vastu colours as drawn: cream, sand, terracotta, olive and sage with teak and brass.", "map": {}, "pal": [["Cream", "#f4ecdc"], ["Sand", "#ead9bf"], ["Terracotta", "#b5583c"], ["Sage", "#8fa07c"], ["Olive", "#6f7550"], ["Brass", "#b8893a"]], "items": ["Cream and sand walls, earthy Vastu palette", "Marble-look tile and timber-look plank floors", "Teak, brass and linen", "Terracotta, olive and sage accents", "Warm 2700 K cove lighting"]}, {"code": "I2", "name": "Scandi Light Sage", "blurb": "Bright and airy: soft white walls, pale oak, grey-sage accents. Looks biggest.", "map": {"#f4ecdc": "#f7f7f4", "#f6f5f1": "#f7f7f4", "#ead9bf": "#eeeae2", "#eadbc3": "#eeeae2", "#f0e2cc": "#eeeae2", "#e6dccb": "#eeeae2", "#f1e8ea": "#f2f0ee", "#d79a78": "#b9c8b2", "#cf8b6c": "#c9d6c2", "#d3aebd": "#cfd8de", "#cfdcc3": "#dfe8dc", "#b5583c": "#8aa39a", "#6f7550": "#58665f", "#8fa07c": "#a9b8a0", "#8a5a34": "#c9a77c", "#5e3d24": "#9a7b57", "#b98d5e": "#dcc3a0", "#b8893a": "#a8a8a2", "#c9b08c": "#e3dccf", "#d9cdb8": "#d6d4cf", "#b08a62": "#d8bf9b", "#c4a585": "#e0cba9", "#f6f0e4": "#f2f2ef", "#c9a3b5": "#c9d4dc", "#d9a9b3": "#dfe5e9", "#a98ea8": "#aebcc4", "#c9a23c": "#b9b9b3"}, "pal": [["Soft white", "#f7f7f4"], ["Greige", "#eeeae2"], ["Pale oak", "#c9a77c"], ["Grey sage", "#8aa39a"], ["Deep sage", "#58665f"], ["Brushed steel", "#a8a8a2"]], "items": ["Matte soft-white walls, one sage feature wall", "Pale oak floors, large-format light tiles", "Light oak furniture, linen upholstery", "Grey-sage and charcoal-green accents", "Warm-white cove lights, matt steel fittings"]}, {"code": "I3", "name": "Royal Rajasthani", "blurb": "Rich and festive: cream walls, maroon, peacock teal and gold with dark carved wood.", "map": {"#f4ecdc": "#f6ead0", "#f6f5f1": "#f6ead0", "#ead9bf": "#f1dcb4", "#eadbc3": "#f1dcb4", "#f0e2cc": "#f1dcb4", "#e6dccb": "#f1dcb4", "#f1e8ea": "#f3e1cf", "#d79a78": "#a8323e", "#cf8b6c": "#b4503a", "#d3aebd": "#c27a8c", "#cfdcc3": "#e7c76a", "#b5583c": "#9c2a3a", "#6f7550": "#1f5f6b", "#8fa07c": "#d6a032", "#8a5a34": "#6b3a1e", "#5e3d24": "#43250f", "#b98d5e": "#a8742f", "#b8893a": "#d4a017", "#c9b08c": "#8a2b36", "#d9cdb8": "#e6c98a", "#b08a62": "#8c5a32", "#c4a585": "#9a6a3c", "#f6f0e4": "#f3e9d2", "#c9a3b5": "#c27a8c", "#d9a9b3": "#d99aa8", "#a98ea8": "#7a2f4f", "#c9a23c": "#e0b030"}, "pal": [["Ivory", "#f6ead0"], ["Maroon", "#9c2a3a"], ["Peacock teal", "#1f5f6b"], ["Marigold", "#d6a032"], ["Dark teak", "#6b3a1e"], ["Antique gold", "#d4a017"]], "items": ["Ivory walls, maroon botanical feature walls", "Cream marble with dark teak floors in the bedrooms", "Carved dark teak furniture, velvet upholstery", "Maroon, peacock teal and marigold accents", "Brass and gold fittings, warm pendants"]}, {"code": "I4", "name": "Chettinad Heritage", "blurb": "South Indian traditional: ochre walls, red-oxide tones, dark teak, brass lamps.", "map": {"#f4ecdc": "#f3e6c8", "#f6f5f1": "#f3e6c8", "#ead9bf": "#ead3a2", "#eadbc3": "#ead3a2", "#f0e2cc": "#ead3a2", "#e6dccb": "#ead3a2", "#f1e8ea": "#efe0c4", "#d79a78": "#c0432f", "#cf8b6c": "#d9a441", "#d3aebd": "#e0b970", "#cfdcc3": "#e8d28a", "#b5583c": "#8f2d1f", "#6f7550": "#2f5d3a", "#8fa07c": "#c79a3b", "#8a5a34": "#5a3217", "#5e3d24": "#3a1f0d", "#b98d5e": "#8a5a2b", "#b8893a": "#c8962c", "#c9b08c": "#6b3a1f", "#d9cdb8": "#c9a15a", "#b08a62": "#7a4a28", "#c4a585": "#8a5a34", "#f6f0e4": "#e8d9b8", "#c9a3b5": "#d9a441", "#d9a9b3": "#c0432f", "#a98ea8": "#2f5d3a", "#c9a23c": "#c8962c"}, "pal": [["Egg-shell", "#f3e6c8"], ["Ochre", "#d9a441"], ["Red oxide", "#8f2d1f"], ["Bottle green", "#2f5d3a"], ["Dark teak", "#5a3217"], ["Brass", "#c8962c"]], "items": ["Egg-shell and ochre walls, red-oxide accent wall", "Warm Athangudi-style tiles, dark teak plank floors", "Heavy teak furniture, cane and cotton upholstery", "Red oxide, bottle green and mustard accents", "Brass lamps, hanging lanterns"]}, {"code": "I5", "name": "Coastal Teal", "blurb": "Fresh and breezy: white and sea-blue with rattan-toned wood and pale linen.", "map": {"#f4ecdc": "#f6f8f8", "#f6f5f1": "#f6f8f8", "#ead9bf": "#e7eef0", "#eadbc3": "#e7eef0", "#f0e2cc": "#e7eef0", "#e6dccb": "#e7eef0", "#f1e8ea": "#eef3f5", "#d79a78": "#7fb0bd", "#cf8b6c": "#9cc3cc", "#d3aebd": "#a8c8d6", "#cfdcc3": "#cfe5e8", "#b5583c": "#2f7f8e", "#6f7550": "#1d4f63", "#8fa07c": "#8bbfc4", "#8a5a34": "#b99a72", "#5e3d24": "#7a5f3f", "#b98d5e": "#d8c3a0", "#b8893a": "#c9b27a", "#c9b08c": "#d8c8ad", "#d9cdb8": "#e9e4da", "#b08a62": "#cdb592", "#c4a585": "#d9c6a5", "#f6f0e4": "#f1f4f4", "#c9a3b5": "#8bbfc4", "#d9a9b3": "#b9dbe0", "#a98ea8": "#4f8fa8", "#c9a23c": "#c9b27a"}, "pal": [["Sea-salt white", "#f6f8f8"], ["Mist blue", "#9cc3cc"], ["Teal", "#2f7f8e"], ["Navy", "#1d4f63"], ["Rattan", "#b99a72"], ["Sand", "#d8c3a0"]], "items": ["White walls, mist-blue feature walls", "Light driftwood floors, white tile", "Rattan-toned wood, linen and cotton", "Teal and navy accents", "Soft warm lights, pale brass"]}, {"code": "I6", "name": "Contemporary Charcoal & Brass", "blurb": "Modern luxe: greige walls, charcoal and slate feature walls, walnut wood, brass details.", "map": {"#f4ecdc": "#e4e0d8", "#f6f5f1": "#e4e0d8", "#ead9bf": "#d3cdc1", "#eadbc3": "#d3cdc1", "#f0e2cc": "#d3cdc1", "#e6dccb": "#d3cdc1", "#f1e8ea": "#d9d5ce", "#d79a78": "#3a4a52", "#cf8b6c": "#2f3f48", "#d3aebd": "#586873", "#cfdcc3": "#8a9a96", "#b5583c": "#b08d57", "#6f7550": "#2b2f33", "#8fa07c": "#6f7f7a", "#8a5a34": "#4a3426", "#5e3d24": "#2b1d14", "#b98d5e": "#6b4b34", "#b8893a": "#d3a85a", "#c9b08c": "#4b5a63", "#d9cdb8": "#a9a299", "#b08a62": "#5d4634", "#c4a585": "#6e5440", "#f6f0e4": "#e9e5de", "#c9a3b5": "#586873", "#d9a9b3": "#8a9aa4", "#a98ea8": "#2b2f33", "#c9a23c": "#d3a85a"}, "pal": [["Greige", "#e4e0d8"], ["Slate", "#3a4a52"], ["Charcoal", "#2b2f33"], ["Champagne brass", "#d3a85a"], ["Walnut", "#4a3426"], ["Stone", "#a9a299"]], "items": ["Greige walls, slate feature walls", "Light grey marble with walnut-look floors", "Walnut furniture, leather and bouclé", "Slate, charcoal and champagne-brass accents", "Concealed cove lights, brass pendants"]}, {"code": "I7", "name": "Japandi Calm", "blurb": "Quiet and natural: oat walls, pale wood, moss green and black details.", "map": {"#f4ecdc": "#f2ede3", "#f6f5f1": "#f2ede3", "#ead9bf": "#e8dfce", "#eadbc3": "#e8dfce", "#f0e2cc": "#e8dfce", "#e6dccb": "#e8dfce", "#f1e8ea": "#efe9df", "#d79a78": "#a6ad8e", "#cf8b6c": "#b7bda0", "#d3aebd": "#c9bfb0", "#cfdcc3": "#d3d8c2", "#b5583c": "#9a7b5a", "#6f7550": "#4e5a45", "#8fa07c": "#9aa583", "#8a5a34": "#b58f63", "#5e3d24": "#6f5338", "#b98d5e": "#d2b48a", "#b8893a": "#8d8466", "#c9b08c": "#cfc2ac", "#d9cdb8": "#d8d0c0", "#b08a62": "#c9a97c", "#c4a585": "#d3b88f", "#f6f0e4": "#efeadf", "#c9a3b5": "#c9bfb0", "#d9a9b3": "#ddd5c6", "#a98ea8": "#8a8f78", "#c9a23c": "#8d8466"}, "pal": [["Oat", "#f2ede3"], ["Stone", "#d8d0c0"], ["Pale ash", "#c9a97c"], ["Moss", "#9aa583"], ["Dark moss", "#4e5a45"], ["Bronze", "#8d8466"]], "items": ["Oat plaster-look walls, moss feature walls", "Pale ash floors, warm stone tiles", "Low-profile ash and oak furniture, wool and linen", "Moss green and charcoal accents", "Paper-style lights, bronze fittings"]}, {"code": "I8", "name": "Boho Jaipur", "blurb": "Playful and colourful: warm white with mustard, rose and teal, block-print walls.", "map": {"#f4ecdc": "#fbf1de", "#f6f5f1": "#fbf1de", "#ead9bf": "#f6d9a8", "#eadbc3": "#f6d9a8", "#f0e2cc": "#f6d9a8", "#e6dccb": "#f6d9a8", "#f1e8ea": "#f8e4e2", "#d79a78": "#e0a526", "#cf8b6c": "#d9577a", "#d3aebd": "#e08aa2", "#cfdcc3": "#9bd0c3", "#b5583c": "#d9573f", "#6f7550": "#1f7d83", "#8fa07c": "#e8a93a", "#8a5a34": "#9a5f33", "#5e3d24": "#6a3d20", "#b98d5e": "#c98d52", "#b8893a": "#d8a233", "#c9b08c": "#e0752f", "#d9cdb8": "#e9c86f", "#b08a62": "#b5835a", "#c4a585": "#c4916a", "#f6f0e4": "#f6efe0", "#c9a3b5": "#e08aa2", "#d9a9b3": "#f2b5c4", "#a98ea8": "#8a4f9a", "#c9a23c": "#d8a233"}, "pal": [["Warm white", "#fbf1de"], ["Mustard", "#e0a526"], ["Rose", "#d9577a"], ["Teal", "#1f7d83"], ["Mango wood", "#9a5f33"], ["Brass", "#d8a233"]], "items": ["Warm-white walls, block-print feature walls in mustard and rose", "Warm timber floors, cream marble", "Mango-wood furniture, cotton prints", "Mustard, rose and teal accents", "Brass pendants, string-light glow"]}];
+  function build() {
+  MC.clear(); SMAP = STYLES[styleIdx].map;
+  [G.base, G.walls, G.furn, G.ceil, G.site].forEach((g) => { while (g.children.length) { const c = g.children[0]; g.remove(c); if (c.geometry) c.geometry.dispose(); } });
   // ============ plan P6 ============
   // rect = [x0, y0, x1, y1]; ext = sides on the outside of the house; accent = one feature wall
   const ROOMS = [
@@ -265,7 +283,6 @@
     box(x0, x1, y0, y1, H, H + 0.3, m('#fbfaf6', 0.95), false, G.ceil);
     const cm = COVE(); [[x0 + 0.7, x1 - 0.7, y0 + 0.7, y0 + 0.82], [x0 + 0.7, x1 - 0.7, y1 - 0.82, y1 - 0.7], [x0 + 0.7, x0 + 0.82, y0 + 0.7, y1 - 0.7], [x1 - 0.82, x1 - 0.7, y0 + 0.7, y1 - 0.7]].forEach(([a, b, c, d]) => box(a, b, c, d, H - 0.06, H, cm, false, G.ceil));
   });
-  function COVE() { if (!COVE.m) COVE.m = new THREE.MeshStandardMaterial({ color: lin('#fff1d6'), emissive: lin('#ffd9a0'), emissiveIntensity: 1.4 }); return COVE.m; }
   box(11.5, 11.5 + TE, 6, 10, 0, H, EXT, true, G.walls);                       // master's porch-side outer skin
   // doors, windows, arches
   const DOORM = m('#7a4f2c', 0.55), DOORL = m('#8a5a34', 0.5);
@@ -291,7 +308,7 @@
 
   // ============ furniture helpers ============
   const WOOD = m('#8a5a34', 0.55), WOODD = m('#5e3d24', 0.55), WOODL = m('#b98d5e', 0.55), BRASS = m('#b8893a', 0.3, 0.8), WHITE = m('#f7f5f0', 0.6), STEEL = m('#b9bcc0', 0.3, 0.8), BLACK = m('#26272a', 0.4, 0.4);
-  const LAMP = new THREE.MeshStandardMaterial({ color: lin('#ffe7bd'), emissive: lin('#ffc978'), emissiveIntensity: 1.2, roughness: 0.5 });
+  LAMP = new THREE.MeshStandardMaterial({ color: lin('#ffe7bd'), emissive: lin('#ffc978'), emissiveIntensity: 1.2, roughness: 0.5 });
   const LEAF = [m('#3f7a35'), m('#5d9a45'), m('#2f6a3a')];
   function plant(x, y, s = 1, pot = '#c9b8a0', z = 0) { cyl(x, y, z, z + 0.9 * s, 0.42 * s, m(pot, 0.7), 12, 0.3 * s);
     for (let i = 0; i < 7; i++) { const b = ball(x + (rnd() - 0.5) * 0.7 * s, y + (rnd() - 0.5) * 0.7 * s, z + (1.3 + rnd() * 1.3) * s, (0.32 + rnd() * 0.25) * s, LEAF[i % 3]); b.scale.y = 1.3; } }
@@ -309,7 +326,7 @@
     if (face === 'N') { box(x0, x1, y0, y0 + t, 1.45, 2.9, b); box(x0, x0 + 0.5, y0, y1, 1.45, 2.2, b); box(x1 - 0.5, x1, y0, y1, 1.45, 2.2, b); cush.forEach((c, i) => box(x0 + 0.7 + i * (x1 - x0 - 1.4) / cush.length, x0 + 0.7 + (i + 0.8) * (x1 - x0 - 1.4) / cush.length, y0 + t, y0 + t + 0.4, 1.5, 2.6, m(c, 0.95))); }
     if (face === 'E') { box(x0, x0 + t, y0, y1, 1.45, 2.9, b); box(x0, x1, y0, y0 + 0.5, 1.45, 2.2, b); box(x0, x1, y1 - 0.5, y1, 1.45, 2.2, b); cush.forEach((c, i) => box(x0 + t, x0 + t + 0.4, y0 + 0.7 + i * (y1 - y0 - 1.4) / cush.length, y0 + 0.7 + (i + 0.8) * (y1 - y0 - 1.4) / cush.length, 1.5, 2.6, m(c, 0.95))); } }
   function pendant(x, y, z, r = 0.45, shade = '#b8893a') { cyl(x, y, z + r, H, 0.015, BLACK, 4); const s = add(new THREE.Mesh(new THREE.SphereGeometry(r, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), m(shade, 0.35, 0.7)), x, z, y); ball(x, y, z + 0.05, r * 0.35, LAMP); return s; }
-  function rug(x0, x1, y0, y1, hex) { const t = T.rug.clone(); t.needsUpdate = true; const mesh = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), new THREE.MeshStandardMaterial({ map: t, color: lin(hex), roughness: 1 })); mesh.rotation.x = -Math.PI / 2; mesh.position.set(W((x0 + x1) / 2), 0.09, D((y0 + y1) / 2)); mesh.receiveShadow = true; G.furn.add(mesh); }
+  function rug(x0, x1, y0, y1, hex) { const t = T.rug.clone(); t.needsUpdate = true; const mesh = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, y1 - y0), new THREE.MeshStandardMaterial({ map: t, color: lin(RM(hex)), roughness: 1 })); mesh.rotation.x = -Math.PI / 2; mesh.position.set(W((x0 + x1) / 2), 0.09, D((y0 + y1) / 2)); mesh.receiveShadow = true; G.furn.add(mesh); }
   function curtainV(c, a, b, side, hex, z0 = 0.2, z1 = 8) { const x = c + (side === 'W' ? -0.45 : 0.45); [[a - 0.5, a + 0.35], [b - 0.35, b + 0.5]].forEach(([p, q]) => box(x - 0.05, x + 0.05, p, q, z0, z1, m(hex, 1))); box(x - 0.04, x + 0.04, a - 0.6, b + 0.6, z1, z1 + 0.08, BRASS, false); }
   function curtainH(c, a, b, side, hex, z0 = 0.2, z1 = 8) { const y = c + (side === 'S' ? -0.45 : 0.45); [[a - 0.5, a + 0.35], [b - 0.35, b + 0.5]].forEach(([p, q]) => box(p, q, y - 0.05, y + 0.05, z0, z1, m(hex, 1))); box(a - 0.6, b + 0.6, y - 0.04, y + 0.04, z1, z1 + 0.08, BRASS, false); }
   function fan(x, y) { CUR = G.ceil; cyl(x, y, H - 0.9, H, 0.04, BLACK, 6); cyl(x, y, H - 1.05, H - 0.85, 0.3, WOODD, 12); for (let i = 0; i < 3; i++) { const bl = add(new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.04, 0.42), WOODD), x, H - 0.95, y); bl.geometry.translate(1.2, 0, 0); bl.rotation.y = i * Math.PI * 2 / 3; } CUR = G.furn; }
@@ -366,13 +383,11 @@
   [25.4, 29.2].forEach((y) => cyl(11, y, 2.5, 2.56, 0.28, WHITE, 12));
   // --- LIVING (centre & east): seating faces north/east, big east windows, plants ---
   sofa(15.4, 20.6, 25.2, 27.9, 'N', '#d9cdb8', ['#8fa07c', '#efe6d6', '#b5583c', '#8fa07c']);
-  sofa(13.4, 15.9, 28.9, 31.6, 'E', '#8fa07c', ['#efe6d6']);
   table(16.9, 19.3, 29.2, 30.8, 1.3, WOOD, 0.14, 0.14); cyl(18.1, 30, 1.3, 1.5, 0.4, BRASS, 16); ball(18.1, 30, 1.75, 0.22, LEAF[1]);
   rug(15.2, 20.6, 28.2, 32.6, '#cdbfa6');
   box(16.2, 20.8, 33.15, 33.72, 0.5, 1.7, WOOD); box(16.0, 20.9, 33.66, 33.74, 1.7, 8.2, m('#7a5a3c', 0.55)); for (let x = 16.2; x < 20.9; x += 0.42) box(x, x + 0.14, 33.6, 33.68, 1.7, 8.2, WOODL, false);
   box(16.9, 20.1, 33.55, 33.62, 3.0, 5.2, BLACK);                                   // TV on the north wall
-  curtainV(21, 23, 26.6, 'W', '#f1ead9'); curtainV(21, 29.4, 33, 'W', '#f1ead9'); plant(20.2, 27.9, 1.25, '#e2d6c2'); plant(20.3, 22.8, 1.0, '#b5583c'); plant(8.7, 32.9, 1.1, '#c9b8a0');
-  cyl(20.3, 24.5, 0, 5.2, 0.05, BRASS, 6); cyl(20.3, 24.5, 5.2, 6.1, 0.45, LAMP, 12, 0.3);  // floor lamp
+  curtainV(21, 23, 26.6, 'W', '#f1ead9'); curtainV(21, 29.4, 33, 'W', '#f1ead9'); plant(20.2, 27.9, 1.25, '#e2d6c2'); plant(8.7, 32.9, 1.1, '#c9b8a0');
   { const md = new THREE.Mesh(new THREE.CircleGeometry(1.6, 40), new THREE.MeshStandardMaterial({ map: T.medal, roughness: 0.4 })); md.rotation.x = -Math.PI / 2; md.position.set(W(12.6), 0.08, D(23.9)); md.receiveShadow = true; G.furn.add(md); }
   fan(18, 28.5); art(18.5, 20.5, 22.26, 22.32, 4, 6.6, '#cfdcc3');
   // --- BATH 2 (W) + WASH LOBBY ---
@@ -431,6 +446,9 @@
   [[2, 58.3], [22, 51]].forEach(([x, y]) => { for (let i = 0; i < 6; i++) cyl(x + i * 0.1, y, i * 1.5, i * 1.5 + 1.6, 0.24, m('#7a6248', 0.9), 7); for (let i = 0; i < 9; i++) { const g = new THREE.BoxGeometry(4.2, 0.06, 0.9); g.translate(2.1, 0, 0); const hold = new THREE.Object3D(); hold.position.set(W(x + 0.6), 9, D(y)); hold.rotation.y = i * Math.PI * 2 / 9; const lf = new THREE.Mesh(g, m('#4f8a3a')); lf.rotation.z = -0.3 - rnd() * 0.35; lf.castShadow = true; hold.add(lf); G.site.add(hold); } });
   CUR = G.furn;
 
+  }
+  build();
+
   // ============ labels, direction letters, Vastu grid ============
   function sprite(text, sub, scale = 5.2, bg = 'rgba(32,29,25,.82)', fg = '#fff') {
     const c = document.createElement('canvas'); c.width = 512; c.height = 160; const g = c.getContext('2d'); g.fillStyle = bg; const r = 28; g.beginPath(); g.moveTo(r, 0); g.arcTo(512, 0, 512, 160, r); g.arcTo(512, 160, 0, 160, r); g.arcTo(0, 160, 0, 0, r); g.arcTo(0, 0, 512, 0, r); g.fill();
@@ -461,11 +479,11 @@
       tips: ['Main door on the south wall, east of the centre line (never in the south-west)', 'Slope and openness increase toward the north and east: bigger windows there, smaller ones on the south and west', 'Centre of the house (Brahmasthan) kept open inside the hall', 'Compound wall higher on the south and west, lower on the north and east; gate in the south-east part of the front', 'Rainwater pit and tulsi in the north-east of the garden; washing area in the north-west'],
       pal: [['Cream', '#f4ecdc'], ['Sand', '#ead9bf'], ['Terracotta', '#b5583c'], ['Sage green', '#8fa07c'], ['Olive', '#6f7550'], ['Brass', '#b8893a']],
       items: ['Cream marble-look vitrified tile in hall, foyer and passage', 'Timber-look plank floors in bedrooms and study', 'Teak doors, brass hardware, warm 2700 K lighting throughout'] },
-    { id: 'living', name: 'Living room', zone: 'Centre + East', size: '13 × 12 ft hall (shared with dining)', cam: [[9.4, 23.2, 5.4], [18.5, 31.5, 3]], eyebrow: 'East · positivity, clarity, growth',
+    { id: 'living', name: 'Living room', zone: 'Centre + East', size: '13 × 12 ft hall (shared with dining)', cam: [[20.5, 22.8, 6.1], [11.5, 31.5, 2.4]], eyebrow: 'East · positivity, clarity, growth',
       desc: 'The living area takes the centre and east of the house. Two large east windows bring in morning sun, the seating faces north and east, and the TV wall is on the north.',
-      tips: ['Large east windows, sheer curtains for morning light', 'Sofas on the south and west of the seating group, so people face north or east', 'TV unit on the north wall with fluted timber panelling', 'Light, soothing colours: cream walls with one sage-green wall', 'Indoor plants near the east windows; centre of the house left open with a floor medallion'],
+      tips: ['Large east windows, sheer curtains for morning light', 'One sofa on the south side of the seating area so people face north; the rest of the 13 × 12 ft hall stays open', 'TV unit on the north wall with fluted timber panelling', 'Light, soothing colours: cream walls with one sage-green wall', 'Indoor plants near the east windows; centre of the house left open with a floor medallion'],
       pal: [['Cream', '#f4ecdc'], ['Beige', '#d9cdb8'], ['Light green', '#cfdcc3'], ['Sage green', '#8fa07c'], ['Sand', '#cdbfa6'], ['Warm white', '#f6f0e4']],
-      items: ['3-seater sofa in beige linen, sage 2-seater', 'Teak coffee table, brass tray', 'Fluted timber TV wall, floating console', 'Ceiling fan, brass floor lamp, beige rug'] },
+      items: ['3-seater sofa in beige linen; seating kept to one sofa so the hall stays spacious', 'Teak coffee table, brass tray', 'Fluted timber TV wall, floating console', 'Ceiling fan, beige rug'] },
     { id: 'dining', name: 'Dining', zone: 'West', size: 'in the 13 × 12 ft hall', cam: [[20.2, 23.0, 5.5], [10, 28, 3]], eyebrow: 'West · stability, prosperity, completeness',
       desc: 'Dining sits on the west side of the hall, next to the kitchen route. A built-in bench along the west wall keeps that side heavier, with an earthy botanical feature wall and warm pendants.',
       tips: ['West side kept slightly heavier with the built-in bench and storage below it', 'Warm, earthy feature wall', 'Good lighting for the evening: two brass pendants over the table', 'Kept clean and clutter-free, close to the kitchen door'],
@@ -542,14 +560,14 @@
     if (inside && cur.cam) flyTo(P(...cur.cam[0]), P(...cur.cam[1]));
     else if (mode === 'plan') flyTo(P(12, 29.9, 90), P(12, 30, 0));
     else flyTo(P(37, -5, 38), P(12, 27, 0));
-    $('tag').innerHTML = `<b>${cur.zone}</b> · `; $('tag').appendChild(document.createTextNode(cur.name + (inside ? '' : mode === 'plan' ? ' · furnished plan' : ' · walls cut at 5 ft')));
+    $('tag').innerHTML = `<b>${cur.zone}</b> · `; $('tag').appendChild(document.createTextNode(cur.name + (inside ? '' : mode === 'plan' ? ' · furnished plan' : ' · walls cut at 5 ft') + ' · ' + STYLES[styleIdx].code + ' ' + STYLES[styleIdx].name));
     $('hint').textContent = inside ? 'Drag to look around · scroll to move closer' : 'Drag to rotate · scroll or pinch to zoom';
     $('d-eyebrow').textContent = cur.eyebrow; $('d-zone').textContent = cur.zone; $('d-name').textContent = `${cur.name} · ${cur.size}`; $('d-desc').textContent = cur.desc;
     $('d-tips').innerHTML = ''; cur.tips.forEach((t) => { const li = document.createElement('li'); const s = document.createElement('span'); s.textContent = t; li.appendChild(s); $('d-tips').appendChild(li); });
-    $('d-sw').innerHTML = cur.pal.map(([n, h]) => `<i style="background:${h}"></i><span>${n}</span><span>${h.toUpperCase()}</span>`).join('');
-    $('d-items').innerHTML = ''; cur.items.forEach((t) => { const li = document.createElement('li'); li.textContent = t; $('d-items').appendChild(li); });
+    $('d-palh').textContent = styleIdx ? 'Colour palette · ' + STYLES[styleIdx].name : 'Colour palette'; $('d-sw').innerHTML = (styleIdx ? STYLES[styleIdx].pal : cur.pal).map(([n, h]) => `<i style="background:${h}"></i><span>${n}</span><span>${h.toUpperCase()}</span>`).join('');
+    $('d-items').innerHTML = ''; (styleIdx ? STYLES[styleIdx].items : cur.items).forEach((t) => { const li = document.createElement('li'); li.textContent = t; $('d-items').appendChild(li); });
     setLights();
-    try { history.replaceState(null, '', '#' + cur.id); } catch (e) {}
+    try { history.replaceState(null, '', '#' + cur.id + (styleIdx ? '-' + STYLES[styleIdx].code : '')); } catch (e) {}
   }
   sel.addEventListener('change', () => go(sel.value, sel.value === 'house' ? 'doll' : 'in'));
   $('v-doll').addEventListener('click', () => go(cur.id, 'doll')); $('v-plan').addEventListener('click', () => go(cur.id, 'plan'));
@@ -558,7 +576,7 @@
   $('t-eve').addEventListener('click', () => { eve = true; $('t-day').setAttribute('aria-pressed', false); $('t-eve').setAttribute('aria-pressed', true); setLights(); });
   $('k-labels').addEventListener('change', () => go(cur.id, mode)); $('k-zones').addEventListener('change', () => { if (mode === 'in') go(cur.id, 'doll'); else go(cur.id, mode); });
   $('shot').addEventListener('click', async () => {
-    renderer.render(scene, camera); const blob = await new Promise((r) => renderer.domElement.toBlob(r, 'image/png')), name = `sullurpeta-interior-${cur.id}.png`;
+    renderer.render(scene, camera); const blob = await new Promise((r) => renderer.domElement.toBlob(r, 'image/png')), name = `sullurpeta-interior-${STYLES[styleIdx].code}-${cur.id}.png`;
     if (!blob) { $('status').textContent = 'Could not capture the picture.'; return; }
     const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
     if (dl) { try { await dl.save({ filename: name, data: blob }); $('status').textContent = 'Picture saved.'; } catch (e) { $('status').textContent = e && e.code === 'declined' ? 'Save cancelled.' : 'Saving is not available in this view.'; } return; }
@@ -566,15 +584,23 @@
   });
   function resize() { const r = stage.getBoundingClientRect(); renderer.setSize(r.width, r.height, false); camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix(); }
   new ResizeObserver(resize).observe(stage); resize();
-  const h0 = (location.hash || '').replace('#', '');
-  go(VIEWS.some((v) => v.id === h0) ? h0 : 'house', VIEWS.some((v) => v.id === h0) && h0 !== 'house' ? 'in' : 'doll');
-  if (fly) { camera.position.copy(fly.p1); controls.target.copy(fly.t1); fly = null; }
+  const chips = $('styles');
+  STYLES.forEach((st, i) => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.i = i;
+    b.innerHTML = '<span class="dots">' + [st.pal[0], st.pal[2], st.pal[3], st.pal[4]].map((c) => '<i style="background:' + c[1] + '"></i>').join('') + '</span><span><b>' + st.code + '</b> ' + st.name + '</span>'; chips.appendChild(b); });
+  function setStyle(i, keepCam) {
+    styleIdx = i; build(); const kp = camera.position.clone(), kt = controls.target.clone(); go(cur.id, mode);
+    if (keepCam) { fly = null; camera.position.copy(kp); controls.target.copy(kt); }
+    [...chips.children].forEach((c) => c.setAttribute('aria-pressed', Number(c.dataset.i) === i)); $('style-note').textContent = STYLES[i].code + ' ' + STYLES[i].name + ': ' + STYLES[i].blurb;
+  }
+  chips.addEventListener('click', (e) => { const b = e.target.closest('.chip'); if (b) setStyle(Number(b.dataset.i), true); });
+  const toks = (location.hash || '').replace('#', '').split('-'), h0 = toks.find((t) => VIEWS.some((v) => v.id === t)) || 'house', sCode = toks.find((t) => /^I\d+$/.test(t)), si = Math.max(0, STYLES.findIndex((t) => t.code === sCode));
+  go(h0, h0 !== 'house' ? 'in' : 'doll'); if (fly) { camera.position.copy(fly.p1); controls.target.copy(fly.t1); fly = null; } setStyle(si, true);
   const needle = $('needle'), dir = new THREE.Vector3();
   (function loop(now) {
     if (fly) { const u = Math.min(1, ((now || performance.now()) - fly.start) / fly.ms), e = u * u * (3 - 2 * u); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.t0, fly.t1, e); if (u >= 1) fly = null; }
     controls.update(); camera.getWorldDirection(dir); needle.setAttribute('transform', `rotate(${(Math.atan2(dir.x, -dir.z) * -180 / Math.PI).toFixed(1)} 32 32)`);
     renderer.render(scene, camera); requestAnimationFrame(loop);
   })();
-  window.__int = { go, setEve: (v) => { eve = v; setLights(); } };
+  window.__int = { go, setStyle, setEve: (v) => { eve = v; setLights(); } };
 })();
 </script>
